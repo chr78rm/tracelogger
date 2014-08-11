@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.christofreichardt.de/java/tracer"
+    xmlns:tns="http://www.christofreichardt.de/java/tracer"
+    elementFormDefault="qualified">
+
+  <xsd:element name="TraceConfig">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Pool" type="tns:PoolType"/>
+        <xsd:element name="DefaultTracer" type="tns:DefaultTracerType" minOccurs="0"/>
+        <xsd:element name="Map" type="tns:MapType" minOccurs="0"/>
+        <xsd:element name="Queue" type="tns:QueueType" minOccurs="0"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:complexType name="PoolType">
+    <xsd:sequence>
+      <xsd:element name="TraceLogger" minOccurs="0" maxOccurs="unbounded" type="tns:TraceLoggerType"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:complexType name="TraceLoggerType">
+    <xsd:sequence minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="LogDir" type="xsd:string"/>
+        <xsd:element name="Listener" type="tns:ListenerType"/>
+      </xsd:choice>
+      <xsd:element name="AutoFlush" type="xsd:boolean"/>
+      <xsd:element name="BufSize" type="xsd:unsignedLong"/>
+      <xsd:element name="Limit" type="xsd:unsignedLong" minOccurs="0"/>
+      <xsd:element name="Context" type="tns:ContextType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute name="name" type="xsd:string"/>
+    <xsd:attribute name="ref" type="xsd:string"/>
+    <xsd:attribute name="class" type="xsd:string" default="de.christofreichardt.diagnosis.NullTracer"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="ListenerType">
+    <xsd:sequence>
+      <xsd:element name="Port" type="xsd:unsignedLong"/>
+      <xsd:element name="Host" type="xsd:string"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="ContextType">
+    <xsd:sequence>
+      <xsd:element name="Thread" type="tns:ThreadType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="MapType">
+    <xsd:sequence>
+      <xsd:element name="Threads">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Thread" minOccurs="0" maxOccurs="unbounded" type="tns:ThreadType"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:complexType name="QueueType">
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:element name="Enabled">
+          <xsd:complexType/>
+        </xsd:element>
+        <xsd:element name="Disabled">
+          <xsd:complexType/>
+        </xsd:element>
+      </xsd:choice>
+      <xsd:element name="Size" type="xsd:unsignedShort"/>
+      <xsd:element name="TraceLogger" type="tns:TraceLoggerType"/>
+      <xsd:group ref="tns:OnlineAndDebug"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="ThreadType">
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:group ref="tns:OnlineAndDebug"/>
+        <xsd:element name="TraceLogger" type="tns:TraceLoggerType"/>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="name" type="xsd:string" use="required"/>
+  </xsd:complexType>
+  
+  <xsd:complexType name="DefaultTracerType">
+    <xsd:attribute name="class" type="xsd:string" default="de.christofreichardt.diagnosis.NullTracer"/>
+  </xsd:complexType>
+
+  <xsd:group name="OnlineAndDebug">
+    <xsd:sequence>
+      <xsd:element name="Online" type="xsd:boolean"/>
+      <xsd:element name="DebugLevel" type="xsd:unsignedLong"/>
+    </xsd:sequence>
+  </xsd:group>
+
+</xsd:schema>

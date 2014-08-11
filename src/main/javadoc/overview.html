@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+  <head>
+    <title>TraceLogger 1.6.0</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+  </head>
+  <body>
+    <div style="text-align: justify">
+      <p>
+        This document is the API specification for the TraceLogger library. This library helps to avoid errors and helps to debug errors
+        during the development of complex software systems on the Java Virtual Machine (JVM) by providing clearly
+        arranged (trace-)logs. That is, in contrast to conventional loggers the call stack of the to be observed methods is 
+        presented by indenting the trace messages dependent on the actual depth of the call stack. A distinction
+        is made between fine granular trace messages (entering and exiting of methods, debugging output) and
+        conventional log messages (error, warning and info notifications). For production the latter ones can be
+        redirected to a conventional logging system like log4j whereas the trace messages will be discarded. Several strategies
+        to access tracers can be employed. Tracers can be accessed by name, can be mapped on threads and be retrieved
+        by invoking a blocking queue. Unlike conventional java loggers, these tracers aren't linked with the package hierarchy
+        but rather linked with threads. 
+      </p>
+    </div>
+  </body>
+</html>
