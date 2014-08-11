@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<TraceConfig xmlns="http://www.christofreichardt.de/java/tracer">
+  <Pool>
+    <TraceLogger name="WorkerTracer-0" class="de.christofreichardt.diagnosis.file.FileTracer">
+      <LogDir>./log/examples</LogDir>
+      <AutoFlush>true</AutoFlush>
+      <BufSize>1024</BufSize>
+      <Limit>1048576</Limit>
+      <Context>
+        <Thread name="Worker-0">
+          <Online>true</Online>
+          <DebugLevel>5</DebugLevel>
+        </Thread>
+      </Context>
+    </TraceLogger>
+    <TraceLogger name="WorkerTracer-1" class="de.christofreichardt.diagnosis.file.FileTracer">
+      <LogDir>./log/examples</LogDir>
+      <AutoFlush>true</AutoFlush>
+      <BufSize>1024</BufSize>
+      <Limit>1048576</Limit>
+      <Context>
+        <Thread name="Worker-1">
+          <Online>true</Online>
+          <DebugLevel>5</DebugLevel>
+        </Thread>
+      </Context>
+    </TraceLogger>
+    <TraceLogger name="WorkerTracer-2" class="de.christofreichardt.diagnosis.file.FileTracer">
+      <LogDir>./log/examples</LogDir>
+      <AutoFlush>true</AutoFlush>
+      <BufSize>1024</BufSize>
+      <Limit>1048576</Limit>
+      <Context>
+        <Thread name="Worker-2">
+          <Online>true</Online>
+          <DebugLevel>5</DebugLevel>
+        </Thread>
+      </Context>
+    </TraceLogger>
+  </Pool>
+  <Map>
+    <Threads>
+      <Thread name="Worker-0">
+        <TraceLogger ref="WorkerTracer-0"/>
+      </Thread>
+      <Thread name="Worker-1">
+        <TraceLogger ref="WorkerTracer-1"/>
+      </Thread>
+      <Thread name="Worker-2">
+        <TraceLogger ref="WorkerTracer-2"/>
+      </Thread>
+    </Threads>
+  </Map>
+</TraceConfig>

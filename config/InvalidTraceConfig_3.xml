@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+    Document   : TraceConfig.xml
+    Author     : chr
+-->
+
+<TraceConfig xmlns="http://www.christofreichardt.de/java/tracer">
+  <Pool>
+    <TraceLogger name="TestTracer-0" class="de.christofreichardt.diagnosis.file.FileTracer">
+      <LogDir>./log/</LogDir>
+      <AutoFlush>true</AutoFlush>
+      <BufSize>1024</BufSize>
+      <Limit>1048576</Limit>
+      <Context>
+        <Thread name="main">
+          <Online>true</Online>
+          <DebugLevel>5</DebugLevel>
+        </Thread>
+        <Thread name="TestThread-0">
+          <Online>true</Online>
+          <DebugLevel>3</DebugLevel>
+        </Thread>
+        <Thread name="TestThread-1">
+          <Online>false</Online>
+          <DebugLevel>2</DebugLevel>
+        </Thread>
+      </Context>
+    </TraceLogger>
+    <TraceLogger name="TestTracer-1" class="de.christofreichardt.diagnosis.file.FileTracer">
+      <LogDir>./log/</LogDir>
+      <AutoFlush>true</AutoFlush>
+      <BufSize>1024</BufSize>
+      <Context>
+        <Thread name="TestThread-1">
+          <Online>true</Online>
+          <DebugLevel>5</DebugLevel>
+        </Thread>
+      </Context>
+    </TraceLogger>
+    <TraceLogger name="TestTracer-2" class="de.christofreichardt.diagnosis.net.NetTracer">
+      <Listener>
+        <Port>5010</Port>
+        <Host>localhost</Host>
+      </Listener>
+      <AutoFlush>true</AutoFlush>
+      <BufSize>1024</BufSize>
+      <Context>
+        <Thread name="TestThread-2">
+          <Online>true</Online>
+          <DebugLevel>5</DebugLevel>
+        </Thread>
+      </Context>
+    </TraceLogger>
+    <TraceLogger name="TestTracer-3" class="de.christofreichardt.diagnosis.NullTracer" />
+    <TraceLogger name="TestTracer-4" class="de.christofreichardt.diagnosis.file.FileTracerLog4jTee">
+      <LogDir>./log/</LogDir>
+      <AutoFlush>true</AutoFlush>
+      <BufSize>1024</BufSize>
+    </TraceLogger>
+  </Pool>
+  <DefaultTracer class="de.christofreichardt.diagnosis.JDKLoggingRouter"/>
+  <Map>
+  </Map>
+</TraceConfig>

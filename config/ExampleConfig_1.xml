@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<TraceConfig xmlns="http://www.christofreichardt.de/java/tracer">
+  <Pool>
+    <TraceLogger name="ExampleTracer" class="de.christofreichardt.diagnosis.file.FileTracer">
+      <LogDir>./log/examples</LogDir>
+      <AutoFlush>true</AutoFlush>
+      <BufSize>1024</BufSize>
+      <Limit>1048576</Limit>
+      <Context>
+        <Thread name="main">
+          <Online>true</Online>
+          <DebugLevel>5</DebugLevel>
+        </Thread>
+      </Context>
+    </TraceLogger>
+  </Pool>
+</TraceConfig>
