@@ -41,7 +41,7 @@ public class NullTracer extends AbstractTracer {
    * @param node (ignored)
    */
   @Override
-  final protected void readConfiguration(XPath xpath, Node node) {
+  protected void readConfiguration(XPath xpath, Node node) {
   }
 
   /**
