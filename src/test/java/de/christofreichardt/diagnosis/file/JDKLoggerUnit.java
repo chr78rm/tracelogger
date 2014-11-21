@@ -148,7 +148,7 @@ public class JDKLoggerUnit {
     
     Assert.assertTrue(new File(PATH_TO_LOGFILE).exists());
     List<String> lines = Files.readAllLines(new File(PATH_TO_LOGFILE).toPath(), Charset.defaultCharset());
-    Assert.assertTrue("Expected eight lines.", lines.size() == 4);
+    Assert.assertTrue("Expected four lines.", lines.size() == 4);
     String[] expectedStrings = {"Within method_1.", "Within method_2.", "Within method_3.", "This is a test."};
     int i=0;
     for (String line : lines) {
