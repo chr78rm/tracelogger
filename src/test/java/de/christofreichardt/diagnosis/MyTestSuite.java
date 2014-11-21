@@ -18,7 +18,8 @@ import org.junit.runners.Suite;
  * @author Developer
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({TracerFactoryUnit.class,
+@Suite.SuiteClasses({
+  TracerFactoryUnit.class,
   FileTracerUnit.class,
   NetTracerUnit.class,
   Log4jUnit.class,
@@ -26,6 +27,8 @@ import org.junit.runners.Suite;
   LoadUnit.class,
   QueueFileTracerUnit.class,
   ExampleUnit.class,
-  ExperimentalUnit.class})
+  ExperimentalUnit.class,
+  LogbackRouterUnit.class
+})
 public class MyTestSuite {
 }
