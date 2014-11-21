@@ -237,13 +237,14 @@ public class TracerFactory {
     private void init(Node node) throws TracerFactory.Exception, XPathExpressionException, AbstractTracer.Exception {
       try {
         for (int i = 0; i < this.size; i++) {
-          Class<QueueTracer> tracerClass = (Class<QueueTracer>) Class.forName(this.className);
-          Constructor<QueueTracer> constructor = tracerClass.getConstructor(String.class);
-          if (!QueueTracer.class.isAssignableFrom(tracerClass))
-            throw new TracerFactory.Exception("Need a QueueTracer class but found '" + tracerClass.getName()+ "'.");
-          else if (QueueNullTracer.class.isAssignableFrom(tracerClass))
+          Class<?> clazz = Class.forName(this.className);
+          if (!QueueTracer.class.isAssignableFrom(clazz))
+            throw new TracerFactory.Exception("Need a QueueTracer class but found '" + clazz.getName()+ "'.");
+          Class<QueueTracer> tracerClass = (Class<QueueTracer>) clazz;
+          if (QueueNullTracer.class.isAssignableFrom(tracerClass))
             throw new TracerFactory.Exception("No QueueNullTracer allowed here.");
           String tracerName = (String) TracerFactory.this.xpath.evaluate("./dns:TraceLogger/@name", node, XPathConstants.STRING);
+          Constructor<QueueTracer> constructor = tracerClass.getConstructor(String.class);
           QueueTracer queueTracer = constructor.newInstance(tracerName + i);
           queueTracer.readConfiguration(TracerFactory.this.xpath, node);
           this.blockingTracerDeque.offerLast(queueTracer);
