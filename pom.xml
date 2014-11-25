@@ -4,7 +4,7 @@
 
   <groupId>de.christofreichardt</groupId>
   <artifactId>tracelogger</artifactId>
-  <version>1.6.2-SNAPSHOT</version>
+  <version>1.7.0-rc0</version>
   <packaging>jar</packaging>
 
   <name>${project.groupId}:${project.artifactId}</name>
