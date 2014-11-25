@@ -2,5 +2,6 @@
 *.jar
 *.war
 *.ear
+*.log
 /target/
 /nb-configuration.xml
