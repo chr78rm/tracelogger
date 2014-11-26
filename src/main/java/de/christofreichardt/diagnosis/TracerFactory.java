@@ -347,10 +347,12 @@ public class TracerFactory {
    * and mappings which will replace the old tracers and their mappings. 
    * 
    * @param configFile the configuration file
-   * @throws TracerFactory.Exception
-   * @throws FileNotFoundException
+   * @throws TracerFactory.Exception indicates a configuration problem
+   * @throws FileNotFoundException indicates a missing configuration file
    */
   public void readConfiguration(File configFile) throws TracerFactory.Exception, FileNotFoundException {
+    if (!configFile.exists())
+      throw new FileNotFoundException(configFile + "doesn't exist.");
     try (FileInputStream fileInputStream = new FileInputStream(configFile)) {
       readConfiguration(fileInputStream);
     }
@@ -362,7 +364,7 @@ public class TracerFactory {
   /**
    * Reads the configuration from the given InputStream.
    * @param inputStream the input stream providing the configuration.
-   * @throws TracerFactory.Exception
+   * @throws TracerFactory.Exception indicates a configuration problem
    * @see TracerFactory#readConfiguration(java.io.File) 
    */
   public void readConfiguration(InputStream inputStream) throws TracerFactory.Exception {
