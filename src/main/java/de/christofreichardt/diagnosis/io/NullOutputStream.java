@@ -24,31 +24,28 @@ final public class NullOutputStream extends OutputStream {
    * Pseudo write()-method.
    *
    * @param b won't be evaluated
-   * @throws java.io.IOException
    */
   @Override
-  public void write(int b) throws IOException {
+  public void write(int b) {
   }
 
   /**
    * Pseudo write()-method.
    * 
-   * @param b
-   * @param off
-   * @param len
-   * @throws IOException 
+   * @param b won't be evaluated
+   * @param off won't be evaluated
+   * @param len won't be evaluated
    */
   @Override
-  public void write(byte[] b, int off, int len) throws IOException {
+  public void write(byte[] b, int off, int len) {
   }
 
   /**
    * Pseudo write()-method.
    * 
-   * @param b
-   * @throws IOException 
+   * @param b won't be evaluated
    */
   @Override
-  public void write(byte[] b) throws IOException {
+  public void write(byte[] b) {
   }
 }
