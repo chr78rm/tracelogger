@@ -150,7 +150,7 @@ public class NetTracer extends AbstractTracer {
   /**
    * Collects some user credentials and sends them over the network.
    * 
-   * @throws java.net.UnknownHostException
+   * @throws java.net.UnknownHostException if the local host name could not be resolved into an address
    */
   protected void sendUserCredentials() throws UnknownHostException {
     this.getTracePrintStream().printf("user = %s, host = %s, name = %s%n", System.getProperty("user.name"), InetAddress.getLocalHost().getHostName(), super.getName());
