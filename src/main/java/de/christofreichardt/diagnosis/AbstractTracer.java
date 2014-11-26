@@ -537,7 +537,7 @@ abstract public class AbstractTracer {
    * @param logLevel one of the predefined levels INFO, WARNING, ERROR, FATAL and SEVERE
    * @param throwable the to be logged throwable
    * @param clazz the originating class
-   * @param methodName
+   * @param methodName the name of the relevant method
    */
   public void logException(LogLevel logLevel, Throwable throwable, Class clazz, String methodName) {
     Date timeStamp = new Date();
