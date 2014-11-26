@@ -200,7 +200,7 @@ abstract public class QueueTracer<T extends AbstractTracer> extends AbstractTrac
    * @param logLevel one of the predefined levels INFO, WARNING, ERROR, FATAL and SEVERE
    * @param throwable the to be logged throwable
    * @param clazz the originating class
-   * @param methodName
+   * @param methodName the name of the relevant method
    */
   @Override
   public void logException(LogLevel logLevel, Throwable throwable, Class clazz, String methodName) {
