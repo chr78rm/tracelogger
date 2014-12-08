@@ -391,7 +391,7 @@ public class TracerFactory {
       try {
         NodeList tracerNodes = (NodeList) this.xpath.evaluate("/dns:TraceConfig/dns:Pool/dns:TraceLogger", tracerConfigDoc.getDocumentElement(), XPathConstants.NODESET);
         System.out.println();
-        System.out.println("Configured TraceLoggers = " + tracerNodes.getLength());
+        System.out.println("Configured Pool Tracers = " + tracerNodes.getLength());
         for (int i = 0; i < tracerNodes.getLength(); i++) {
           System.out.println();
           System.out.println("(+) " + (i + 1) + ". TraceLogger");
