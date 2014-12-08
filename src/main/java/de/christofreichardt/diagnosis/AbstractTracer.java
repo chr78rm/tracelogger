@@ -99,7 +99,7 @@ import org.w3c.dom.NodeList;
  */
 abstract public class AbstractTracer {
   
-  final static public String VERSION = "1.6.0";
+  final static public String VERSION = "1.7.1";
   
   /**
    * Indicates exceptional states within the AbstractTracer context.
