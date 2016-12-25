@@ -1,5 +1,7 @@
-tracelogger
-===========
+# Tracelogger
+
+## Abstract
+
 This library helps to avoid errors and helps to debug errors during the development of complex software systems on the 
 Java Virtual Machine (JVM) by providing clearly arranged (trace-)logs. That is, in contrast to conventional loggers the 
 call stack of the to be observed methods is presented by indenting the trace messages dependent on the actual depth of the call stack. 
