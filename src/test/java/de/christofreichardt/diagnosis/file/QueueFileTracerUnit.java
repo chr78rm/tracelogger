@@ -110,12 +110,7 @@ public class QueueFileTracerUnit {
   
   @Before
   public void setup() throws IOException {
-    File[] logFiles = QueueFileTracerUnit.logDir.listFiles(new FileFilter() {
-      @Override
-      public boolean accept(File pathName) {
-        return pathName.getName().endsWith("log");
-      }
-    });
+    File[] logFiles = QueueFileTracerUnit.logDir.listFiles((File file) -> file.getName().endsWith("log") && !"empty.log".equals(file.getName()));
     for (File logFile : logFiles) {
       System.out.printf("Deleting '%s'.%n", logFile.getName());
       if (!logFile.delete()) throw new IOException("Cannot delete '" + logFile.getAbsolutePath() + "'.");
@@ -184,12 +179,7 @@ public class QueueFileTracerUnit {
     }
     
     Assert.assertTrue("Problems when closing the queue tracer.", TracerFactory.getInstance().closeQueueTracer());
-    File[] logFiles = QueueFileTracerUnit.logDir.listFiles(new FileFilter() {
-      @Override
-      public boolean accept(File pathName) {
-        return pathName.getName().endsWith("log");
-      }
-    });
+    File[] logFiles = QueueFileTracerUnit.logDir.listFiles((File file) -> file.getName().endsWith("log") && !"empty.log".equals(file.getName()));
     Assert.assertTrue("Expected " + TracerFactory.getInstance().getQueueSize() + " logfiles.", logFiles.length == TracerFactory.getInstance().getQueueSize());
     Set<String> expectedConsumers = new HashSet<>();
     for (int i=0; i<ITERATIONS; i++) {

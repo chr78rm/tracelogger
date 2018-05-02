@@ -35,12 +35,7 @@ public class LogbackRouterUnit {
   @Before
   public void setup() throws IOException, JoranException {
     File logDir = new File(PATH_TO_LOGDIR);
-    File[] logFiles = logDir.listFiles(new FileFilter() {
-      @Override
-      public boolean accept(File pathName) {
-        return pathName.getName().endsWith("log");
-      }
-    });
+    File[] logFiles = logDir.listFiles((File file) -> file.getName().endsWith("log") && !"empty.log".equals(file.getName()));
     for (File logFile : logFiles) {
       System.out.printf("Deleting '%s'.%n", logFile.getName());
       if (!logFile.delete()) throw new IOException("Cannot delete '" + logFile.getAbsolutePath() + "'.");
