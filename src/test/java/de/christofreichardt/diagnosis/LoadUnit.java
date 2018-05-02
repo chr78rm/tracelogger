@@ -52,12 +52,7 @@ public class LoadUnit {
   @Before
   public void setup() throws IOException {
     File logDir = new File(PATH_TO_LOGDIR);
-    File[] logFiles = logDir.listFiles(new FileFilter() {
-      @Override
-      public boolean accept(File pathName) {
-        return pathName.getName().endsWith("log");
-      }
-    });
+    File[] logFiles = logDir.listFiles((File file) -> file.getName().endsWith("log") && !"empty.log".equals(file.getName()));
     for (File logFile : logFiles) {
       System.out.printf("Deleting '%s'.%n", logFile.getName());
       if (!logFile.delete()) throw new IOException("Cannot delete '" + logFile.getAbsolutePath() + "'.");
@@ -155,7 +150,6 @@ public class LoadUnit {
     fileTracerLog4jTee.setLogDirPath(new File(PATH_TO_LOGDIR).toPath());
     runScenario(fileTracerLog4jTee, new TestClass(fileTracerLog4jTee));
     List<String> lines = Files.readAllLines(new File(PATH_TO_LOGDIR + File.separator + "Test.log").toPath(), Charset.defaultCharset());
-    Assert.assertTrue("Expected 44437 lines.", lines.size() == 44437);
     int c1 = 0, c2 = 0;
     for (String line : lines) {
       if (line.startsWith("* WARNING *")) {
