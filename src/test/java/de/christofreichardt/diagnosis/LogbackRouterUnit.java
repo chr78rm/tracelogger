@@ -88,7 +88,7 @@ public class LogbackRouterUnit {
         tracer.entry("void", this, "method_2()");
         try {
           Assert.assertTrue(tracer.out() instanceof NullPrintStream);
-          tracer.logMessage(LogLevel.INFO, "Within method_2.", getClass(), "method_1()");
+          tracer.logMessage(LogLevel.INFO, "Within method_2.", getClass(), "method_2()");
           method_3();
         }
         finally {
@@ -101,7 +101,7 @@ public class LogbackRouterUnit {
         tracer.entry("void", this, "method_3()");
         try {
           Assert.assertTrue(tracer.out() instanceof NullPrintStream);
-          tracer.logMessage(LogLevel.INFO, "Within method_3.", getClass(), "method_1()");
+          tracer.logMessage(LogLevel.INFO, "Within method_3.", getClass(), "method_3()");
           tracer.out().printfIndentln("This output goes to /dev/null.");
           throw new java.lang.RuntimeException("This is a test.");
         }
