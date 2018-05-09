@@ -10,13 +10,9 @@ import de.christofreichardt.diagnosis.AbstractTracer;
 import de.christofreichardt.diagnosis.BannerPrinter;
 import de.christofreichardt.diagnosis.LogLevel;
 import de.christofreichardt.diagnosis.QueueNullTracer;
-import de.christofreichardt.diagnosis.QueueTracer;
 import de.christofreichardt.diagnosis.SimpleDummy;
 import de.christofreichardt.diagnosis.TracerFactory;
-import de.christofreichardt.diagnosis.io.NullPrintStream;
-import de.christofreichardt.diagnosis.io.TracePrintStream;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -35,7 +31,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**

@@ -12,7 +12,6 @@ import de.christofreichardt.diagnosis.LogLevel;
 import de.christofreichardt.diagnosis.NullTracer;
 import de.christofreichardt.diagnosis.io.NullPrintStream;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -23,7 +22,6 @@ import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**

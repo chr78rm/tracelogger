@@ -9,7 +9,6 @@ package de.christofreichardt.diagnosis.file;
 import de.christofreichardt.diagnosis.BannerPrinter;
 import de.christofreichardt.diagnosis.SimpleDummy;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -20,7 +19,6 @@ import org.apache.log4j.xml.DOMConfigurator;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
