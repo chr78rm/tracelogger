@@ -28,7 +28,8 @@ import org.junit.runners.Suite;
   QueueFileTracerUnit.class,
   ExampleUnit.class,
   ExperimentalUnit.class,
-  LogbackRouterUnit.class
+  LogbackRouterUnit.class,
+  Log4j2RouterUnit.class
 })
 public class MyTestSuite {
 }
