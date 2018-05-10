@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" name="MyApp" packages="">
+  <Appenders>
+    <File name="MyFile" fileName="log/log4j2/Log4j2.log">
+      <PatternLayout>
+        <Pattern>%d %p %c{1.} [%t] [%M()] %m%ex%n</Pattern>
+      </PatternLayout>
+    </File>
+  </Appenders>
+  <Loggers>
+    <Logger name="de.christofreichardt.diagnosis" level="info" additivity="false">
+      <AppenderRef ref="MyFile"/>
+    </Logger>    
+    <Root level="error">
+      <AppenderRef ref="MyFile"/>
+    </Root>
+  </Loggers>
+</Configuration>

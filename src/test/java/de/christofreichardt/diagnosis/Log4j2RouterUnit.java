@@ -15,9 +15,9 @@
  */
 package de.christofreichardt.diagnosis;
 
-import ch.qos.logback.core.joran.spi.JoranException;
 import java.io.File;
 import java.io.IOException;
+import org.apache.logging.log4j.LogManager;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,24 +26,90 @@ import org.junit.Test;
  * @author Christof Reichardt
  */
 public class Log4j2RouterUnit {
+
   public static final String PATH_TO_LOGDIR = "." + File.separator + "log" + File.separator + "log4j2";
   public static final String PATH_TO_LOGFILE = PATH_TO_LOGDIR + File.separator + "log4j2-test.log";
-  
+
   final private BannerPrinter bannerPrinter = new BannerPrinter();
-  
-  
+  final private NullTracer nullTracer = new Log4j2Router();
+
   @Before
-  public void setup() throws IOException, JoranException {
+  public void setup() throws IOException {
     File logDir = new File(PATH_TO_LOGDIR);
     File[] logFiles = logDir.listFiles((File file) -> file.getName().endsWith("log") && !"empty.log".equals(file.getName()));
     for (File logFile : logFiles) {
       System.out.printf("Deleting '%s'.%n", logFile.getName());
-      if (!logFile.delete()) throw new IOException("Cannot delete '" + logFile.getAbsolutePath() + "'.");
+      if (!logFile.delete()) {
+        throw new IOException("Cannot delete '" + logFile.getAbsolutePath() + "'.");
+      }
+    }
+    ((org.apache.logging.log4j.core.LoggerContext) LogManager.getContext(false)).reconfigure();
+  }
+
+  class Foo implements Traceable {
+
+    Bar bar = new Bar();
+
+    void doSomething() {
+      AbstractTracer tracer = getCurrentTracer();
+      tracer.entry("void", this, "doSomething()");
+
+      try {
+        tracer.logMessage(LogLevel.INFO, "Within doSomething() ...", getClass(), "doSomething()");
+      } finally {
+        tracer.wayout();
+      }
+    }
+
+    void invokeBar() {
+      AbstractTracer tracer = getCurrentTracer();
+      tracer.entry("void", this, "invokeBar()");
+
+      try {
+        tracer.logMessage(LogLevel.INFO, "Within invokeBar() ...", getClass(), "invokeBar()");
+        this.bar.throwSomething();
+      } finally {
+        tracer.wayout();
+      }
+    }
+
+    @Override
+    public AbstractTracer getCurrentTracer() {
+      return Log4j2RouterUnit.this.nullTracer;
+    }
+
+  }
+
+  class Bar implements Traceable {
+
+    void throwSomething() {
+      AbstractTracer tracer = getCurrentTracer();
+      tracer.entry("void", this, "throwSomething()");
+
+      try {
+        tracer.logMessage(LogLevel.INFO, "Within throwSomething() ...", getClass(), "throwSomething()");
+        throw new RuntimeException("This is a test.");
+      } finally {
+        tracer.wayout();
+      }
+    }
+
+    @Override
+    public AbstractTracer getCurrentTracer() {
+      return Log4j2RouterUnit.this.nullTracer;
     }
   }
-  
+
   @Test
   public void loggingRouter() {
     this.bannerPrinter.start("loggingRouter", getClass());
+
+    Foo foo = new Foo();
+    foo.doSomething();
+    try {
+      foo.invokeBar();
+    } catch (Exception ex) {
+      this.nullTracer.logException(LogLevel.INFO, ex, getClass(), "loggingRouter()");
+    }
   }
 }
