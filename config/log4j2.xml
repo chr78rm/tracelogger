@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn" name="MyApp" packages="">
   <Appenders>
-    <File name="MyFile" fileName="log/log4j2/Log4j2.log">
+    <File name="MyFile" fileName="log/log4j2/log4j2-test.log">
       <PatternLayout>
         <Pattern>%d %p %c{1.} [%t] [%M()] %m%ex%n</Pattern>
       </PatternLayout>

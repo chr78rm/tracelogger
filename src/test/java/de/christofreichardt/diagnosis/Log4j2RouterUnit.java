@@ -17,7 +17,11 @@ package de.christofreichardt.diagnosis;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -101,15 +105,25 @@ public class Log4j2RouterUnit {
   }
 
   @Test
-  public void loggingRouter() {
+  public void loggingRouter() throws IOException {
     this.bannerPrinter.start("loggingRouter", getClass());
 
+    File logFile = new File(PATH_TO_LOGFILE);
     Foo foo = new Foo();
     foo.doSomething();
     try {
       foo.invokeBar();
     } catch (Exception ex) {
       this.nullTracer.logException(LogLevel.INFO, ex, getClass(), "loggingRouter()");
+    }
+    Assert.assertTrue(logFile.exists());
+    List<String> lines = Files.readAllLines(new File(PATH_TO_LOGFILE).toPath(), Charset.defaultCharset());
+    Assert.assertTrue("Expected at least four lines.", lines.size() >= 4);
+    String[] expectedStrings = {"Within doSomething() ...", "Within invokeBar() ...", "Within throwSomething() ...", 
+      "Catched: java.lang.RuntimeException: This is a test."};
+    int i = 0;
+    for (String expectedString : expectedStrings) {
+      Assert.assertTrue("Expected a suffix '" + expectedString, lines.get(i++).endsWith(expectedString));
     }
   }
 }

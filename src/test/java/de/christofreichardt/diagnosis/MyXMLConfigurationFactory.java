@@ -27,8 +27,6 @@ public class MyXMLConfigurationFactory extends XmlConfigurationFactory {
 
   @Override
   public Configuration getConfiguration(LoggerContext loggerContext, String name, URI configLocation) {
-    System.out.printf("--> Configuring log4j2 ...%n");
-    
     File configFile = new File("." + File.separator + "config" + File.separator + "log4j2.xml");
     try {
       try (FileInputStream fileInputStream = new FileInputStream(configFile)) {
