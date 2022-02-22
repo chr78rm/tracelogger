@@ -6,12 +6,10 @@
 package de.christofreichardt.diagnosis;
 
 import de.christofreichardt.diagnosis.file.FileTracer;
-import de.christofreichardt.diagnosis.file.FileTracerLog4jTee;
 import de.christofreichardt.diagnosis.io.NullPrintStream;
 import de.christofreichardt.diagnosis.io.TracePrintStream;
 import de.christofreichardt.diagnosis.net.NetTracer;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
@@ -32,12 +30,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.xml.DOMConfigurator;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -61,7 +56,6 @@ public class LoadUnit {
   
   @After
   public void tearDown() {
-    LogManager.shutdown();
   }
   
   @Test
@@ -139,29 +133,6 @@ public class LoadUnit {
     finally {
       executorService.shutdown();
     }
-  }
-  
-  @Test
-  public void log4jTee() throws InterruptedException, BrokenBarrierException, IOException {
-    this.bannerPrinter.start("log4jTee", getClass());
-    
-    DOMConfigurator.configure("." + File.separator + "config" + File.separator + "log4j_load.xml");
-    FileTracerLog4jTee fileTracerLog4jTee = new FileTracerLog4jTee("Test");
-    fileTracerLog4jTee.setLogDirPath(new File(PATH_TO_LOGDIR).toPath());
-    runScenario(fileTracerLog4jTee, new TestClass(fileTracerLog4jTee));
-    List<String> lines = Files.readAllLines(new File(PATH_TO_LOGDIR + File.separator + "Test.log").toPath(), Charset.defaultCharset());
-    int c1 = 0, c2 = 0;
-    for (String line : lines) {
-      if (line.startsWith("* WARNING *")) {
-        if (line.endsWith("\"Eine Exception zu Testzwecken.\""))
-          c1++;
-        else if (line.endsWith("\"Nur zum testen.\""))
-          c2++;
-      }
-      Assert.assertTrue("No SEVERE messages expected.", !line.startsWith("* SEVERE *"));
-    }
-    Assert.assertTrue("Expected 300 logged exceptions.", c1 == 300);
-    Assert.assertTrue("Expected 3 logged messages.", c2 == 3);
   }
   
   @Test

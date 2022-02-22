@@ -7,7 +7,6 @@ package de.christofreichardt.diagnosis;
 
 import de.christofreichardt.diagnosis.file.FileTracerUnit;
 import de.christofreichardt.diagnosis.file.JDKLoggerUnit;
-import de.christofreichardt.diagnosis.file.Log4jUnit;
 import de.christofreichardt.diagnosis.file.QueueFileTracerUnit;
 import de.christofreichardt.diagnosis.net.NetTracerUnit;
 import org.junit.runner.RunWith;
@@ -22,7 +21,6 @@ import org.junit.runners.Suite;
   TracerFactoryUnit.class,
   FileTracerUnit.class,
   NetTracerUnit.class,
-  Log4jUnit.class,
   JDKLoggerUnit.class,
   LoadUnit.class,
   QueueFileTracerUnit.class,

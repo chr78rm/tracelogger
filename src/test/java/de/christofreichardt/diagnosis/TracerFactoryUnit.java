@@ -7,7 +7,6 @@
 package de.christofreichardt.diagnosis;
 
 import de.christofreichardt.diagnosis.file.FileTracer;
-import de.christofreichardt.diagnosis.file.FileTracerLog4jTee;
 import de.christofreichardt.diagnosis.net.NetTracer;
 import java.io.File;
 import java.io.FileFilter;
@@ -17,9 +16,6 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -34,7 +30,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 import org.xml.sax.SAXException;
@@ -110,7 +105,7 @@ public class TracerFactoryUnit {
     try {
       TracerFactory.getInstance().readConfiguration(configFile);
       
-      Class<?>[] tracerClasses = {FileTracer.class, FileTracer.class, NetTracer.class, NullTracer.class, FileTracerLog4jTee.class, FileTracer.class};
+      Class<?>[] tracerClasses = {FileTracer.class, FileTracer.class, NetTracer.class, NullTracer.class, FileTracer.class};
       for (int i=0; i<tracerClasses.length; i++) {
         String tracerName = "TestTracer-" + i;
         AbstractTracer testTracer = TracerFactory.getInstance().getTracer(tracerName);
@@ -291,7 +286,7 @@ public class TracerFactoryUnit {
       }
     }
     
-    String[] tracerNames = {"TestTracer-0", "TestTracer-1", "TestTracer-2", "TestTracer-3", "TestTracer-4", "TestTracer-5"};
+    String[] tracerNames = {"TestTracer-0", "TestTracer-1", "TestTracer-2", "TestTracer-3", "TestTracer-4"};
     ExecutorService executorService = Executors.newSingleThreadExecutor();
     try {
       Future<Boolean> future = executorService.submit(new Receiver());
@@ -309,7 +304,6 @@ public class TracerFactoryUnit {
       Assert.assertTrue("TestTracer-1.log missing.", new File(PATH_TO_LOGDIR + File.separator + "TestTracer-1.log").exists());
       Assert.assertTrue("NullTracer must not produce a log.", !new File(PATH_TO_LOGDIR + File.separator + "TestTracer-3.log").exists());
       Assert.assertTrue("TestTracer-4.log missing.", new File(PATH_TO_LOGDIR + File.separator + "TestTracer-4.log").exists());
-      Assert.assertTrue("TestTracer-5.log missing.", new File(PATH_TO_LOGDIR + File.separator + "TestTracer-5.log").exists());
     }
     finally {
       executorService.shutdown();
@@ -326,7 +320,7 @@ public class TracerFactoryUnit {
     File configFile = new File("." + File.separator + "config" + File.separator + "TraceConfig.xml");
     try {
       TracerFactory.getInstance().readConfiguration(configFile);
-      final AbstractTracer tracer = TracerFactory.getInstance().getTracer("TestTracer-5");
+      final AbstractTracer tracer = TracerFactory.getInstance().getTracer("TestTracer-4");
       tracer.open();
       try {
         SimpleDummy simpleDummy = new SimpleDummy(tracer);

@@ -6,7 +6,6 @@
 
 package de.christofreichardt.diagnosis;
 
-import de.christofreichardt.diagnosis.file.FileTracerLog4jTee;
 import de.christofreichardt.diagnosis.io.IndentablePrintStream;
 import de.christofreichardt.diagnosis.io.NullOutputStream;
 import de.christofreichardt.diagnosis.io.NullPrintStream;
@@ -47,8 +46,7 @@ import org.w3c.dom.NodeList;
  * </p>
  * <p>
  * A distinction is made between tracing and logging. Log messages can be redirected to conventional logging systems
- * such as the logging system of the Java platform or log4j, see for an example {@link JDKLoggingRouter} and
- * {@link FileTracerLog4jTee}.
+ * such as the logging system of the Java platform or log4j, see for an example {@link JDKLoggingRouter}.
  * </p>
  * <p>
  * Before a tracer generates output it must be opened and the tracing context of the current thread must
@@ -99,7 +97,7 @@ import org.w3c.dom.NodeList;
  */
 abstract public class AbstractTracer {
   
-  final static public String VERSION = "1.8.0";
+  final static public String VERSION = "1.9.0";
   
   /**
    * Indicates exceptional states within the AbstractTracer context.

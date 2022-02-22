@@ -53,11 +53,6 @@
       </Context>
     </TraceLogger>
     <TraceLogger name="TestTracer-3" class="de.christofreichardt.diagnosis.NullTracer" />
-    <TraceLogger name="TestTracer-4" class="de.christofreichardt.diagnosis.file.FileTracerLog4jTee">
-      <LogDir>./log/</LogDir>
-      <AutoFlush>true</AutoFlush>
-      <BufSize>1024</BufSize>
-    </TraceLogger>
   </Pool>
   <DefaultTracer class="de.christofreichardt.diagnosis.file.FileTracer"/>
   <Map>
