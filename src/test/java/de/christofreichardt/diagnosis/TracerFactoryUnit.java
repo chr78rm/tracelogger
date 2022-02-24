@@ -24,14 +24,11 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Rule;
-import org.junit.rules.ExpectedException;
 import org.xml.sax.SAXException;
 
 /**
@@ -41,8 +38,6 @@ import org.xml.sax.SAXException;
 public class TracerFactoryUnit {
   public static final String PATH_TO_LOGDIR = "." + File.separator + "log";
 
-  @Rule
-  public ExpectedException thrown = ExpectedException.none();
   final private BannerPrinter bannerPrinter = new BannerPrinter();
   
   public TracerFactoryUnit() {
@@ -177,9 +172,9 @@ public class TracerFactoryUnit {
   public void unknownTracerByName() throws TracerFactory.Exception {
     this.bannerPrinter.start("unknownTracerByName", getClass());
     
-    this.thrown.expect(TracerFactory.Exception.class);
-    this.thrown.expectMessage("Unknown tracer:");
-    TracerFactory.getInstance().getTracer("TestTracer-0");
+    String tracerName = "TestTracer-0";
+    TracerFactory.Exception throwable = Assert.assertThrows(String.format("Unknown tracer: %s", tracerName), TracerFactory.Exception.class, () -> TracerFactory.getInstance().getTracer(tracerName));
+    System.out.printf("throwable = %s\n", throwable);
   }
 
   /**
@@ -202,15 +197,11 @@ public class TracerFactoryUnit {
   public void invalidTracerClassConfigured_1() throws TracerFactory.Exception {
     this.bannerPrinter.start("invalidTracerClassConfigured_1", getClass());
     
-    this.thrown.expect(TracerFactory.Exception.class);
-    this.thrown.expectMessage("Illegal tracer class!");
-    File configFile = new File("." + File.separator + "config" + File.separator + "InvalidTraceConfig_1.xml");
-    try {
+    TracerFactory.Exception throwable = Assert.assertThrows("Illegal tracer class!", TracerFactory.Exception.class, () -> {
+      File configFile = new File("." + File.separator + "config" + File.separator + "InvalidTraceConfig_1.xml");
       TracerFactory.getInstance().readConfiguration(configFile);
-    }
-    catch (FileNotFoundException ex) {
-      fail("\"" + configFile.getAbsolutePath() + "\" should be found.");
-    }
+    });
+    System.out.printf("throwable = %s\n", throwable);
   }
   
   /**
@@ -221,15 +212,11 @@ public class TracerFactoryUnit {
   public void invalidTracerClassConfigured_2() throws TracerFactory.Exception {
     this.bannerPrinter.start("invalidTracerClassConfigured_2", getClass());
     
-    this.thrown.expect(TracerFactory.Exception.class);
-    this.thrown.expectMessage("Requiring a NullTracer as default tracer!");
-    File configFile = new File("." + File.separator + "config" + File.separator + "InvalidTraceConfig_2.xml");
-    try {
+    TracerFactory.Exception throwable = Assert.assertThrows("Requiring a NullTracer as default tracer!", TracerFactory.Exception.class, () -> {
+      File configFile = new File("." + File.separator + "config" + File.separator + "InvalidTraceConfig_2.xml");
       TracerFactory.getInstance().readConfiguration(configFile);
-    }
-    catch (FileNotFoundException ex) {
-      fail("\"" + configFile.getAbsolutePath() + "\" should be found.");
-    }
+    });
+    System.out.printf("throwable = %s\n", throwable);
   }
   
   /**
@@ -240,15 +227,13 @@ public class TracerFactoryUnit {
   public void invalidTracerClassConfigured_3() throws TracerFactory.Exception {
     this.bannerPrinter.start("invalidTracerClassConfigured_3", getClass());
     
-    this.thrown.expect(TracerFactory.Exception.class);
-    this.thrown.expectCause(CoreMatchers.any(SAXException.class));
-    File configFile = new File("." + File.separator + "config" + File.separator + "InvalidTraceConfig_3.xml");
-    try {
+    TracerFactory.Exception throwable = Assert.assertThrows(TracerFactory.Exception.class, () -> {
+      File configFile = new File("." + File.separator + "config" + File.separator + "InvalidTraceConfig_3.xml");
       TracerFactory.getInstance().readConfiguration(configFile);
-    }
-    catch (FileNotFoundException ex) {
-      fail("\"" + configFile.getAbsolutePath() + "\" should be found.");
-    }
+    });
+    System.out.printf("throwable = %s\n", throwable);
+    System.out.printf("throwable.getCause() = %s\n", throwable.getCause());
+    Assert.assertTrue(throwable.getCause() instanceof SAXException);
   }
   
   /**
