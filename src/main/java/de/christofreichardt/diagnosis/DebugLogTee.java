@@ -105,7 +105,7 @@ abstract public class DebugLogTee<T extends AbstractTracer> extends AbstractTrac
    * @param message the actual message
    * @param clazz the class context of the message
    */
-  abstract protected void adapt(LogLevel logLevel, String message, Class clazz);
+  abstract protected void adapt(LogLevel logLevel, String message, Class<?> clazz);
   
   /**
    * Derived classes should provide code which routes the given throwable with the denoted logLevel and class to the desired log system.
@@ -113,10 +113,10 @@ abstract public class DebugLogTee<T extends AbstractTracer> extends AbstractTrac
    * @param throwable references the to be logged info
    * @param clazz the class context of the message
    */
-  abstract protected void adapt(LogLevel logLevel, Throwable throwable, Class clazz);
+  abstract protected void adapt(LogLevel logLevel, Throwable throwable, Class<?> clazz);
 
   @Override
-  public TraceMethod entry(String returnType, Class clazz, String methodSignature) {
+  public TraceMethod entry(String returnType, Class<?> clazz, String methodSignature) {
     return this.tracer.entry(returnType, clazz, methodSignature);
   }
 
@@ -132,13 +132,13 @@ abstract public class DebugLogTee<T extends AbstractTracer> extends AbstractTrac
   }
 
   @Override
-  final public void logMessage(LogLevel logLevel, String message, Class clazz, String methodName) {
+  final public void logMessage(LogLevel logLevel, String message, Class<?> clazz, String methodName) {
     this.tracer.logMessage(logLevel, message, clazz, methodName);
     adapt(logLevel, message, clazz);
   }
 
   @Override
-  final public void logException(LogLevel logLevel, Throwable throwable, Class clazz, String methodName) {
+  final public void logException(LogLevel logLevel, Throwable throwable, Class<?> clazz, String methodName) {
     this.tracer.logException(logLevel, throwable, clazz, methodName);
     adapt(logLevel, throwable, clazz);
   }

@@ -40,13 +40,13 @@ final public class LogbackRouter extends NullTracer {
   }
 
   @Override
-  public void logMessage(LogLevel logLevel, String message, Class clazz, String methodName) {
+  public void logMessage(LogLevel logLevel, String message, Class<?> clazz, String methodName) {
     LocationAwareLogger logger = (LocationAwareLogger) LoggerFactory.getLogger(clazz);
     logger.log(null, LogbackRouter.class.getName(), convertToLogbackLevel(logLevel), message, null, null);
   }
 
   @Override
-  public void logException(LogLevel logLevel, Throwable throwable, Class clazz, String methodName) {
+  public void logException(LogLevel logLevel, Throwable throwable, Class<?> clazz, String methodName) {
     LocationAwareLogger logger = (LocationAwareLogger) LoggerFactory.getLogger(clazz);
     logger.log(null, LogbackRouter.class.getName(), convertToLogbackLevel(logLevel), throwable.getMessage(), null, throwable);
   }

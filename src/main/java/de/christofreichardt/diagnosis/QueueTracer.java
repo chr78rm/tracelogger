@@ -165,7 +165,7 @@ abstract public class QueueTracer<T extends AbstractTracer> extends AbstractTrac
    * @return the TraceMethod which has been put onto the stack - a mere data object for internal use primarily. May be null.
    */
   @Override
-  public TraceMethod entry(String returnType, Class clazz, String methodSignature) {
+  public TraceMethod entry(String returnType, Class<?> clazz, String methodSignature) {
     return this.tracer.entry(returnType, clazz, methodSignature);
   }
 
@@ -190,7 +190,7 @@ abstract public class QueueTracer<T extends AbstractTracer> extends AbstractTrac
    * @param clazz the originating class
    */
   @Override
-  public void logMessage(LogLevel logLevel, String message, Class clazz, String methodName) {
+  public void logMessage(LogLevel logLevel, String message, Class<?> clazz, String methodName) {
     this.tracer.logMessage(logLevel, message, clazz, methodName);
   }
 
@@ -203,7 +203,7 @@ abstract public class QueueTracer<T extends AbstractTracer> extends AbstractTrac
    * @param methodName the name of the relevant method
    */
   @Override
-  public void logException(LogLevel logLevel, Throwable throwable, Class clazz, String methodName) {
+  public void logException(LogLevel logLevel, Throwable throwable, Class<?> clazz, String methodName) {
     this.tracer.logException(logLevel, throwable, clazz, methodName);
   }
 

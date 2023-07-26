@@ -67,7 +67,7 @@ public class TraceMethod {
    * @param clazz the class to which that method belong
    * @param methodSignature  the remaining method signature (without return type) inclusive parameter as string representation
    */
-  public TraceMethod(String returnType, Class clazz, String methodSignature) {
+  public TraceMethod(String returnType, Class<?> clazz, String methodSignature) {
     this.clazz = clazz;
     this.signature = returnType + " " + this.clazz.getSimpleName() + "." + methodSignature;
     this.methodName = methodSignature;

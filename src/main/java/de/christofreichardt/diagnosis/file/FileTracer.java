@@ -195,13 +195,13 @@ public class FileTracer extends AbstractTracer {
   }
 
   @Override
-  public void logException(LogLevel logLevel, Throwable throwable, Class clazz, String methodName) {
+  public void logException(LogLevel logLevel, Throwable throwable, Class<?> clazz, String methodName) {
     super.logException(logLevel, throwable, clazz, methodName);
     checkLimit();
   }
 
   @Override
-  public void logMessage(LogLevel logLevel, String message, Class clazz, String methodName) {
+  public void logMessage(LogLevel logLevel, String message, Class<?> clazz, String methodName) {
     super.logMessage(logLevel, message, clazz, methodName);
     checkLimit();
   }

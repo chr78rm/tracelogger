@@ -36,13 +36,13 @@ public class Log4j2Router extends NullTracer {
   }
 
   @Override
-  public void logMessage(LogLevel logLevel, String message, Class clazz, String methodName) {
+  public void logMessage(LogLevel logLevel, String message, Class<?> clazz, String methodName) {
     ExtendedLogger extendedLogger = (ExtendedLogger) LogManager.getLogger(clazz);
     extendedLogger.logMessage(Log4j2Router.class.getName(), convertToLogbackLevel(logLevel), null, new SimpleMessage(message), null);
   }
 
   @Override
-  public void logException(LogLevel logLevel, Throwable throwable, Class clazz, String methodName) {
+  public void logException(LogLevel logLevel, Throwable throwable, Class<?> clazz, String methodName) {
     ExtendedLogger extendedLogger = (ExtendedLogger) LogManager.getLogger(clazz);
     extendedLogger.logMessage(Log4j2Router.class.getName(), convertToLogbackLevel(logLevel), null, new SimpleMessage("Catched: "), throwable);
   }

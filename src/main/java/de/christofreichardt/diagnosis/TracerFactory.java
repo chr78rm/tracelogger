@@ -204,9 +204,9 @@ public class TracerFactory {
     private final boolean enabled;
     private final int size;
     private final String className;
-    private final BlockingDeque<QueueTracer> blockingTracerDeque;
+    private final BlockingDeque<QueueTracer<? extends AbstractTracer>> blockingTracerDeque;
     private final QueueNullTracer queueNullTracer = new QueueNullTracer(TracerFactory.this.defaultTracer);
-    private final ThreadLocal<QueueTracer<?>> currentTracer;
+    private final ThreadLocal<QueueTracer<? extends AbstractTracer>> currentTracer;
 
     Queue() {
       this.enabled = false;
@@ -239,12 +239,12 @@ public class TracerFactory {
           Class<?> clazz = Class.forName(this.className);
           if (!QueueTracer.class.isAssignableFrom(clazz))
             throw new TracerFactory.Exception("Need a QueueTracer class but found '" + clazz.getName()+ "'.");
-          Class<QueueTracer> tracerClass = (Class<QueueTracer>) clazz;
+          Class<QueueTracer<? extends AbstractTracer>> tracerClass = (Class<QueueTracer<? extends AbstractTracer>>) clazz;
           if (QueueNullTracer.class.isAssignableFrom(tracerClass))
             throw new TracerFactory.Exception("No QueueNullTracer allowed here.");
           String tracerName = (String) TracerFactory.this.xpath.evaluate("./dns:TraceLogger/@name", node, XPathConstants.STRING);
-          Constructor<QueueTracer> constructor = tracerClass.getConstructor(String.class);
-          QueueTracer queueTracer = constructor.newInstance(tracerName + i);
+          Constructor<QueueTracer<? extends AbstractTracer>> constructor = tracerClass.getConstructor(String.class);
+          QueueTracer<? extends AbstractTracer> queueTracer = constructor.newInstance(tracerName + i);
           queueTracer.readConfiguration(TracerFactory.this.xpath, node);
           this.blockingTracerDeque.offerLast(queueTracer);
         }

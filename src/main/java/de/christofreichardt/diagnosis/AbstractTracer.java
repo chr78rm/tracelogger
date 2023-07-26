@@ -457,7 +457,7 @@ abstract public class AbstractTracer {
    * @param methodSignature the remaining method signature (without return type) inclusive parameter as string representation
    * @return the TraceMethod which has been put onto the stack - a mere data object for internal use primarily. May be null.
    */
-  public TraceMethod entry(String returnType, Class clazz, String methodSignature) {
+  public TraceMethod entry(String returnType, Class<?> clazz, String methodSignature) {
     TraceMethod traceMethod;
 
     if (clazz != null) {
@@ -516,7 +516,7 @@ abstract public class AbstractTracer {
    * @param clazz the originating class
    * @param methodName the originating method
    */
-  public void logMessage(LogLevel logLevel, String message, Class clazz, String methodName) {
+  public void logMessage(LogLevel logLevel, String message, Class<?> clazz, String methodName) {
     Date timeStamp = new Date();
     char border[] = new char[logLevel.toString().length() + 4];
     Arrays.fill(border, '*');
@@ -537,7 +537,7 @@ abstract public class AbstractTracer {
    * @param clazz the originating class
    * @param methodName the name of the relevant method
    */
-  public void logException(LogLevel logLevel, Throwable throwable, Class clazz, String methodName) {
+  public void logException(LogLevel logLevel, Throwable throwable, Class<?> clazz, String methodName) {
     Date timeStamp = new Date();
     char border[] = new char[logLevel.toString().length() + 4];
     Arrays.fill(border, '*');

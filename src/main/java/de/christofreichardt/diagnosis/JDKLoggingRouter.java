@@ -54,7 +54,7 @@ final public class JDKLoggingRouter extends NullTracer {
    * @param clazz the originating class
    */
   @Override
-  public void logMessage(LogLevel logLevel, String message, Class clazz, String methodName) {
+  public void logMessage(LogLevel logLevel, String message, Class<?> clazz, String methodName) {
     Logger logger = Logger.getLogger(clazz.getName());
     logger.logp(convertToJDK14Level(logLevel), clazz.getName(), methodName, message);
   }
@@ -67,7 +67,7 @@ final public class JDKLoggingRouter extends NullTracer {
    * @param clazz the originating class
    */
   @Override
-  public void logException(LogLevel logLevel, Throwable throwable, Class clazz, String methodName) {
+  public void logException(LogLevel logLevel, Throwable throwable, Class<?> clazz, String methodName) {
     Logger logger = Logger.getLogger(clazz.getName());
     logger.logp(convertToJDK14Level(logLevel), clazz.getName(), "-", throwable.getMessage(), throwable);
   }

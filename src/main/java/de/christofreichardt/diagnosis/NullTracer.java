@@ -116,7 +116,7 @@ public class NullTracer extends AbstractTracer {
    * @return always null
    */
   @Override
-  final public TraceMethod entry(String returnType, Class clazz, String methodSignature) {
+  final public TraceMethod entry(String returnType, Class<?> clazz, String methodSignature) {
     return null;
   }
 
@@ -161,7 +161,7 @@ public class NullTracer extends AbstractTracer {
    * @param clazz (ignored)
    */
   @Override
-  public void logException(LogLevel logLevel, Throwable throwable, Class clazz, String methodName) {
+  public void logException(LogLevel logLevel, Throwable throwable, Class<?> clazz, String methodName) {
   }
 
   /**
@@ -171,6 +171,6 @@ public class NullTracer extends AbstractTracer {
    * @param clazz (ignored) 
    */
   @Override
-  public void logMessage(LogLevel logLevel, String message, Class clazz, String methodName) {
+  public void logMessage(LogLevel logLevel, String message, Class<?> clazz, String methodName) {
   }
 }
