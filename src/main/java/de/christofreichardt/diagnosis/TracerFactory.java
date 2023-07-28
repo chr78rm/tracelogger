@@ -154,7 +154,7 @@ public class TracerFactory {
   
   private static final class ErrorHandler implements org.xml.sax.ErrorHandler {
     @Override
-    public void warning(SAXParseException ex) throws SAXException {
+    public void warning(SAXParseException ex) {
       System.err.println(ex.getMessage());
     }
 
@@ -239,6 +239,7 @@ public class TracerFactory {
           Class<?> clazz = Class.forName(this.className);
           if (!QueueTracer.class.isAssignableFrom(clazz))
             throw new TracerFactory.Exception("Need a QueueTracer class but found '" + clazz.getName()+ "'.");
+          @SuppressWarnings("unchecked")
           Class<QueueTracer<? extends AbstractTracer>> tracerClass = (Class<QueueTracer<? extends AbstractTracer>>) clazz;
           if (QueueNullTracer.class.isAssignableFrom(tracerClass))
             throw new TracerFactory.Exception("No QueueNullTracer allowed here.");
@@ -404,6 +405,7 @@ public class TracerFactory {
           Class<?> tracerClass = Class.forName(className);
           if (!AbstractTracer.class.isAssignableFrom(tracerClass))
             throw new TracerFactory.Exception("Illegal tracer class!");
+          @SuppressWarnings("unchecked")
           AbstractTracer tracer = createTracer((Class<? extends AbstractTracer>) tracerClass, name);
           tracer.readConfiguration(this.xpath, tracerElement);
 
@@ -432,7 +434,9 @@ public class TracerFactory {
           Class<?> tracerClass = Class.forName(className);
           if (!NullTracer.class.isAssignableFrom(tracerClass))
             throw new TracerFactory.Exception("Requiring a NullTracer as default tracer!");
-          this.defaultTracer = createTracer((Class<? extends NullTracer>) tracerClass);
+          @SuppressWarnings("unchecked")
+          NullTracer nullTracer = createTracer((Class<? extends NullTracer>) tracerClass);
+          this.defaultTracer = nullTracer;
         }
         else {
           this.defaultTracer = TracerFactory.NULLTRACER;

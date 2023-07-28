@@ -58,7 +58,7 @@
         <version>3.11.0</version>
         <configuration>
           <release>11</release>
-          <compilerArgument>-Xlint:all</compilerArgument>
+          <compilerArgument>-Xlint:all,-serial</compilerArgument>
           <useIncrementalCompilation>false</useIncrementalCompilation>
           <forceJavacCompilerUse>false</forceJavacCompilerUse>
         </configuration>
