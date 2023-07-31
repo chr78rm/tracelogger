@@ -523,7 +523,7 @@ public class TracerFactory {
       AbstractTracer tracer;
       
       if (!this.tracerMap.containsKey(thread.getId())) {
-        if (this.threadNames.contains(thread.getName())) { // non-unique thread name, first come first serve
+        if (this.threadNames.contains(thread.getName())) { // non-unique thread name, first come, first served
           System.err.printf("WARNING: Duplicate thread name \"%s\" encountered.%n", thread.getName());
           tracer = this.defaultTracer;
         }
@@ -623,10 +623,10 @@ public class TracerFactory {
    * QueueTracer wrapping a NullTracer will be (non-blocking) delivered. 
    * @return the tracer from the head of the deque
    */
-  public QueueTracer<?> takeTracer() {
+  public QueueTracer<? extends AbstractTracer> takeTracer() {
     this.queueReadLock.lock();
     try {
-      QueueTracer<?> tracer;
+      QueueTracer<? extends AbstractTracer> tracer;
       if (this.queueConfig.enabled) {
         try {
           tracer = this.queueConfig.blockingTracerDeque.takeFirst();
@@ -674,8 +674,7 @@ public class TracerFactory {
       if (this.queueConfig.enabled) {
         success = this.queueConfig.blockingTracerDeque.offerLast(tracer);
         if (success) {
-//          this.queueConfig.tracerMap.remove(Thread.currentThread());
-          this.queueConfig.currentTracer.set(null);
+            this.queueConfig.currentTracer.remove();
         }
       }
       
