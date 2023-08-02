@@ -159,7 +159,7 @@ public class TracerFactoryUnit {
       assertTrue("Size of the queue is expected to be five.", TracerFactory.getInstance().getQueueSize() == 5);
       assertTrue("Wrong QueueTracer class.", "de.christofreichardt.diagnosis.file.QueueFileTracer".equals(TracerFactory.getInstance().getQueueTracerClassname()));
     }
-    catch (TracerFactory.Exception | FileNotFoundException ex) {
+    catch (TracerFactory.Exception | IOException ex) {
       fail("'" + configFile.getAbsolutePath() + "' should be accepted.");
     }
   }
@@ -246,7 +246,7 @@ public class TracerFactoryUnit {
    * @throws java.util.concurrent.TimeoutException
    */
   @Test
-  public void openAllAndCloseAll() throws TracerFactory.Exception, FileNotFoundException, InterruptedException, ExecutionException, TimeoutException {
+  public void openAllAndCloseAll() throws TracerFactory.Exception, IOException, InterruptedException, ExecutionException, TimeoutException {
     this.bannerPrinter.start("openAllAndCloseAll", getClass());
     
     File configFile = new File("." + File.separator + "config" + File.separator + "TraceConfig.xml");
@@ -317,7 +317,7 @@ public class TracerFactoryUnit {
         tracer.close();
       }
     }
-    catch (TracerFactory.Exception | FileNotFoundException ex) {
+    catch (TracerFactory.Exception | IOException ex) {
       fail("'" + configFile.getAbsolutePath() + "' should be accepted.");
     }
   }
@@ -328,7 +328,7 @@ public class TracerFactoryUnit {
    * @throws de.christofreichardt.diagnosis.TracerFactory.Exception
    */
   @Test
-  public void disabledQueueTraceConfig_1() throws FileNotFoundException, TracerFactory.Exception {
+  public void disabledQueueTraceConfig_1() throws IOException, TracerFactory.Exception {
     this.bannerPrinter.start("disabledQueueTraceConfig_1", getClass());
     
     File configFile = new File("." + File.separator + "config" + File.separator + "DisabledQueueTraceConfig_1.xml");
@@ -342,7 +342,7 @@ public class TracerFactoryUnit {
    * @throws de.christofreichardt.diagnosis.TracerFactory.Exception
    */
   @Test
-  public void disabledQueueTraceConfig_2()  throws FileNotFoundException, TracerFactory.Exception {
+  public void disabledQueueTraceConfig_2()  throws IOException, TracerFactory.Exception {
     this.bannerPrinter.start("disabledQueueTraceConfig_2", getClass());
     
     File configFile = new File("." + File.separator + "config" + File.separator + "DisabledQueueTraceConfig_2.xml");

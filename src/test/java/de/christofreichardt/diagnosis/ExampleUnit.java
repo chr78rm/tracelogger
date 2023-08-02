@@ -122,7 +122,7 @@ public class ExampleUnit {
    * @throws InterruptedException 
    */
   @Test
-  public void example_2() throws TracerFactory.Exception, FileNotFoundException, InterruptedException {
+  public void example_2() throws TracerFactory.Exception, IOException, InterruptedException {
     this.bannerPrinter.start("example_2", getClass());
 
     class Foo implements Callable<Integer>, Traceable {
