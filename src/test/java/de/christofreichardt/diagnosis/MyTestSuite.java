@@ -18,7 +18,6 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  TracerFactoryUnit.class,
   FileTracerUnit.class,
   NetTracerUnit.class,
   JDKLoggerUnit.class,

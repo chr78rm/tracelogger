@@ -228,8 +228,10 @@ abstract public class QueueTracer<T extends AbstractTracer> extends AbstractTrac
     TraceMethod traceMethod = this.tracer.wayout();
     if (getThreadMap().getCurrentStackSize() == 0) {
       clearCurrentTracingContext();
-      if (!TracerFactory.getInstance().offerTracer(this))
+      if (!TracerFactory.getInstance().offerTracer(this)) {
+        // this dubious check relies on the fact that the QueueNullTracer must not have a tracing context and therefore always returns a current stack size of -1
         System.err.printf("WARNING: Offer failed. Possible queue corruption.%n");
+      }
     }
     return traceMethod;
   }

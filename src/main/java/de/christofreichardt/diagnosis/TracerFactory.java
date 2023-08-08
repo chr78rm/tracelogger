@@ -262,7 +262,7 @@ public class TracerFactory {
     final private Map<String, Element> threadName2Element = new HashMap<>();
     final private Map<String, AbstractTracer> tracerPool = new HashMap<>();
     final private Map<Long, AbstractTracer> tracerMap = new ConcurrentHashMap<>();
-    final private Set<String> threadNames = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>());
+    final private Set<String> threadNames = Collections.newSetFromMap(new ConcurrentHashMap<>());
     final private XPath xpath = XPathFactory.newInstance().newXPath();
     private NullTracer defaultTracer = TracerFactory.NULLTRACER;
 
@@ -338,7 +338,7 @@ public class TracerFactory {
     }
 
     /**
-     * Reads the given configuration file, validates it against a XML-Schema and creates the tracer pool, its mappings and the queue accordingly.
+     * Reads the given configuration file, validates it against an XML-Schema and creates the tracer pool, its mappings and the queue accordingly.
      * This method should normally be invoked once at program start. Multiple calls with the same configuration file leads to instantiations of new tracer objects
      * and mappings which will replace the old tracers and their mappings.
      *
@@ -391,21 +391,17 @@ public class TracerFactory {
                     System.out.println("(+) " + (i + 1) + ". TraceLogger");
                     Element tracerElement = (Element) tracerNodes.item(i);
                     if (!tracerElement.hasAttribute("name"))
-                        throw new TracerFactory.Exception("Missing 'name' attribut.");
+                        throw new TracerFactory.Exception("Missing 'name' attribute.");
                     String name = tracerElement.getAttribute("name");
                     String className = tracerElement.getAttribute("class");
                     System.out.println("name = " + name);
                     System.out.println("className = " + className);
                     Class<?> tracerClass = Class.forName(className);
                     if (!AbstractTracer.class.isAssignableFrom(tracerClass))
-                        throw new TracerFactory.Exception("Illegal tracer class!");
+                        throw new TracerFactory.Exception(String.format("Illegal tracer class: '%s'", className));
                     @SuppressWarnings("unchecked")
                     AbstractTracer tracer = createTracer((Class<? extends AbstractTracer>) tracerClass, name);
                     tracer.readConfiguration(this.xpath, tracerElement);
-
-                    //        synchronized (this.mapGuardObj) {
-                    //          this.tracerPool.put(name, tracer);
-                    //        }
                     this.tracerPool.put(name, tracer);
                 }
 
@@ -602,7 +598,7 @@ public class TracerFactory {
     }
 
     /**
-     * Takes the tracer from the head of the deque. If the deque is empty the methods blocks until a tracer will become available. By default a
+     * Takes the tracer from the head of the deque. If the deque is empty the methods blocks until a tracer will become available. By default, a
      * QueueTracer wrapping a NullTracer will be (non-blocking) delivered.
      *
      * @return the tracer from the head of the deque
@@ -631,29 +627,16 @@ public class TracerFactory {
     }
 
     /**
-     * Required for symmetrical reasons. The code used for debugging (enabled queue) and for production (disabled queue) should not differ. In the latter
-     * case {@link #takeTracer()} delivers by default a QueueNullTracer (without blocking) which must not be enqueued again. Hence this method will simply discard
-     * the given QueueNullTracer.
-     *
-     * @param queueNullTracer a previously taken QueueTracer
-     * @return always false
-     * @see #offerTracer(de.christofreichardt.diagnosis.QueueTracer)
-     */
-    protected boolean offerTracer(QueueNullTracer queueNullTracer) {
-        return false;
-    }
-
-    /**
      * Used to enqueue a tracer which has been previously retrieved by a call to {@link #takeTracer()}.
      *
      * @param tracer the to be enqueued tracer
      * @return indicates if the tracer has been enqueued (true) or has been discarded (false)
      */
-    protected boolean offerTracer(QueueTracer<?> tracer) {
+    protected boolean offerTracer(QueueTracer<? extends AbstractTracer> tracer) {
         boolean success = false;
         this.queueReadLock.lock();
         try {
-            if (this.queueConfig.enabled) {
+            if (this.queueConfig.enabled  && !(tracer instanceof QueueNullTracer) ) {
                 success = this.queueConfig.blockingTracerDeque.offerLast(tracer);
                 if (success) {
                     this.queueConfig.currentTracer.remove();
