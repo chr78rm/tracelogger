@@ -10,14 +10,13 @@ import de.christofreichardt.diagnosis.AbstractTracer;
 import de.christofreichardt.diagnosis.LogLevel;
 import de.christofreichardt.diagnosis.io.IndentablePrintStream;
 import de.christofreichardt.diagnosis.io.TracePrintStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Date;
+import java.nio.file.StandardCopyOption;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -107,16 +106,18 @@ public class FileTracer extends AbstractTracer {
     @Override
     public void open() {
         try {
-            if (this.isOpened() == false) {
-                System.out.println(formatVersionInfo() + " Opening ...");
+            if (!this.isOpened()) {
+                Path logFilePath = this.logDirPath.resolve(String.format("%s.log", super.getName()));
 
-                this.traceLogfile = FileSystems.getDefault().getPath(this.logDirPath.toString(), super.getName() + ".log").toFile();
+                System.out.printf("%s Opening [%s] ...%n", formatVersionInfo(), logFilePath.toAbsolutePath());
+
+                this.traceLogfile = logFilePath.toFile();
                 this.fileOutputStream = new FileOutputStream(this.traceLogfile);
                 this.setBufferedOutputStream(new BufferedOutputStream(this.fileOutputStream, this.getBufferSize()));
                 this.setTracePrintStream(new TracePrintStream(this.getBufferedOutputStream(), this.getThreadMap()));
 
                 this.getTracePrintStream().printf("--> TraceLog opened!%n");
-                this.getTracePrintStream().printf("    Time     : %tc%n", new Date());
+                this.getTracePrintStream().printf("    Time     : %s%n", ZonedDateTime.now().format(DateTimeFormatter.ISO_ZONED_DATE_TIME));
                 this.getTracePrintStream().printf("    Bufsize  : %d%n", this.getBufferSize());
                 this.getTracePrintStream().printf("    Autoflush: %b%n%n", this.isAutoflush());
                 this.setOpened(true);
@@ -134,12 +135,12 @@ public class FileTracer extends AbstractTracer {
     @Override
     public void close() {
         try {
-            if (this.isOpened() == true) {
+            if (this.isOpened()) {
                 this.getTracePrintStream().println();
                 this.getTracePrintStream().printf("--> TraceLog closing!%n");
-                this.getTracePrintStream().printf("    Time     : %tc%n", new Date());
+                this.getTracePrintStream().printf("    Time     : %s%n", ZonedDateTime.now().format(DateTimeFormatter.ISO_ZONED_DATE_TIME));
 
-                System.out.println(formatStreamErrorState() + " Closing ...");
+                System.out.printf("%s Closing [%s] ...%n", formatStreamErrorState(), this.traceLogfile.toPath().toAbsolutePath());
 
                 this.getTracePrintStream().close();
                 this.getBufferedOutputStream().close();
@@ -163,10 +164,10 @@ public class FileTracer extends AbstractTracer {
         }
         this.logDirPath = logDir.toPath();
 
-        try {
-            this.byteLimit = Long.parseLong((String) xpath.evaluate("./dns:Limit/text()", node, XPathConstants.STRING));
-        } catch (NumberFormatException ex) {
-            System.err.println(super.getName() + ": Could not parse byte limit. File splitting is off.");
+        String strLimit = (String) xpath.evaluate("./dns:Limit/text()", node, XPathConstants.STRING);
+        if (!strLimit.isEmpty()) {
+            this.byteLimit = Long.parseLong(strLimit);
+        } else {
             this.byteLimit = -1;
         }
 
@@ -182,15 +183,13 @@ public class FileTracer extends AbstractTracer {
             if (this.byteLimit != -1 && this.traceLogfile != null && this.traceLogfile.length() > this.byteLimit) {
                 close();
 
-                int pos = this.traceLogfile.getAbsolutePath().lastIndexOf('\u002e');
-                String splitFilename = this.traceLogfile.getAbsolutePath().substring(0, pos) + "." + (++this.counter) + ".log";
-                File splitFile = new File(splitFilename);
-                if (splitFile.exists()) {
-                  if (!splitFile.delete()) {
-                    System.err.printf("WARNING: Couldn't delete old file: %s%n", splitFile.getName());
-                  }
+                int pos = this.traceLogfile.getName().lastIndexOf('.');
+                String splitFilename = String.format("%s.%d.log", this.traceLogfile.getName().substring(0, pos), ++this.counter);
+                try {
+                    Files.move(this.traceLogfile.toPath(), this.logDirPath.resolve(splitFilename), StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException ex) {
+                    ex.printStackTrace(System.err);
                 }
-                this.traceLogfile.renameTo(splitFile);
 
                 open();
             }

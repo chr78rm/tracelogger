@@ -30,7 +30,14 @@
       </xsd:choice>
       <xsd:element name="AutoFlush" type="xsd:boolean"/>
       <xsd:element name="BufSize" type="xsd:unsignedLong"/>
-      <xsd:element name="Limit" type="xsd:unsignedLong" minOccurs="0"/>
+      <xsd:element name="Limit" minOccurs="0">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:positiveInteger">
+            <xsd:minInclusive value="65536"/>
+            <xsd:maxInclusive value="134217728"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
       <xsd:element name="Context" type="tns:ContextType" minOccurs="0"/>
     </xsd:sequence>
     <xsd:attribute name="name" type="xsd:string"/>

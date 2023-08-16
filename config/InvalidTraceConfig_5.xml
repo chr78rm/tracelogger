@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+    Document   : TraceConfig.xml
+    Author     : chr
+
+    Used to trigger a schema violation regarding the file size limit (minimum file size undercut).
+-->
+
+<TraceConfig xmlns="http://www.christofreichardt.de/java/tracer">
+  <Pool>
+    <TraceLogger name="TestTracer-0" class="de.christofreichardt.diagnosis.file.FileTracer">
+      <LogDir>./log/</LogDir>
+      <AutoFlush>true</AutoFlush>
+      <BufSize>1024</BufSize>
+      <Limit>4096</Limit>
+      <Context>
+        <Thread name="main">
+          <Online>true</Online>
+          <DebugLevel>5</DebugLevel>
+        </Thread>
+        <Thread name="TestThread-0">
+          <Online>true</Online>
+          <DebugLevel>3</DebugLevel>
+        </Thread>
+        <Thread name="TestThread-1">
+          <Online>false</Online>
+          <DebugLevel>2</DebugLevel>
+        </Thread>
+      </Context>
+    </TraceLogger>
+  </Pool>
+  <DefaultTracer class="de.christofreichardt.diagnosis.JDKLoggingRouter"/>
+  <Map>
+    <Threads>
+      <Thread name="TestThread-0">
+        <TraceLogger ref="TestTracer-0" />
+      </Thread>
+      <Thread name="main">
+        <TraceLogger ref="TestTracer-0" />
+      </Thread>
+    </Threads>
+  </Map>
+</TraceConfig>
