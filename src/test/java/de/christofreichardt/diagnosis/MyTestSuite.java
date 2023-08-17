@@ -5,10 +5,8 @@
  */
 package de.christofreichardt.diagnosis;
 
-import de.christofreichardt.diagnosis.file.FileTracerUnit;
 import de.christofreichardt.diagnosis.file.JDKLoggerUnit;
 import de.christofreichardt.diagnosis.file.QueueFileTracerUnit;
-import de.christofreichardt.diagnosis.net.NetTracerUnit;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -18,7 +16,6 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  NetTracerUnit.class,
   JDKLoggerUnit.class,
   LoadUnit.class,
   QueueFileTracerUnit.class,

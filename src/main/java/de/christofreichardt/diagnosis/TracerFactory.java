@@ -549,7 +549,7 @@ public class TracerFactory {
     /**
      * Clears the pool, the mappings and the queue.
      */
-    public void reset() {
+    public void reset() { // TODO: Think about closing all present tracers prior to clearing the maps and pools
         this.poolWriteLock.lock();
         try {
             this.defaultTracer = TracerFactory.NULLTRACER;
