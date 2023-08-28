@@ -79,6 +79,7 @@ public class NetTracerUnit5 implements WithAssertions {
             System.out.printf("terminated = %b%n", terminated);
             if (!terminated) {
                 System.out.printf("Aborting ...%n");
+                executorService.shutdownNow();
                 terminated = executorService.awaitTermination(SERVICE_TIMEOUT, TimeUnit.MILLISECONDS);
                 System.out.printf("terminated = %b%n", terminated);
             }
