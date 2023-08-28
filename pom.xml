@@ -54,6 +54,7 @@
                         <include>**/FileTracerUnit5.java</include>
                         <include>**/NetTracerUnit5.java</include>
                         <include>**/JDKLoggerUnit5.java</include>
+                        <include>**/LoadUnit5.java</include>
                         <include>**/MyTestSuite.java</include>
                     </includes>
                 </configuration>
