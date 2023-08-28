@@ -517,7 +517,7 @@ abstract public class AbstractTracer {
    * @param methodName the originating method
    */
   public void logMessage(LogLevel logLevel, String message, Class<?> clazz, String methodName) {
-    Date timeStamp = new Date();
+    Date timeStamp = new Date(); // TODO: use ZonedDateTime
     char border[] = new char[logLevel.toString().length() + 4];
     Arrays.fill(border, '*');
 
@@ -538,7 +538,7 @@ abstract public class AbstractTracer {
    * @param methodName the name of the relevant method
    */
   public void logException(LogLevel logLevel, Throwable throwable, Class<?> clazz, String methodName) {
-    Date timeStamp = new Date();
+    Date timeStamp = new Date(); // TODO: use ZonedDateTime
     char border[] = new char[logLevel.toString().length() + 4];
     Arrays.fill(border, '*');
 
