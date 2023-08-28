@@ -100,8 +100,8 @@ public class NetTracer extends AbstractTracer {
     @Override
     public void open() {
         try {
-            if (this.isOpened() == false) {
-                System.out.println(formatVersionInfo() + " Opening ...");
+            if (!this.isOpened()) {
+                System.out.printf("%s Opening [%s, %d] ...%n", formatVersionInfo(), this.hostName, this.portNo);
 
                 InetSocketAddress inetSocketAddress = new InetSocketAddress(this.hostName, this.portNo);
                 this.pizzaConnection = new Socket();
@@ -130,12 +130,12 @@ public class NetTracer extends AbstractTracer {
     @Override
     public void close() {
         try {
-            if (this.isOpened() == true) {
+            if (this.isOpened()) {
                 this.getTracePrintStream().println();
                 this.getTracePrintStream().printf("--> TraceLog closing!%n");
                 this.getTracePrintStream().printf("    Time     : %tc%n", new Date());
 
-                System.out.println(formatStreamErrorState() + " Closing ...");
+                System.out.printf("%s Closing [%s, %d] ...%n", formatStreamErrorState(), this.hostName, this.portNo);
 
                 this.getTracePrintStream().close();
                 this.getBufferedOutputStream().close();
