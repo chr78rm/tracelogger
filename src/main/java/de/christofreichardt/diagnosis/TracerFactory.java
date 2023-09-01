@@ -603,7 +603,7 @@ public class TracerFactory {
      *
      * @return the tracer from the head of the deque
      */
-    public QueueTracer<? extends AbstractTracer> takeTracer() {
+    public QueueTracer<? extends AbstractTracer> takeTracer() { // TODO: think about a (boolean) parameter which indicates whether the tracing context should be automatically created
         this.queueReadLock.lock();
         try {
             QueueTracer<? extends AbstractTracer> tracer;

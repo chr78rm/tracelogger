@@ -229,7 +229,7 @@ abstract public class QueueTracer<T extends AbstractTracer> extends AbstractTrac
     if (getThreadMap().getCurrentStackSize() == 0) {
       clearCurrentTracingContext();
       if (!TracerFactory.getInstance().offerTracer(this)) {
-        // this dubious check relies on the fact that the QueueNullTracer must not have a tracing context and therefore always returns a current stack size of -1
+        // this dubious check relies on the fact that the QueueNullTracer must not have a tracing context and therefore always returns a current stack size of -1 (??, think again)
         System.err.printf("WARNING: Offer failed. Possible queue corruption.%n");
       }
     }

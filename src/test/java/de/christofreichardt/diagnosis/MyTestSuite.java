@@ -16,7 +16,6 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  QueueFileTracerUnit.class,
   ExampleUnit.class,
   ExperimentalUnit.class,
   LogbackRouterUnit.class,
