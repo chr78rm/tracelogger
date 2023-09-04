@@ -47,7 +47,7 @@
 
   <xsd:complexType name="ListenerType">
     <xsd:sequence>
-      <xsd:element name="Port" type="xsd:unsignedLong"/>
+      <xsd:element name="Port" type="xsd:unsignedShort"/>
       <xsd:element name="Host" type="xsd:string"/>
     </xsd:sequence>
   </xsd:complexType>

@@ -30,10 +30,6 @@ public class NetTracer extends AbstractTracer {
     public static final int TIMEOUT = 5000;
 
     /**
-     * the default port
-     */
-    final protected int defaultPortNo = 5010;
-    /**
      * the debug server's port number
      */
     protected int portNo;
@@ -83,12 +79,7 @@ public class NetTracer extends AbstractTracer {
         super.readConfiguration(xpath, node);
 
         this.hostName = (String) xpath.evaluate("./dns:Listener/dns:Host/text()", node, XPathConstants.STRING);
-        try {
-            this.portNo = Integer.parseInt((String) xpath.evaluate("./dns:Listener/dns:Port/text()", node, XPathConstants.STRING));
-        } catch (NumberFormatException ex) {
-            System.err.println(super.getName() + ": Could not parse port number. Using default value[" + this.defaultPortNo + "]");
-            this.portNo = this.defaultPortNo;
-        }
+        this.portNo = Integer.parseInt((String) xpath.evaluate("./dns:Listener/dns:Port/text()", node, XPathConstants.STRING));
 
         System.out.println("this.hostName = " + this.hostName);
         System.out.println("this.portNo = " + this.portNo);

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+    Document   : TraceConfig.xml
+    Author     : chr
+
+    Used to trigger a schema violation regarding the port number (out of range 0..65535).
+-->
+
+<TraceConfig xmlns="http://www.christofreichardt.de/java/tracer">
+  <Pool>
+    <TraceLogger name="TestTracer-2" class="de.christofreichardt.diagnosis.net.NetTracer">
+      <Listener>
+        <Port>65536</Port>
+        <Host>localhost</Host>
+      </Listener>
+      <AutoFlush>true</AutoFlush>
+      <BufSize>1024</BufSize>
+      <Context>
+        <Thread name="TestThread-2">
+          <Online>true</Online>
+          <DebugLevel>5</DebugLevel>
+        </Thread>
+      </Context>
+    </TraceLogger>
+  </Pool>
+</TraceConfig>
