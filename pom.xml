@@ -56,6 +56,7 @@
                         <include>**/JDKLoggerUnit5.java</include>
                         <include>**/LoadUnit5.java</include>
                         <include>**/QueueFileTracerUnit5.java</include>
+                        <include>**/ExampleUnit5.java</include>
                         <include>**/MyTestSuite.java</include>
                     </includes>
                 </configuration>
