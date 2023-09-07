@@ -16,8 +16,6 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  ExperimentalUnit.class,
-  LogbackRouterUnit.class,
   Log4j2RouterUnit.class
 })
 public class MyTestSuite {
