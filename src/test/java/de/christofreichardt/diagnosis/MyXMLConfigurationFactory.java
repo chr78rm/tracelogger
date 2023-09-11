@@ -12,6 +12,7 @@ import java.io.UncheckedIOException;
 import java.net.URI;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.ConfigurationFactory;
 import org.apache.logging.log4j.core.config.ConfigurationSource;
 import org.apache.logging.log4j.core.config.Order;
 import org.apache.logging.log4j.core.config.plugins.Plugin;
@@ -21,7 +22,7 @@ import org.apache.logging.log4j.core.config.xml.XmlConfigurationFactory;
  *
  * @author developer
  */
-@Plugin(name = "MyXMLConfigurationFactory", category = "ConfigurationFactory")
+@Plugin(name = "MyXMLConfigurationFactory", category = ConfigurationFactory.CATEGORY)
 @Order(10)
 public class MyXMLConfigurationFactory extends XmlConfigurationFactory {
 
@@ -38,9 +39,10 @@ public class MyXMLConfigurationFactory extends XmlConfigurationFactory {
     }
   }
 
-  @Override
-  public Configuration getConfiguration(LoggerContext loggerContext, ConfigurationSource configurationSource) {
-    return getConfiguration(loggerContext, configurationSource.toString(), null);
-  }
+//  @Override
+//  public Configuration getConfiguration(LoggerContext loggerContext, ConfigurationSource configurationSource) {
+//    System.out.printf("getConfiguration(LoggerContext loggerContext, ConfigurationSource configurationSource) ...%n");
+//    return getConfiguration(loggerContext, configurationSource.toString(), null);
+//  }
 
 }

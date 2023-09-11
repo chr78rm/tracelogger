@@ -58,7 +58,7 @@
                         <include>**/QueueFileTracerUnit5.java</include>
                         <include>**/ExampleUnit5.java</include>
                         <include>**/LogbackRouterUnit5.java</include>
-                        <include>**/MyTestSuite.java</include>
+                        <include>**/Log4j2RouterUnit5.java</include>
                     </includes>
                 </configuration>
             </plugin>

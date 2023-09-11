@@ -39,7 +39,6 @@ public class ExampleUnit5 implements WithAssertions {
     }
 
     @Test
-    @Disabled
     void tracerByName() throws IOException, TracerFactory.Exception {
         this.bannerPrinter.start("tracerByName", getClass());
 
@@ -93,7 +92,6 @@ public class ExampleUnit5 implements WithAssertions {
     }
 
     @Test
-    @Disabled
     void tracerByThread() throws IOException, TracerFactory.Exception, InterruptedException {
         this.bannerPrinter.start("tracerByThread", getClass());
 
