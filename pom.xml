@@ -59,6 +59,7 @@
                         <include>**/ExampleUnit5.java</include>
                         <include>**/LogbackRouterUnit5.java</include>
                         <include>**/Log4j2RouterUnit5.java</include>
+                        <include>**/PerformanceUnit5.java</include>
                     </includes>
                 </configuration>
             </plugin>
@@ -160,6 +161,18 @@
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>3.24.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-generator-annprocess</artifactId>
+            <version>1.37</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-core</artifactId>
+            <version>1.37</version>
             <scope>test</scope>
         </dependency>
         <dependency>
