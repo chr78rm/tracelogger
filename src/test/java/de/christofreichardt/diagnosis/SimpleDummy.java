@@ -8,13 +8,13 @@ package de.christofreichardt.diagnosis;
 
 import de.christofreichardt.diagnosis.io.NullPrintStream;
 import de.christofreichardt.diagnosis.io.TracePrintStream;
-import org.junit.Assert;
+import org.assertj.core.api.WithAssertions;
 
 /**
  *
  * @author Developer
  */
-public class SimpleDummy {
+public class SimpleDummy implements WithAssertions {
   final AbstractTracer tracer;
 
   public SimpleDummy(AbstractTracer tracer) {
@@ -22,54 +22,54 @@ public class SimpleDummy {
   }
   
   public void method_0() {
-    Assert.assertTrue("Expected a NullPrintStream but found a " + tracer.out().getClass().getSimpleName(), tracer.out() instanceof NullPrintStream);
+    assertThat(tracer.out()).isInstanceOf(NullPrintStream.class);
     tracer.entry("void", this, "method_0()");
     try {
-      Assert.assertTrue("Expected a NullPrintStream but found a " + tracer.out().getClass().getSimpleName(), tracer.out() instanceof NullPrintStream);
+      assertThat(tracer.out()).isInstanceOf(NullPrintStream.class);
     }
     finally {
       tracer.wayout();
-      Assert.assertTrue("Expected a NullPrintStream but found a " + tracer.out().getClass().getSimpleName(), tracer.out() instanceof NullPrintStream);
+      assertThat(tracer.out()).isInstanceOf(NullPrintStream.class);
     }
   }
 
   public void method_1() {
-    Assert.assertTrue("Expected a TracePrintStream but found a " + tracer.out().getClass().getSimpleName(), tracer.out() instanceof TracePrintStream);
+    assertThat(tracer.out()).isInstanceOf(TracePrintStream.class);
     tracer.entry("void", this, "method_1()");
     try {
-      Assert.assertTrue("Expected a TracePrintStream but found a " + tracer.out().getClass().getSimpleName(), tracer.out() instanceof TracePrintStream);
+      assertThat(tracer.out()).isInstanceOf(TracePrintStream.class);
       method_2();
     }
     finally {
       tracer.wayout();
-      Assert.assertTrue("Expected a TracePrintStream but found a " + tracer.out().getClass().getSimpleName(), tracer.out() instanceof TracePrintStream);
+      assertThat(tracer.out()).isInstanceOf(TracePrintStream.class);
     }
   }
 
   void method_2() {
-    Assert.assertTrue("Expected a TracePrintStream but found a " + tracer.out().getClass().getSimpleName(), tracer.out() instanceof TracePrintStream);
+    assertThat(tracer.out()).isInstanceOf(TracePrintStream.class);
     tracer.entry("void", this, "method_2()");
     try {
-      Assert.assertTrue("Expected a TracePrintStream but found a " + tracer.out().getClass().getSimpleName(), tracer.out() instanceof TracePrintStream);
+      assertThat(tracer.out()).isInstanceOf(TracePrintStream.class);
       method_3();
     }
     finally {
       tracer.wayout();
-      Assert.assertTrue("Expected a TracePrintStream but found a " + tracer.out().getClass().getSimpleName(), tracer.out() instanceof TracePrintStream);
+      assertThat(tracer.out()).isInstanceOf(TracePrintStream.class);
     }
   }
 
   void method_3() {
-    Assert.assertTrue("Expected a TracePrintStream but found a " + tracer.out().getClass().getSimpleName(), tracer.out() instanceof TracePrintStream);
+    assertThat(tracer.out()).isInstanceOf(TracePrintStream.class);
     tracer.entry("void", this, "method_3()");
     try {
-      Assert.assertTrue("Expected a NullPrintStream but found a " + tracer.out().getClass().getSimpleName(), tracer.out() instanceof NullPrintStream);
+      assertThat(tracer.out()).isInstanceOf(NullPrintStream.class);
       tracer.logMessage(LogLevel.INFO, "This is a test.", getClass(), "method_3()");
       tracer.out().printfIndentln("This output goes to /dev/null.");
     }
     finally {
       tracer.wayout();
-      Assert.assertTrue("Expected a TracePrintStream but found a " + tracer.out().getClass().getSimpleName(), tracer.out() instanceof TracePrintStream);
+      assertThat(tracer.out()).isInstanceOf(TracePrintStream.class);
     }
   }
 }
