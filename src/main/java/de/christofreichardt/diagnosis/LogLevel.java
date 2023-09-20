@@ -10,24 +10,24 @@ package de.christofreichardt.diagnosis;
  */
 public enum LogLevel {
 
-  /**
-   * indicates an information message.
-   */
-  INFO,
-  /**
-   * indicates a warning message.
-   */
-  WARNING,
-  /**
-   * indicates an error message.
-   */
-  ERROR,
-  /**
-   * indicates a more serious error message.
-   */
-  FATAL,
-  /**
-   * indicates a severe error message.
-   */
-  SEVERE
+    /**
+     * indicates an information message.
+     */
+    INFO,
+    /**
+     * indicates a warning message.
+     */
+    WARNING,
+    /**
+     * indicates an error message.
+     */
+    ERROR,
+    /**
+     * indicates a more serious error message.
+     */
+    FATAL,
+    /**
+     * indicates a severe error message.
+     */
+    SEVERE
 }

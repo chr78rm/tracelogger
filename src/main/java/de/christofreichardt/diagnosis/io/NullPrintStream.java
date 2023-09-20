@@ -10,351 +10,349 @@ import java.util.Locale;
  */
 final public class NullPrintStream extends IndentablePrintStream {
 
-  public NullPrintStream() {
-    super(new NullOutputStream());
-  }
-  
-  @Override
-  public IndentablePrintStream printIndent(String s) {
-    return this;
-  }
+    public NullPrintStream() {
+        super(new NullOutputStream());
+    }
 
-  @Override
-  public IndentablePrintStream printIndentln(String s) {
-    return this;
-  }
+    @Override
+    public IndentablePrintStream printIndent(String s) {
+        return this;
+    }
 
-  @Override
-  public IndentablePrintStream printIndentString() {
-    return this;
-  }
+    @Override
+    public IndentablePrintStream printIndentln(String s) {
+        return this;
+    }
 
-  @Override
-  public Indentable printfIndentln(String format, Object... args) {
-    return this;
-  }
+    @Override
+    public IndentablePrintStream printIndentString() {
+        return this;
+    }
 
-  /**
-   * Pseudo append()-method.
-   *
-   * @param csq won't be evaluated
-   * @return this indentable print stream
-   */
-  @Override
-  public IndentablePrintStream append(CharSequence csq) {
-    return this;
-  }
+    @Override
+    public Indentable printfIndentln(String format, Object... args) {
+        return this;
+    }
 
-  /**
-   * Pseudo append()-method.
-   *
-   * @param csq won't be evaluated
-   * @param start won't be evaluated
-   * @param end won't be evaluated
-   * @return this indentable print stream
-   */
-  @Override
-  public IndentablePrintStream append(CharSequence csq, int start, int end) {
-    return this;
-  }
+    /**
+     * Pseudo append()-method.
+     *
+     * @param csq won't be evaluated
+     * @return this indentable print stream
+     */
+    @Override
+    public IndentablePrintStream append(CharSequence csq) {
+        return this;
+    }
 
-  /**
-   * Pseudo append()-method.
-   *
-   * @param c won't be evaluated
-   * @return this indentable print stream
-   */
-  @Override
-  public IndentablePrintStream append(char c) {
-    return this;
-  }
+    /**
+     * Pseudo append()-method.
+     *
+     * @param csq   won't be evaluated
+     * @param start won't be evaluated
+     * @param end   won't be evaluated
+     * @return this indentable print stream
+     */
+    @Override
+    public IndentablePrintStream append(CharSequence csq, int start, int end) {
+        return this;
+    }
 
-  /**
-   * Pseudo clearError()-method.
-   */
-  @Override
-  protected void clearError()
-  {
-  }
-  
-  /**
-   * Indicates always no error.
-   *
-   * @return always false
-   */
-  @Override
-  public boolean checkError() {
-    return false;
-  }
+    /**
+     * Pseudo append()-method.
+     *
+     * @param c won't be evaluated
+     * @return this indentable print stream
+     */
+    @Override
+    public IndentablePrintStream append(char c) {
+        return this;
+    }
 
-  /**
-   * Pseudo format()-method.
-   *
-   * @param l won't be evaluated
-   * @param format won't be evaluated
-   * @param args won't be evaluated
-   * @return this indentable print stream
-   */
-  @Override
-  public IndentablePrintStream format(Locale l, String format, Object... args) {
-    return this;
-  }
+    /**
+     * Pseudo clearError()-method.
+     */
+    @Override
+    protected void clearError() {
+    }
 
-  /**
-   * Pseudo format()-method.
-   *
-   * @param format won't be evaluated
-   * @param args won't be evaluated
-   * @return this indentable print stream
-   */
-  @Override
-  public IndentablePrintStream format(String format, Object... args) {
-    return this;
-  }
+    /**
+     * Indicates always no error.
+     *
+     * @return always false
+     */
+    @Override
+    public boolean checkError() {
+        return false;
+    }
 
-  /**
-   * Pseudo print()-method.
-   *
-   * @param s won't be evaluated
-   */
-  @Override
-  public void print(char[] s) {
-  }
+    /**
+     * Pseudo format()-method.
+     *
+     * @param l      won't be evaluated
+     * @param format won't be evaluated
+     * @param args   won't be evaluated
+     * @return this indentable print stream
+     */
+    @Override
+    public IndentablePrintStream format(Locale l, String format, Object... args) {
+        return this;
+    }
 
-  /**
-   * Pseudo print()-method.
-   *
-   * @param obj won't be evaluated
-   */
-  @Override
-  public void print(Object obj) {
-  }
+    /**
+     * Pseudo format()-method.
+     *
+     * @param format won't be evaluated
+     * @param args   won't be evaluated
+     * @return this indentable print stream
+     */
+    @Override
+    public IndentablePrintStream format(String format, Object... args) {
+        return this;
+    }
 
-  /**
-   * Pseudo print()-method.
-   *
-   * @param c won't be evaluated
-   */
-  @Override
-  public void print(char c) {
-  }
+    /**
+     * Pseudo print()-method.
+     *
+     * @param s won't be evaluated
+     */
+    @Override
+    public void print(char[] s) {
+    }
 
-  /**
-   * Pseudo print()-method.
-   *
-   * @param i won't be evaluated
-   */
-  @Override
-  public void print(int i) {
-  }
+    /**
+     * Pseudo print()-method.
+     *
+     * @param obj won't be evaluated
+     */
+    @Override
+    public void print(Object obj) {
+    }
 
-  /**
-   * Pseudo print()-method.
-   *
-   * @param s won't be evaluated
-   */
-  @Override
-  public void print(String s) {
-  }
+    /**
+     * Pseudo print()-method.
+     *
+     * @param c won't be evaluated
+     */
+    @Override
+    public void print(char c) {
+    }
 
-  /**
-   * Pseudo print()-method.
-   *
-   * @param b won't be evaluated
-   */
-  @Override
-  public void print(boolean b) {
-  }
+    /**
+     * Pseudo print()-method.
+     *
+     * @param i won't be evaluated
+     */
+    @Override
+    public void print(int i) {
+    }
 
-  /**
-   * Pseudo print()-method.
-   *
-   * @param l won't be evaluated
-   */
-  @Override
-  public void print(long l) {
-  }
+    /**
+     * Pseudo print()-method.
+     *
+     * @param s won't be evaluated
+     */
+    @Override
+    public void print(String s) {
+    }
 
-  /**
-   * Pseudo print()-method.
-   *
-   * @param d won't be evaluated
-   */
-  @Override
-  public void print(double d) {
-  }
+    /**
+     * Pseudo print()-method.
+     *
+     * @param b won't be evaluated
+     */
+    @Override
+    public void print(boolean b) {
+    }
 
-  /**
-   * Pseudo print()-method.
-   *
-   * @param f won't be evaluated
-   */
-  @Override
-  public void print(float f) {
-  }
+    /**
+     * Pseudo print()-method.
+     *
+     * @param l won't be evaluated
+     */
+    @Override
+    public void print(long l) {
+    }
 
-  /**
-   * Pseudo printf()-method.
-   *
-   * @param l won't be evaluated
-   * @param format won't be evaluated
-   * @param args won't be evaluated
-   * @return this indentable print stream
-   */
-  @Override
-  public IndentablePrintStream printf(Locale l, String format, Object... args) {
-    return this;
-  }
+    /**
+     * Pseudo print()-method.
+     *
+     * @param d won't be evaluated
+     */
+    @Override
+    public void print(double d) {
+    }
 
-  /**
-   * Pseudo printf()-method.
-   *
-   * @param format won't be evaluated
-   * @param args won't be evaluated
-   * @return this indentable print stream
-   */
-  @Override
-  public IndentablePrintStream printf(String format, Object... args) {
-    return this;
-  }
+    /**
+     * Pseudo print()-method.
+     *
+     * @param f won't be evaluated
+     */
+    @Override
+    public void print(float f) {
+    }
 
-  /**
-   * Pseudo println()-method.
-   *
-   * @param x won't be evaluated
-   */
-  @Override
-  public void println(char[] x) {
-  }
+    /**
+     * Pseudo printf()-method.
+     *
+     * @param l      won't be evaluated
+     * @param format won't be evaluated
+     * @param args   won't be evaluated
+     * @return this indentable print stream
+     */
+    @Override
+    public IndentablePrintStream printf(Locale l, String format, Object... args) {
+        return this;
+    }
 
-  /**
-   * Pseudo println()-method.
-   *
-   */
-  @Override
-  public void println() {
-  }
+    /**
+     * Pseudo printf()-method.
+     *
+     * @param format won't be evaluated
+     * @param args   won't be evaluated
+     * @return this indentable print stream
+     */
+    @Override
+    public IndentablePrintStream printf(String format, Object... args) {
+        return this;
+    }
 
-  /**
-   * Pseudo println()-method.
-   *
-   * @param x won't be evaluated
-   */
-  @Override
-  public void println(Object x) {
-  }
+    /**
+     * Pseudo println()-method.
+     *
+     * @param x won't be evaluated
+     */
+    @Override
+    public void println(char[] x) {
+    }
 
-  /**
-   * Pseudo println()-method.
-   *
-   * @param x won't be evaluated
-   */
-  @Override
-  public void println(char x) {
-  }
+    /**
+     * Pseudo println()-method.
+     */
+    @Override
+    public void println() {
+    }
 
-  /**
-   * Pseudo println()-method.
-   *
-   * @param x won't be evaluated
-   */
-  @Override
-  public void println(int x) {
-  }
+    /**
+     * Pseudo println()-method.
+     *
+     * @param x won't be evaluated
+     */
+    @Override
+    public void println(Object x) {
+    }
 
-  /**
-   * Pseudo println()-method.
-   *
-   * @param x won't be evaluated
-   */
-  @Override
-  public void println(String x) {
-  }
+    /**
+     * Pseudo println()-method.
+     *
+     * @param x won't be evaluated
+     */
+    @Override
+    public void println(char x) {
+    }
 
-  /**
-   * Pseudo println()-method.
-   *
-   * @param x won't be evaluated
-   */
-  @Override
-  public void println(boolean x) {
-  }
+    /**
+     * Pseudo println()-method.
+     *
+     * @param x won't be evaluated
+     */
+    @Override
+    public void println(int x) {
+    }
 
-  /**
-   * Pseudo println()-method.
-   *
-   * @param x won't be evaluated
-   */
-  @Override
-  public void println(long x) {
-  }
+    /**
+     * Pseudo println()-method.
+     *
+     * @param x won't be evaluated
+     */
+    @Override
+    public void println(String x) {
+    }
 
-  /**
-   * Pseudo println()-method.
-   *
-   * @param x won't be evaluated
-   */
-  @Override
-  public void println(double x) {
-  }
+    /**
+     * Pseudo println()-method.
+     *
+     * @param x won't be evaluated
+     */
+    @Override
+    public void println(boolean x) {
+    }
 
-  /**
-   * Pseudo println()-method.
-   *
-   * @param x won't be evaluated
-   */
-  @Override
-  public void println(float x) {
-  }
+    /**
+     * Pseudo println()-method.
+     *
+     * @param x won't be evaluated
+     */
+    @Override
+    public void println(long x) {
+    }
 
-  /**
-   * Pseudo setError()-method.
-   */
-  @Override
-  protected void setError() {
-  }
+    /**
+     * Pseudo println()-method.
+     *
+     * @param x won't be evaluated
+     */
+    @Override
+    public void println(double x) {
+    }
 
-  /**
-   * Pseudo write()-method.
-   *
-   * @param b won't be evaluated
-   */
-  @Override
-  public void write(int b) {
-  }
+    /**
+     * Pseudo println()-method.
+     *
+     * @param x won't be evaluated
+     */
+    @Override
+    public void println(float x) {
+    }
 
-  /**
-   * Pseudo write()-method.
-   *
-   * @param buf won't be evaluated
-   * @param off won't be evaluated
-   * @param len won't be evaluated
-   */
-  @Override
-  public void write(byte[] buf, int off, int len) {
-  }
+    /**
+     * Pseudo setError()-method.
+     */
+    @Override
+    protected void setError() {
+    }
 
-  /**
-   * Pseudo write()-method.
-   *
-   * @param b won't be evaluated
-   */
-  @Override
-  public void write(byte[] b) {
-  }
+    /**
+     * Pseudo write()-method.
+     *
+     * @param b won't be evaluated
+     */
+    @Override
+    public void write(int b) {
+    }
 
-  /**
-   * Pseudo flush()-method.
-   */
-  @Override
-  public void flush() {
-  }
+    /**
+     * Pseudo write()-method.
+     *
+     * @param buf won't be evaluated
+     * @param off won't be evaluated
+     * @param len won't be evaluated
+     */
+    @Override
+    public void write(byte[] buf, int off, int len) {
+    }
 
-  /**
-   * Closes the underlying IndentablePrintStream.
-   */
-  @Override
-  public void close() {
-    super.close();
-  }
+    /**
+     * Pseudo write()-method.
+     *
+     * @param b won't be evaluated
+     */
+    @Override
+    public void write(byte[] b) {
+    }
+
+    /**
+     * Pseudo flush()-method.
+     */
+    @Override
+    public void flush() {
+    }
+
+    /**
+     * Closes the underlying IndentablePrintStream.
+     */
+    @Override
+    public void close() {
+        super.close();
+    }
 }

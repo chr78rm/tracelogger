@@ -12,18 +12,17 @@ import javax.xml.xpath.XPathExpressionException;
 import org.w3c.dom.Node;
 
 /**
- *
  * @author Developer
  */
 public class OueueNetTracer extends QueueTracer<NetTracer> {
 
-  public OueueNetTracer(String name, NetTracer tracer) {
-    super(name, new NetTracer(name));
-  }
+    public OueueNetTracer(String name, NetTracer tracer) {
+        super(name, new NetTracer(name));
+    }
 
-  @Override
-  protected void readConfiguration(XPath xpath, Node node) throws XPathExpressionException, OueueNetTracer.Exception {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-  
+    @Override
+    protected void readConfiguration(XPath xpath, Node node) throws XPathExpressionException, OueueNetTracer.Exception {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

@@ -15,27 +15,27 @@ import java.io.OutputStream;
  */
 public abstract class IndentablePrintStream extends PrintStream implements Indentable {
 
-  /**
-   * This constructor passes the given OutputStream to the underlying PrintStream implementation.
-   *
-   * @param out the desired OutputStream
-   */
-  public IndentablePrintStream(OutputStream out) {
-    super(out);
-  }
+    /**
+     * This constructor passes the given OutputStream to the underlying PrintStream implementation.
+     *
+     * @param out the desired OutputStream
+     */
+    public IndentablePrintStream(OutputStream out) {
+        super(out);
+    }
 
-  /*
-   * Implementation of Indentable interface
-   */
-  @Override
-  abstract public IndentablePrintStream printIndent(String s);
+    /*
+     * Implementation of Indentable interface
+     */
+    @Override
+    abstract public IndentablePrintStream printIndent(String s);
 
-  @Override
-  abstract public IndentablePrintStream printIndentln(String s);
+    @Override
+    abstract public IndentablePrintStream printIndentln(String s);
 
-  @Override
-  abstract public IndentablePrintStream printIndentString();
+    @Override
+    abstract public IndentablePrintStream printIndentString();
 
-  @Override
-  abstract public Indentable printfIndentln(String format, Object... args);
+    @Override
+    abstract public Indentable printfIndentln(String format, Object... args);
 }

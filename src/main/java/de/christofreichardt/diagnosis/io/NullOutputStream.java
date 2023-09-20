@@ -13,39 +13,39 @@ import java.io.IOException;
  */
 final public class NullOutputStream extends OutputStream {
 
-  /**
-   * default constructor.
-   */
-  public NullOutputStream() {
-    super();
-  }
+    /**
+     * default constructor.
+     */
+    public NullOutputStream() {
+        super();
+    }
 
-  /**
-   * Pseudo write()-method.
-   *
-   * @param b won't be evaluated
-   */
-  @Override
-  public void write(int b) {
-  }
+    /**
+     * Pseudo write()-method.
+     *
+     * @param b won't be evaluated
+     */
+    @Override
+    public void write(int b) {
+    }
 
-  /**
-   * Pseudo write()-method.
-   * 
-   * @param b won't be evaluated
-   * @param off won't be evaluated
-   * @param len won't be evaluated
-   */
-  @Override
-  public void write(byte[] b, int off, int len) {
-  }
+    /**
+     * Pseudo write()-method.
+     *
+     * @param b   won't be evaluated
+     * @param off won't be evaluated
+     * @param len won't be evaluated
+     */
+    @Override
+    public void write(byte[] b, int off, int len) {
+    }
 
-  /**
-   * Pseudo write()-method.
-   * 
-   * @param b won't be evaluated
-   */
-  @Override
-  public void write(byte[] b) {
-  }
+    /**
+     * Pseudo write()-method.
+     *
+     * @param b won't be evaluated
+     */
+    @Override
+    public void write(byte[] b) {
+    }
 }

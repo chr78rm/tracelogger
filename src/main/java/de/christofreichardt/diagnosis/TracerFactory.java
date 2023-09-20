@@ -237,12 +237,14 @@ public class TracerFactory {
             try {
                 for (int i = 0; i < this.size; i++) {
                     Class<?> clazz = Class.forName(this.className);
-                    if (!QueueTracer.class.isAssignableFrom(clazz))
+                    if (!QueueTracer.class.isAssignableFrom(clazz)) {
                         throw new TracerFactory.Exception("Need a QueueTracer class but found '" + clazz.getName() + "'.");
+                    }
                     @SuppressWarnings("unchecked")
                     Class<QueueTracer<? extends AbstractTracer>> tracerClass = (Class<QueueTracer<? extends AbstractTracer>>) clazz;
-                    if (QueueNullTracer.class.isAssignableFrom(tracerClass))
+                    if (QueueNullTracer.class.isAssignableFrom(tracerClass)) {
                         throw new TracerFactory.Exception("No QueueNullTracer allowed here.");
+                    }
                     String tracerName = (String) TracerFactory.this.xpath.evaluate("./dns:TraceLogger/@name", node, XPathConstants.STRING);
                     Constructor<QueueTracer<? extends AbstractTracer>> constructor = tracerClass.getConstructor(String.class);
                     QueueTracer<? extends AbstractTracer> queueTracer = constructor.newInstance(tracerName + i);
@@ -347,8 +349,9 @@ public class TracerFactory {
      * @throws IOException             indicates an I/O problem, e.g. a missing configuration file
      */
     public void readConfiguration(File configFile) throws TracerFactory.Exception, IOException {
-        if (!configFile.exists())
+        if (!configFile.exists()) {
             throw new FileNotFoundException(configFile + "doesn't exist.");
+        }
         try (FileInputStream fileInputStream = new FileInputStream(configFile)) {
             readConfiguration(fileInputStream);
         }
@@ -362,8 +365,9 @@ public class TracerFactory {
      * @see TracerFactory#readConfiguration(java.io.File)
      */
     public void readConfiguration(InputStream inputStream) throws TracerFactory.Exception {
-        if (this.traceConfigSchema == null)
+        if (this.traceConfigSchema == null) {
             System.err.println("CAUTION: Unable to validate the given configuration against a schema.");
+        }
 
         DocumentBuilderFactory builderFactory = javax.xml.parsers.DocumentBuilderFactory.newInstance();
         builderFactory.setNamespaceAware(true);
@@ -390,15 +394,17 @@ public class TracerFactory {
                     System.out.println();
                     System.out.println("(+) " + (i + 1) + ". TraceLogger");
                     Element tracerElement = (Element) tracerNodes.item(i);
-                    if (!tracerElement.hasAttribute("name"))
+                    if (!tracerElement.hasAttribute("name")) {
                         throw new TracerFactory.Exception("Missing 'name' attribute.");
+                    }
                     String name = tracerElement.getAttribute("name");
                     String className = tracerElement.getAttribute("class");
                     System.out.println("name = " + name);
                     System.out.println("className = " + className);
                     Class<?> tracerClass = Class.forName(className);
-                    if (!AbstractTracer.class.isAssignableFrom(tracerClass))
+                    if (!AbstractTracer.class.isAssignableFrom(tracerClass)) {
                         throw new TracerFactory.Exception(String.format("Illegal tracer class: '%s'", className));
+                    }
                     @SuppressWarnings("unchecked")
                     AbstractTracer tracer = createTracer((Class<? extends AbstractTracer>) tracerClass, name);
                     tracer.readConfiguration(this.xpath, tracerElement);
@@ -422,8 +428,9 @@ public class TracerFactory {
                 if (defaultTracerNode != null) {
                     String className = ((Element) defaultTracerNode).getAttribute("class");
                     Class<?> tracerClass = Class.forName(className);
-                    if (!NullTracer.class.isAssignableFrom(tracerClass))
+                    if (!NullTracer.class.isAssignableFrom(tracerClass)) {
                         throw new TracerFactory.Exception("Requiring a NullTracer as default tracer!");
+                    }
                     @SuppressWarnings("unchecked")
                     NullTracer nullTracer = createTracer((Class<? extends NullTracer>) tracerClass);
                     this.defaultTracer = nullTracer;
@@ -524,11 +531,13 @@ public class TracerFactory {
                         } catch (XPathExpressionException | TracerFactory.Exception ex) {
                             tracer = this.defaultTracer;
                         }
-                    } else
+                    } else {
                         tracer = this.defaultTracer;
+                    }
                 }
-            } else
+            } else {
                 tracer = this.tracerMap.get(thread.getId());
+            }
 
             return tracer;
         } finally {
@@ -636,7 +645,7 @@ public class TracerFactory {
         boolean success = false;
         this.queueReadLock.lock();
         try {
-            if (this.queueConfig.enabled  && !(tracer instanceof QueueNullTracer) ) {
+            if (this.queueConfig.enabled && !(tracer instanceof QueueNullTracer)) {
                 success = this.queueConfig.blockingTracerDeque.offerLast(tracer);
                 if (success) {
                     this.queueConfig.currentTracer.remove();
@@ -667,8 +676,9 @@ public class TracerFactory {
                         if (!queueTracer.isOpened()) {
                             queueTracer.open();
                             tracerCounter++;
-                            if (tracerCounter == this.queueConfig.size)
+                            if (tracerCounter == this.queueConfig.size) {
                                 success = true;
+                            }
                         }
                     }
                 }
@@ -699,8 +709,9 @@ public class TracerFactory {
                         if (queueTracer.isOpened()) {
                             queueTracer.close();
                             tracerCounter++;
-                            if (tracerCounter == this.queueConfig.size)
+                            if (tracerCounter == this.queueConfig.size) {
                                 success = true;
+                            }
                         }
                     }
                 }
