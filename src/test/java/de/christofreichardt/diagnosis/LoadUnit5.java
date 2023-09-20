@@ -51,7 +51,7 @@ public class LoadUnit5 implements WithAssertions {
 
         void verify() {
             List<String> warnings = lines.stream()
-                    .filter(line -> line.startsWith("* WARNING *"))
+                    .filter(line -> line.startsWith("| WARNING |"))
                     .collect(Collectors.toList());
             assertThat(
                     warnings.stream()
@@ -65,7 +65,7 @@ public class LoadUnit5 implements WithAssertions {
             ).isEqualTo(3);
             assertThat(
                     lines.stream()
-                            .filter(line -> line.startsWith("* SEVERE *"))
+                            .filter(line -> line.startsWith("| SEVERE |"))
                             .count()
             ).isEqualTo(0);
         }
@@ -154,7 +154,7 @@ public class LoadUnit5 implements WithAssertions {
         Set<String> enabledThreads = new HashSet<>(Arrays.asList("main", "TestThread-0", "TestThread-1"));
         Set<String> disabledThreads = new HashSet<>();
         for (String line : lines) {
-            if (line.startsWith("* SEVERE *")) {
+            if (line.startsWith("| SEVERE |")) {
                 assertThat(line).endsWith("\"Stack is corrupted. Tracing is off.\"");
                 String foundThread = enabledThreads.stream()
                         .filter(thread -> line.contains(thread))
@@ -189,7 +189,7 @@ public class LoadUnit5 implements WithAssertions {
         Set<String> enabledThreads = new HashSet<>(Arrays.asList("main", "TestThread-0", "TestThread-1"));
         Set<String> disabledThreads = new HashSet<>();
         for (String line : lines) {
-            if (line.startsWith("* SEVERE *")) {
+            if (line.startsWith("| SEVERE |")) {
                 assertThat(line).endsWith("\"Stacksize is exceeded. Tracing is off.\"");
                 String foundThread = enabledThreads.stream()
                         .filter(thread -> line.contains(thread))

@@ -11,8 +11,9 @@ import de.christofreichardt.diagnosis.io.NullOutputStream;
 import de.christofreichardt.diagnosis.io.NullPrintStream;
 import de.christofreichardt.diagnosis.io.TracePrintStream;
 import java.io.BufferedOutputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Formatter;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -515,13 +516,15 @@ abstract public class AbstractTracer {
      * @param methodName the originating method
      */
     public void logMessage(LogLevel logLevel, String message, Class<?> clazz, String methodName) {
-        Date timeStamp = new Date(); // TODO: use ZonedDateTime
+        String timeStamp = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         char border[] = new char[logLevel.toString().length() + 4];
-        Arrays.fill(border, '*');
+        Arrays.fill(border, '-');
+        border[0] = '+';
+        border[border.length - 1] = '+';
 
         synchronized (this.syncObject) {
             this.tracePrintStream.println(border);
-            this.tracePrintStream.printf("* %s *  [%tc] [%d,%s] [%s] [%s] \"%s\"%n", logLevel.toString(), timeStamp, Thread.currentThread().getId(),
+            this.tracePrintStream.printf("| %s |  [%s] [%d,%s] [%s] [%s] \"%s\"%n", logLevel, timeStamp, Thread.currentThread().getId(),
                     Thread.currentThread().getName(), clazz.getName(), methodName, message);
             this.tracePrintStream.println(border);
         }
@@ -536,9 +539,11 @@ abstract public class AbstractTracer {
      * @param methodName the name of the relevant method
      */
     public void logException(LogLevel logLevel, Throwable throwable, Class<?> clazz, String methodName) {
-        Date timeStamp = new Date(); // TODO: use ZonedDateTime
+        String timeStamp = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         char border[] = new char[logLevel.toString().length() + 4];
-        Arrays.fill(border, '*');
+        Arrays.fill(border, '-');
+        border[0] = '+';
+        border[border.length - 1] = '+';
 
         String message;
         if (throwable.getMessage() != null) {
@@ -550,7 +555,7 @@ abstract public class AbstractTracer {
 
         synchronized (this.syncObject) {
             this.tracePrintStream.println(border);
-            this.tracePrintStream.printf("* %s *  [%tc] [%d,%s] [%s] [%s] \"%s\"%n", logLevel.toString(), timeStamp, Thread.currentThread().getId(),
+            this.tracePrintStream.printf("| %s |  [%s] [%d,%s] [%s] [%s] \"%s\"%n", logLevel, timeStamp, Thread.currentThread().getId(),
                     Thread.currentThread().getName(), clazz.getName(), methodName, message);
             this.tracePrintStream.println(border);
             throwable.printStackTrace(this.tracePrintStream);

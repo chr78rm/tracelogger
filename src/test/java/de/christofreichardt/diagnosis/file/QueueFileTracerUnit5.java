@@ -220,7 +220,7 @@ public class QueueFileTracerUnit5 implements WithAssertions {
             long count = 0;
             for (String expectedTraceLogfile : expectedTraceLogfiles) {
                 Set<String> consumers = Files.readAllLines(LOGDIR.resolve(expectedTraceLogfile)).stream()
-                        .filter(line -> line.startsWith("* INFO *"))
+                        .filter(line -> line.startsWith("| INFO |"))
                         .map(line -> {
                             Matcher matcher = pattern.matcher(line);
                             if (matcher.find()) {
