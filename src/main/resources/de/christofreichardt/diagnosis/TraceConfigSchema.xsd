@@ -29,7 +29,13 @@
         <xsd:element name="Listener" type="tns:ListenerType"/>
       </xsd:choice>
       <xsd:element name="AutoFlush" type="xsd:boolean"/>
-      <xsd:element name="BufSize" type="xsd:unsignedLong"/>
+      <xsd:element name="BufSize">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:positiveInteger">
+            <xsd:maxInclusive value="2147483647"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
       <xsd:element name="Limit" minOccurs="0">
         <xsd:simpleType>
           <xsd:restriction base="xsd:positiveInteger">
@@ -103,7 +109,13 @@
   <xsd:group name="OnlineAndDebug">
     <xsd:sequence>
       <xsd:element name="Online" type="xsd:boolean"/>
-      <xsd:element name="DebugLevel" type="xsd:unsignedLong"/>
+      <xsd:element name="DebugLevel">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:positiveInteger">
+            <xsd:maxInclusive value="25"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
     </xsd:sequence>
   </xsd:group>
 
