@@ -103,7 +103,7 @@ abstract public class AbstractTracer {
     /**
      * Indicates exceptional states within the AbstractTracer context.
      */
-    public class Exception extends java.lang.Exception {
+    public static class Exception extends java.lang.Exception {
 
         /**
          * Creates an Exception instance.
@@ -133,12 +133,12 @@ abstract public class AbstractTracer {
     /** the buffer size */
     private int bufferSize = 512;
 
-    /** the undesired output will bypassed into this PrintStream */
+    /** the undesired output will be bypassed into this PrintStream */
     private final NullPrintStream nullPrintStream;
     /** used for buffering of the trace output */
     private BufferedOutputStream bufferedOutputStream = null;
     /** a specialised PrintStream suitable for indented output */
-    private TracePrintStream tracePrintStream = null;
+    private TracePrintStream tracePrintStream;
 
     /** provides access to the tracing contexts indexed by Threads */
     private final AbstractThreadMap threadMap = new ThreadLocalMap();
@@ -310,7 +310,7 @@ abstract public class AbstractTracer {
      * @throws de.christofreichardt.diagnosis.AbstractTracer.Exception indicates problems when configuring certain tracer instances
      */
     protected void readConfiguration(XPath xpath, Node node) throws XPathExpressionException, AbstractTracer.Exception {
-        this.autoflush = "true".equals((String) xpath.evaluate("./dns:AutoFlush/text()", node, XPathConstants.STRING));
+        this.autoflush = "true".equals(xpath.evaluate("./dns:AutoFlush/text()", node, XPathConstants.STRING));
         this.bufferSize = Integer.parseInt((String) xpath.evaluate("./dns:BufSize/text()", node, XPathConstants.STRING));
 
         System.out.println("this.autoflush = " + this.autoflush);
@@ -320,7 +320,7 @@ abstract public class AbstractTracer {
         for (int i = 0; i < threadNodes.getLength(); i++) {
             String threadName = threadNodes.item(i).getAttributes().getNamedItem("name").getNodeValue();
 
-            boolean online = "true".equals((String) xpath.evaluate("./dns:Online/text()", threadNodes.item(i), XPathConstants.STRING));
+            boolean online = "true".equals(xpath.evaluate("./dns:Online/text()", threadNodes.item(i), XPathConstants.STRING));
             int debugLevel = Integer.parseInt((String) xpath.evaluate("./dns:DebugLevel/text()", threadNodes.item(i), XPathConstants.STRING));
 
             System.out.println("(*-*)");
@@ -343,9 +343,9 @@ abstract public class AbstractTracer {
     public abstract void close();
 
     /**
-     * Returns some kind of an {@link IndentablePrintStream} based upon the the current managed stack size, the configured debug
+     * Returns some kind of {@link IndentablePrintStream} based upon the current managed stack size, the configured debug
      * level and the online state of the current tracing context. This is the {@link NullPrintStream} if the stack size is greater
-     * than the debug level or if the thread is offline. Otherwise it's the {@link TracePrintStream}.
+     * than the debug level or if the thread is offline. Otherwise, it's the {@link TracePrintStream}.
      *
      * @return an {@link IndentablePrintStream}
      */
@@ -354,9 +354,9 @@ abstract public class AbstractTracer {
     }
 
     /**
-     * Returns some kind of an IndentablePrintStream based upon the given level, the configured debug level and the
+     * Returns some kind of {@link IndentablePrintStream} based upon the given level, the configured debug level and the
      * online state of the current tracing context. It will be the {@link NullPrintStream} if the given level is greater
-     * than the debug level or if the thread is offline. Otherwise it's the {@link TracePrintStream}.
+     * than the debug level or if the thread is offline. Otherwise, it's the {@link TracePrintStream}.
      *
      * @param level the level of the to be printed data
      * @return an {@link IndentablePrintStream}
@@ -366,7 +366,7 @@ abstract public class AbstractTracer {
 
         if (level >= 0) {
             TracingContext tracingContext = this.threadMap.getCurrentTracingContext();
-            if (tracingContext != null && tracingContext.isOnline() == true && tracingContext.getDebugLevel() >= level) {
+            if (tracingContext != null && tracingContext.isOnline() && tracingContext.getDebugLevel() >= level) {
                 printStream = this.tracePrintStream;
             } else {
                 printStream = this.nullPrintStream;
@@ -495,7 +495,7 @@ abstract public class AbstractTracer {
             if (traceMethod != null) {
                 synchronized (this.syncObject) {
                     out().printIndentln("RETURN-" + traceMethod.getSignature() + "--(+" + traceMethod.getElapsedTime() + "ms)--" + "(+" + traceMethod.getElapsedCpuTime() + "ms)--" + Thread.currentThread().getName() + "[" + Thread.currentThread().getId() + "]");
-                    if (this.autoflush == true) {
+                    if (this.autoflush) {
                         out().flush();
                     }
                 }
@@ -517,7 +517,7 @@ abstract public class AbstractTracer {
      */
     public void logMessage(LogLevel logLevel, String message, Class<?> clazz, String methodName) {
         String timeStamp = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        char border[] = new char[logLevel.toString().length() + 4];
+        char[] border = new char[logLevel.toString().length() + 4];
         Arrays.fill(border, '-');
         border[0] = '+';
         border[border.length - 1] = '+';
@@ -540,7 +540,7 @@ abstract public class AbstractTracer {
      */
     public void logException(LogLevel logLevel, Throwable throwable, Class<?> clazz, String methodName) {
         String timeStamp = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        char border[] = new char[logLevel.toString().length() + 4];
+        char[] border = new char[logLevel.toString().length() + 4];
         Arrays.fill(border, '-');
         border[0] = '+';
         border[border.length - 1] = '+';
@@ -588,16 +588,6 @@ abstract public class AbstractTracer {
      * debug map.
      */
     public void initCurrentTracingContext() {
-//    if (this.debugConfigMap.containsKey(Thread.currentThread().getName())) {
-//      DebugConfig debugConfig = this.debugConfigMap.get(Thread.currentThread().getName());
-//      this.debugConfigMap.remove(Thread.currentThread().getName());
-//
-//      System.out.println(formatContextInfo(debugConfig.getLevel(), debugConfig.isOnline()));
-//
-//      TracingContext tracingContext = new TracingContext(debugConfig);
-//      this.threadMap.setCurrentTracingContext(tracingContext);
-//    }
-
         TracingContext tracingContext = this.threadMap.getCurrentTracingContext();
         if (tracingContext == null) {
             if (this.debugConfigMap.containsKey(Thread.currentThread().getName())) {
@@ -676,7 +666,7 @@ abstract public class AbstractTracer {
      */
     protected String formatStreamErrorState() {
         Formatter formatter = new Formatter();
-        formatter.format("TraceLogger[%s]: Stream error state = %s.", this.name, this.tracePrintStream.checkError() == true ? "bad" : "ok");
+        formatter.format("TraceLogger[%s]: Stream error state = %s.", this.name, this.tracePrintStream.checkError() ? "bad" : "ok");
 
         return formatter.toString();
     }

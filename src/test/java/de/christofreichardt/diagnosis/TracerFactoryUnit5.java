@@ -69,14 +69,18 @@ public class TracerFactoryUnit5 implements WithAssertions {
         Path config = Path.of(".", "config", "TraceConfig.xml");
         TracerFactory.getInstance().readConfiguration(config.toFile());
 
-        // check correct tracer class and name
+        // check correct tracer class, name, autoFlush and bufferSize
         Class<?>[] tracerClasses = {FileTracer.class, FileTracer.class, NetTracer.class, NullTracer.class, FileTracer.class};
+        boolean[] autoFlushs = {true, true, true, true, false};
+        int[] bufferSizes = {1024, 1024, 1024, 512, 1024};
         for (int i = 0; i < tracerClasses.length; i++) {
             String tracerName = "TestTracer-" + i;
             AbstractTracer testTracer = TracerFactory.getInstance().getTracer(tracerName);
             assertThat(testTracer).isNotNull();
             assertThat(testTracer.getName()).isEqualTo(tracerName);
             assertThat(testTracer.getClass()).isEqualTo(tracerClasses[i]);
+            assertThat(testTracer.isAutoflush()).isEqualTo(autoFlushs[i]);
+            assertThat(testTracer.getBufferSize()).isEqualTo(bufferSizes[i]);
         }
 
         // check mapping for 'main' thread
