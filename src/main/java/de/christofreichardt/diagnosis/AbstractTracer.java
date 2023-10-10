@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Formatter;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -226,6 +227,24 @@ abstract public class AbstractTracer {
      */
     public void setBufferSize(int bufferSize) {
         this.bufferSize = bufferSize;
+    }
+
+    public boolean isOnline(String threadName) {
+        DebugConfig debugConfig = this.debugConfigMap.get(threadName);
+        if (Objects.nonNull(debugConfig)) {
+            return debugConfig.isOnline();
+        } else {
+            throw new IllegalArgumentException(String.format("No such Thread[name=%s] configured.", threadName));
+        }
+    }
+
+    public int getLevel(String threadName) {
+        DebugConfig debugConfig = this.debugConfigMap.get(threadName);
+        if (Objects.nonNull(debugConfig)) {
+            return debugConfig.getLevel();
+        } else {
+            throw new IllegalArgumentException(String.format("No such Thread[name=%s] configured.", threadName));
+        }
     }
 
     /**
@@ -605,50 +624,6 @@ abstract public class AbstractTracer {
      */
     public void clearCurrentTracingContext() {
         this.threadMap.removeCurrentTracingContext();
-    }
-
-    /**
-     * Replaces the given argument by repeatedly substituting all expressions of the form ${property-key} with the
-     * corresponding property value.
-     *
-     * @param expression the to be replaced expression
-     * @return the replaced expression
-     * @throws de.christofreichardt.diagnosis.AbstractTracer.Exception indicates problems during the replacement
-     */
-    protected String substitute(String expression) throws AbstractTracer.Exception {
-        Pattern compiledPattern = Pattern.compile("\\$\\{[a-zA-Z0-9.]+\\}");
-        Matcher matcher = compiledPattern.matcher(expression);
-        int pos = 0;
-        StringBuilder stringBuilder = new StringBuilder();
-        boolean flag;
-
-        do {
-            flag = false;
-
-            while (matcher.find()) {
-                stringBuilder.append(expression.substring(pos, matcher.start()));
-                String propertyKey = expression.substring(matcher.start() + 2, matcher.end() - 1);
-                if (System.getProperties().containsKey(propertyKey)) {
-                    String propertyValue = System.getProperty(propertyKey);
-                    stringBuilder.append(propertyValue);
-                    pos = matcher.end();
-                    flag = true;
-                } else {
-                    throw new AbstractTracer.Exception("Unknown property key.");
-                }
-            }
-
-            stringBuilder.append(expression.substring(pos));
-            expression = stringBuilder.toString();
-
-            if (flag) {
-                stringBuilder = new StringBuilder();
-                matcher.reset(expression);
-                pos = 0;
-            }
-        } while (flag);
-
-        return expression;
     }
 
     private String formatContextInfo(int debugLevel, boolean online) {

@@ -79,9 +79,7 @@
   <xsd:complexType name="QueueType">
     <xsd:sequence>
       <xsd:choice>
-        <xsd:element name="Enabled">
-          <xsd:complexType/>
-        </xsd:element>
+        <xsd:element name="Enabled" type="xsd:boolean" default="true"/>
         <xsd:element name="Disabled">
           <xsd:complexType/>
         </xsd:element>

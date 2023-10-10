@@ -7,6 +7,7 @@
 package de.christofreichardt.diagnosis;
 
 import de.christofreichardt.diagnosis.file.FileTracer;
+import de.christofreichardt.util.PropertyExpression;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,19 +15,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.xml.XMLConstants;
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
@@ -36,10 +36,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
@@ -218,9 +215,14 @@ public class TracerFactory {
         }
 
         Queue(Node node) throws XPathExpressionException, TracerFactory.Exception, AbstractTracer.Exception {
-            this.enabled = TracerFactory.this.xpath.evaluate("./dns:Enabled", node, XPathConstants.NODE) != null;
+            Node enabledNode = (Node) TracerFactory.this.xpath.evaluate("./dns:Enabled", node, XPathConstants.NODE);
+            if (enabledNode != null) {
+                this.enabled = Boolean.parseBoolean(enabledNode.getTextContent().strip());
+            } else {
+                this.enabled = false;
+            }
             if (this.enabled) {
-                this.size = Integer.parseInt((String) TracerFactory.this.xpath.evaluate("./dns:Size", node, XPathConstants.STRING));
+                this.size = Integer.parseInt(((String) TracerFactory.this.xpath.evaluate("./dns:Size", node, XPathConstants.STRING)).strip());
                 this.className = (String) TracerFactory.this.xpath.evaluate("./dns:TraceLogger/@class", node, XPathConstants.STRING);
                 this.blockingTracerDeque = new LinkedBlockingDeque<>(this.size);
                 this.currentTracer = new ThreadLocal<>();
@@ -260,7 +262,6 @@ public class TracerFactory {
 
     static final NullTracer NULLTRACER = new JDKLoggingRouter();
 
-    final private Schema traceConfigSchema;
     final private Map<String, Element> threadName2Element = new HashMap<>();
     final private Map<String, AbstractTracer> tracerPool = new HashMap<>();
     final private Map<Long, AbstractTracer> tracerMap = new ConcurrentHashMap<>();
@@ -278,7 +279,6 @@ public class TracerFactory {
     private Queue queueConfig = new Queue();
 
     private TracerFactory() {
-        this.traceConfigSchema = loadTraceConfigSchema();
         this.xpath.setNamespaceContext(new TracerConfigNamespaceContextImpl());
     }
 
@@ -325,20 +325,6 @@ public class TracerFactory {
         }
     }
 
-    private Schema loadTraceConfigSchema() {
-        InputStream inputStream = TracerFactory.class.getClassLoader().getResourceAsStream("de/christofreichardt/diagnosis/TraceConfigSchema.xsd");
-        StreamSource streamSource = new StreamSource(inputStream);
-        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        Schema schema = null;
-        try {
-            schema = schemaFactory.newSchema(streamSource);
-        } catch (SAXException ex) {
-            ex.printStackTrace(System.err);
-        }
-
-        return schema;
-    }
-
     /**
      * Reads the given configuration file, validates it against an XML-Schema and creates the tracer pool, its mappings and the queue accordingly.
      * This method should normally be invoked once at program start. Multiple calls with the same configuration file leads to instantiations of new tracer objects
@@ -357,37 +343,114 @@ public class TracerFactory {
         }
     }
 
+    static class XMLConfig {
+        final Document tracerConfigDoc;
+        final DOMResult domResult;
+        final List<String> xpathExpressions;
+
+        XMLConfig(InputStream inputStream) throws ParserConfigurationException, IOException, SAXException {
+            DocumentBuilderFactory builderFactory = javax.xml.parsers.DocumentBuilderFactory.newInstance();
+            builderFactory.setNamespaceAware(true);
+            DocumentBuilder parser = builderFactory.newDocumentBuilder();
+            this.tracerConfigDoc = parser.parse(inputStream);
+            this.domResult = new DOMResult(this.tracerConfigDoc);
+            this.xpathExpressions = List.of(
+                    "/dns:TraceConfig/dns:Pool/dns:TraceLogger/dns:LogDir/text()",
+                    "/dns:TraceConfig/dns:Pool/dns:TraceLogger/dns:AutoFlush/text()",
+                    "/dns:TraceConfig/dns:Pool/dns:TraceLogger/dns:BufSize/text()",
+                    "/dns:TraceConfig/dns:Pool/dns:TraceLogger/dns:Limit/text()",
+                    "/dns:TraceConfig/dns:Pool/dns:TraceLogger/dns:Context/dns:Thread/dns:Online/text()",
+                    "/dns:TraceConfig/dns:Pool/dns:TraceLogger/dns:Context/dns:Thread/dns:DebugLevel/text()",
+                    "/dns:TraceConfig/dns:Pool/dns:TraceLogger/dns:Listener/dns:Port/text()",
+                    "/dns:TraceConfig/dns:Pool/dns:TraceLogger/dns:Listener/dns:Host/text()",
+                    "/dns:TraceConfig/dns:Queue/dns:Enabled/text()",
+                    "/dns:TraceConfig/dns:Queue/dns:Size/text()",
+                    "/dns:TraceConfig/dns:Queue/dns:Online/text()",
+                    "/dns:TraceConfig/dns:Queue/dns:DebugLevel/text()",
+                    "/dns:TraceConfig/dns:Queue/dns:TraceLogger/dns:LogDir/text()",
+                    "/dns:TraceConfig/dns:Queue/dns:TraceLogger/dns:AutoFlush/text()",
+                    "/dns:TraceConfig/dns:Queue/dns:TraceLogger/dns:BufSize/text()",
+                    "/dns:TraceConfig/dns:Pool/dns:TraceLogger/@name",
+                    "/dns:TraceConfig/dns:Pool/dns:TraceLogger/@class",
+                    "/dns:TraceConfig/dns:Pool/dns:TraceLogger/dns:Context/dns:Thread/@name",
+                    "/dns:TraceConfig/dns:DefaultTracer/@class",
+                    "/dns:TraceConfig/dns:Queue/dns:TraceLogger/@name",
+                    "/dns:TraceConfig/dns:Queue/dns:TraceLogger/@class"
+            );
+        }
+
+        void validate() throws IOException, SAXException {
+            try (InputStream inputStream = TracerFactory.class.getClassLoader().getResourceAsStream("de/christofreichardt/diagnosis/TraceConfigSchema.xsd")) {
+                StreamSource streamSource = new StreamSource(inputStream);
+                SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+                Schema schema = schemaFactory.newSchema(streamSource);
+                DOMSource domSource = new DOMSource(this.tracerConfigDoc);
+                Validator traceConfigValidator = schema.newValidator();
+                TracerFactory.ErrorHandler errorHandler = new TracerFactory.ErrorHandler();
+                traceConfigValidator.setErrorHandler(errorHandler);
+                traceConfigValidator.validate(domSource, this.domResult);
+            }
+        }
+
+        void evaluatePropertyExpressions() throws TracerFactory.Exception {
+            XPath xpath = XPathFactory.newInstance().newXPath();
+            xpath.setNamespaceContext(new NamespaceContext() {
+                @Override
+                public String getNamespaceURI(String prefix) {
+                    return "http://www.christofreichardt.de/java/tracer";
+                }
+
+                @Override
+                public String getPrefix(String namespaceURI) {
+                    return "dns";
+                }
+
+                @Override
+                public Iterator<String> getPrefixes(String namespaceURI) {
+                    throw new UnsupportedOperationException("Not supported yet.");
+                }
+            });
+            PropertyExpression propertyExpression = new PropertyExpression(System.getProperties());
+            for (String xpathExpression : this.xpathExpressions) {
+                try {
+                    NodeList nodeList = (NodeList) xpath.evaluate(xpathExpression, documentElement(), XPathConstants.NODESET);
+                    for (int i=0; i<nodeList.getLength(); i++) {
+                        Node node = nodeList.item(i);
+                        if (Objects.nonNull(node) && node.getNodeType() == Node.TEXT_NODE) {
+                            node.setTextContent(propertyExpression.replace(node.getTextContent()));
+                        } else if (Objects.nonNull(node) && node.getNodeType() == Node.ATTRIBUTE_NODE) {
+                            Attr attr = (Attr) node;
+                            attr.setValue(propertyExpression.replace(attr.getValue()));
+                        }
+                    }
+                } catch (XPathExpressionException ex) {
+                    throw new TracerFactory.Exception(ex);
+                }
+            }
+        }
+
+        Element documentElement() {
+            Document document = (Document) this.domResult.getNode();
+            return document.getDocumentElement();
+        }
+    }
+
     /**
      * Reads the configuration from the given InputStream.
      *
-     * @param inputStream the input stream providing the configuration.
+     * @param inputStream the input stream providing the configuration. Caller is responsible for closing the stream.
      * @throws TracerFactory.Exception indicates a configuration problem
      * @see TracerFactory#readConfiguration(java.io.File)
      */
     public void readConfiguration(InputStream inputStream) throws TracerFactory.Exception {
-        if (this.traceConfigSchema == null) {
-            System.err.println("CAUTION: Unable to validate the given configuration against a schema.");
-        }
-
-        DocumentBuilderFactory builderFactory = javax.xml.parsers.DocumentBuilderFactory.newInstance();
-        builderFactory.setNamespaceAware(true);
-        builderFactory.setXIncludeAware(false);
-
         try {
-            DocumentBuilder parser = builderFactory.newDocumentBuilder();
-            Document tracerConfigDoc = parser.parse(inputStream);
-
-            if (this.traceConfigSchema != null) {
-                DOMSource domSource = new DOMSource(tracerConfigDoc);
-                Validator traceConfigValidator = this.traceConfigSchema.newValidator();
-                TracerFactory.ErrorHandler errorHandler = new TracerFactory.ErrorHandler();
-                traceConfigValidator.setErrorHandler(errorHandler);
-                traceConfigValidator.validate(domSource);
-            }
+            XMLConfig xmlConfig = new XMLConfig(inputStream);
+            xmlConfig.evaluatePropertyExpressions();
+            xmlConfig.validate();
 
             this.poolWriteLock.lock();
             try {
-                NodeList tracerNodes = (NodeList) this.xpath.evaluate("/dns:TraceConfig/dns:Pool/dns:TraceLogger", tracerConfigDoc.getDocumentElement(), XPathConstants.NODESET);
+                NodeList tracerNodes = (NodeList) this.xpath.evaluate("/dns:TraceConfig/dns:Pool/dns:TraceLogger", xmlConfig.documentElement(), XPathConstants.NODESET);
                 System.out.println();
                 System.out.println("Configured Pool Tracers = " + tracerNodes.getLength());
                 for (int i = 0; i < tracerNodes.getLength(); i++) {
@@ -411,7 +474,7 @@ public class TracerFactory {
                     this.tracerPool.put(name, tracer);
                 }
 
-                NodeList threadNodes = (NodeList) this.xpath.evaluate("/dns:TraceConfig/dns:Map/dns:Threads/dns:Thread", tracerConfigDoc.getDocumentElement(), XPathConstants.NODESET);
+                NodeList threadNodes = (NodeList) this.xpath.evaluate("/dns:TraceConfig/dns:Map/dns:Threads/dns:Thread", xmlConfig.documentElement(), XPathConstants.NODESET);
                 System.out.println();
                 System.out.println("Configured Tracermappings = " + threadNodes.getLength());
                 for (int i = 0; i < threadNodes.getLength(); i++) {
@@ -424,7 +487,7 @@ public class TracerFactory {
                     this.threadName2Element.put(threadName, threadElement);
                 }
 
-                Node defaultTracerNode = (Node) this.xpath.evaluate("/dns:TraceConfig/dns:DefaultTracer", tracerConfigDoc.getDocumentElement(), XPathConstants.NODE);
+                Node defaultTracerNode = (Node) this.xpath.evaluate("/dns:TraceConfig/dns:DefaultTracer", xmlConfig.documentElement(), XPathConstants.NODE);
                 if (defaultTracerNode != null) {
                     String className = ((Element) defaultTracerNode).getAttribute("class");
                     Class<?> tracerClass = Class.forName(className);
@@ -443,7 +506,7 @@ public class TracerFactory {
 
             this.queueWriteLock.lock();
             try {
-                Node queueNode = (Node) this.xpath.evaluate("/dns:TraceConfig/dns:Queue", tracerConfigDoc.getDocumentElement(), XPathConstants.NODE);
+                Node queueNode = (Node) this.xpath.evaluate("/dns:TraceConfig/dns:Queue", xmlConfig.documentElement(), XPathConstants.NODE);
                 if (queueNode != null) {
                     this.queueConfig = new Queue(queueNode);
                 } else {

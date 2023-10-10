@@ -113,12 +113,30 @@ abstract public class QueueTracer<T extends AbstractTracer> extends AbstractTrac
         this.tracer.setAutoflush(autoflush);
     }
 
+    public boolean isOnline() {
+        return this.online;
+    }
+
+    public int getLevel() {
+        return this.level;
+    }
+
     @Override
     protected void readConfiguration(XPath xpath, Node node) throws XPathExpressionException, AbstractTracer.Exception {
-        this.online = (boolean) xpath.evaluate("./dns:Online/text()", node, XPathConstants.BOOLEAN);
-        this.level = Integer.parseInt((String) xpath.evaluate("./dns:DebugLevel/text()", node, XPathConstants.STRING));
-        setAutoflush((boolean) xpath.evaluate("./dns:TraceLogger/dns:AutoFlush/text()", node, XPathConstants.BOOLEAN));
-        setBufferSize(Integer.parseInt((String) xpath.evaluate("./dns:TraceLogger/dns:BufSize/text()", node, XPathConstants.STRING)));
+        this.online = Boolean.parseBoolean(
+                (String) xpath.evaluate("./dns:Online/text()", node, XPathConstants.STRING)
+        );
+        this.level = Integer.parseInt(
+                ((String) xpath.evaluate("./dns:DebugLevel/text()", node, XPathConstants.STRING)).strip()
+        );
+        setAutoflush(
+                Boolean.parseBoolean((String) xpath.evaluate("./dns:TraceLogger/dns:AutoFlush/text()", node, XPathConstants.STRING))
+        );
+        setBufferSize(
+                Integer.parseInt(
+                        ((String) xpath.evaluate("./dns:TraceLogger/dns:BufSize/text()", node, XPathConstants.STRING)).strip()
+                )
+        );
     }
 
     /**

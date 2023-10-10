@@ -1,6 +1,7 @@
 package de.christofreichardt.diagnosis;
 
 import de.christofreichardt.diagnosis.file.FileTracer;
+import de.christofreichardt.diagnosis.file.QueueFileTracer;
 import de.christofreichardt.diagnosis.net.NetTracer;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -214,8 +215,7 @@ public class TracerFactoryUnit5 implements WithAssertions {
                 for (String tracerName : tracerNames) {
                     assertThat(TracerFactory.getInstance().getTracer(tracerName).isOpened()).isTrue();
                 }
-            }
-            finally {
+            } finally {
                 TracerFactory.getInstance().closePoolTracer();
             }
             assertThat(future.get(TIME_OUT, TimeUnit.SECONDS)).isTrue();
@@ -226,8 +226,7 @@ public class TracerFactoryUnit5 implements WithAssertions {
             for (String tracerName : tracerNames) {
                 assertThat(TracerFactory.getInstance().getTracer(tracerName).isOpened()).isFalse();
             }
-        }
-        finally {
+        } finally {
             executorService.shutdown();
         }
     }
@@ -245,14 +244,13 @@ public class TracerFactoryUnit5 implements WithAssertions {
             simpleDummy.method_0();
             tracer.initCurrentTracingContext();
             simpleDummy.method_1();
-        }
-        finally {
+        } finally {
             tracer.close();
         }
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "DisabledQueueTraceConfig_1.xml", "DisabledQueueTraceConfig_2.xml"})
+    @ValueSource(strings = {"DisabledQueueTraceConfig_1.xml", "DisabledQueueTraceConfig_2.xml"})
     void disabledQueueTraceConfig(String fileName) throws IOException, TracerFactory.Exception {
         this.bannerPrinter.start("disabledQueueTraceConfig", getClass());
         System.out.printf("fileName = %s%n", fileName);
@@ -283,7 +281,7 @@ public class TracerFactoryUnit5 implements WithAssertions {
             @Override
             public Boolean call() {
                 final int ITERATIONS = 100;
-                for (int i=0; i<ITERATIONS; i++) {
+                for (int i = 0; i < ITERATIONS; i++) {
                     TracerFactory.getInstance().takeTracer();
                 }
                 return true;
@@ -292,7 +290,7 @@ public class TracerFactoryUnit5 implements WithAssertions {
         final int THREADS = 5;
         List<Future<Boolean>> results = new ArrayList<>();
         ExecutorService executorService = Executors.newFixedThreadPool(THREADS);
-        for (int i=0; i<THREADS; i++) {
+        for (int i = 0; i < THREADS; i++) {
             results.add(executorService.submit(new Consumer()));
         }
         assertThat(results.stream().allMatch(result -> {
@@ -302,5 +300,142 @@ public class TracerFactoryUnit5 implements WithAssertions {
                 throw new RuntimeException(ex);
             }
         })).isTrue();
+    }
+
+    @Test
+    void propertyExpressions() throws IOException, TracerFactory.Exception {
+        this.bannerPrinter.start("propertyExpressions", getClass());
+
+        try {
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.LogDir");
+            System.setProperty("de.christofreichardt.diagnosis.LogDir", "./log/examples");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.AutoFlush.1");
+            System.setProperty("de.christofreichardt.diagnosis.AutoFlush.1", "false");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.AutoFlush.2");
+            System.setProperty("de.christofreichardt.diagnosis.AutoFlush.2", "true");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.BufSize.1");
+            System.setProperty("de.christofreichardt.diagnosis.BufSize.1", "1024");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.BufSize.2");
+            System.setProperty("de.christofreichardt.diagnosis.BufSize.2", "2048");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.Limit");
+            System.setProperty("de.christofreichardt.diagnosis.Limit", "1048576");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.Online");
+            System.setProperty("de.christofreichardt.diagnosis.Online", "false");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.DebugLevel");
+            System.setProperty("de.christofreichardt.diagnosis.DebugLevel", "3");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.Port");
+            System.setProperty("de.christofreichardt.diagnosis.Port", "1234");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.Host");
+            System.setProperty("de.christofreichardt.diagnosis.Host", "github.com");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.queue.Enabled");
+            System.setProperty("de.christofreichardt.diagnosis.queue.Enabled", "true");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.queue.Size");
+            System.setProperty("de.christofreichardt.diagnosis.queue.Size", "5");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.queue.tracer.Online");
+            System.setProperty("de.christofreichardt.diagnosis.queue.tracer.Online", "false");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.queue.tracer.DebugLevel");
+            System.setProperty("de.christofreichardt.diagnosis.queue.tracer.DebugLevel", "3");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.queue.tracer.LogDir");
+            System.setProperty("de.christofreichardt.diagnosis.queue.tracer.LogDir", "./log/queue");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.queue.tracer.AutoFlush");
+            System.setProperty("de.christofreichardt.diagnosis.queue.tracer.AutoFlush", "false");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.queue.tracer.BufSize");
+            System.setProperty("de.christofreichardt.diagnosis.queue.tracer.BufSize", "4096");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.tracer.1.name");
+            System.setProperty("de.christofreichardt.diagnosis.tracer.1.name", "FileTracer");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.tracer.2.name");
+            System.setProperty("de.christofreichardt.diagnosis.tracer.2.name", "NetTracer");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.tracer.1.class");
+            System.setProperty("de.christofreichardt.diagnosis.tracer.1.class", "de.christofreichardt.diagnosis.file.FileTracer");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.tracer.2.class");
+            System.setProperty("de.christofreichardt.diagnosis.tracer.2.class", "de.christofreichardt.diagnosis.net.NetTracer");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.tracer.1.context.thread.name");
+            System.setProperty("de.christofreichardt.diagnosis.tracer.1.context.thread.name", "worker");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.defaulttracer.class");
+            System.setProperty("de.christofreichardt.diagnosis.defaulttracer.class", "de.christofreichardt.diagnosis.LogbackRouter");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.queue.tracer.name");
+            System.setProperty("de.christofreichardt.diagnosis.queue.tracer.name", "QueueTracer-");
+
+            assertThat(System.getProperties()).doesNotContainKey("de.christofreichardt.diagnosis.queue.tracer.class");
+            System.setProperty("de.christofreichardt.diagnosis.queue.tracer.class", "de.christofreichardt.diagnosis.file.QueueFileTracer");
+
+            Path config = Path.of(".", "config", "TraceConfigWithProperties.xml");
+            TracerFactory.getInstance().readConfiguration(config.toFile());
+
+            FileTracer fileTracer = (FileTracer) TracerFactory.getInstance().getTracer("FileTracer");
+            assertThat(fileTracer.getByteLimit()).isEqualTo(1048576);
+            assertThat(fileTracer.getLogDirPath()).isEqualTo(Path.of(".", "log", "examples"));
+            assertThat(fileTracer.isAutoflush()).isEqualTo(false);
+            assertThat(fileTracer.getBufferSize()).isEqualTo(1024);
+            assertThat(fileTracer.isOnline("worker")).isFalse();
+            assertThat(fileTracer.getLevel("worker")).isEqualTo(3);
+
+            NetTracer netTracer = (NetTracer) TracerFactory.getInstance().getTracer("NetTracer");
+            assertThat(netTracer.getPortNo()).isEqualTo(1234);
+            assertThat(netTracer.getHostName()).isEqualTo("github.com");
+            assertThat(netTracer.isAutoflush()).isTrue();
+            assertThat(netTracer.getBufferSize()).isEqualTo(2048);
+
+            assertThat(TracerFactory.getInstance().isQueueEnabled()).isTrue();
+            assertThat(TracerFactory.getInstance().getQueueSize()).isEqualTo(5);
+            QueueTracer<? extends AbstractTracer> queueTracer = TracerFactory.getInstance().takeTracer();
+            assertThat(queueTracer.isOnline()).isFalse();
+            assertThat(queueTracer.getLevel()).isEqualTo(3);
+            assertThat(queueTracer).isInstanceOf(QueueFileTracer.class);
+            assertThat(queueTracer.getName()).isEqualTo("QueueTracer-0");
+            QueueFileTracer queueFileTracer = (QueueFileTracer) queueTracer;
+            assertThat(queueFileTracer.getLogDirPath()).isEqualTo(Path.of(".", "log", "queue"));
+            assertThat(queueTracer.isAutoflush()).isFalse();
+            assertThat(queueTracer.getBufferSize()).isEqualTo(4096);
+
+            assertThat(TracerFactory.getInstance().getDefaultTracer()).isInstanceOf(LogbackRouter.class);
+        } finally {
+            System.clearProperty("de.christofreichardt.diagnosis.LogDir");
+            System.clearProperty("de.christofreichardt.diagnosis.AutoFlush.1");
+            System.clearProperty("de.christofreichardt.diagnosis.BufSize.1");
+            System.clearProperty("de.christofreichardt.diagnosis.BufSize.2");
+            System.clearProperty("de.christofreichardt.diagnosis.Limit");
+            System.clearProperty("de.christofreichardt.diagnosis.Online");
+            System.clearProperty("de.christofreichardt.diagnosis.DebugLevel");
+            System.clearProperty("de.christofreichardt.diagnosis.Port");
+            System.clearProperty("de.christofreichardt.diagnosis.Host");
+            System.clearProperty("de.christofreichardt.diagnosis.queue.Enabled");
+            System.clearProperty("de.christofreichardt.diagnosis.queue.Size");
+            System.clearProperty("de.christofreichardt.diagnosis.queue.tracer.Online");
+            System.clearProperty("de.christofreichardt.diagnosis.queue.tracer.DebugLevel");
+            System.clearProperty("de.christofreichardt.diagnosis.queue.tracer.LogDir");
+            System.clearProperty("de.christofreichardt.diagnosis.queue.tracer.AutoFlush");
+            System.clearProperty("de.christofreichardt.diagnosis.queue.tracer.BufSize");
+            System.clearProperty("de.christofreichardt.diagnosis.tracer.1.name");
+            System.clearProperty("de.christofreichardt.diagnosis.tracer.2.name");
+            System.clearProperty("de.christofreichardt.diagnosis.tracer.1.class");
+            System.clearProperty("de.christofreichardt.diagnosis.tracer.2.class");
+            System.clearProperty("de.christofreichardt.diagnosis.tracer.1.context.thread.name");
+            System.clearProperty("de.christofreichardt.diagnosis.defaulttracer.class");
+            System.clearProperty("de.christofreichardt.diagnosis.queue.tracer.name");
+        }
     }
 }

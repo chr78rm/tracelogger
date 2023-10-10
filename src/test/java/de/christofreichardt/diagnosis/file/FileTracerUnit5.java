@@ -93,7 +93,7 @@ public class FileTracerUnit5 implements WithAssertions {
     }
 
     @Test
-    void logFileRolling() throws IOException {
+    void logFileRolling() throws IOException { // TODO: occasionally fails (perhaps due to file system quirks on windows)
         this.bannerPrinter.start("logFileRolling", getClass());
 
         final String TRACER_NAME = "Test";

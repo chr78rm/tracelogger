@@ -8,6 +8,7 @@ package de.christofreichardt.diagnosis.file;
 
 import de.christofreichardt.diagnosis.QueueTracer;
 import java.io.File;
+import java.nio.file.Path;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -24,10 +25,14 @@ public class QueueFileTracer extends QueueTracer<FileTracer> {
     super(name, new FileTracer(name));
   }
 
+  public Path getLogDirPath() {
+    return super.tracer.getLogDirPath();
+  }
+
   @Override
   protected void readConfiguration(XPath xpath, Node node) throws XPathExpressionException, QueueFileTracer.Exception {
     super.readConfiguration(xpath, node);
-    File logDir = new File(substitute((String) xpath.evaluate("./dns:TraceLogger/dns:LogDir/text()", node, XPathConstants.STRING)));
+    File logDir = new File((String) xpath.evaluate("./dns:TraceLogger/dns:LogDir/text()", node, XPathConstants.STRING));
     super.tracer.setLogDirPath(logDir.toPath());
   }
 

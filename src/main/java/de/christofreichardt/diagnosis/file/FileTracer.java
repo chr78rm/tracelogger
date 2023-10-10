@@ -158,7 +158,7 @@ public class FileTracer extends AbstractTracer {
     protected void readConfiguration(XPath xpath, Node node) throws XPathExpressionException, FileTracer.Exception {
         super.readConfiguration(xpath, node);
 
-        File logDir = new File(substitute((String) xpath.evaluate("./dns:LogDir/text()", node, XPathConstants.STRING)));
+        File logDir = new File((String) xpath.evaluate("./dns:LogDir/text()", node, XPathConstants.STRING));
         if (!logDir.isDirectory()) {
             throw new FileTracer.Exception("Invalid path to directory configured for tracer: " + super.getName());
         }

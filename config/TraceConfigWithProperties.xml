@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+    Document   : TraceConfig.xml
+    Author     : chr
+-->
+
+<TraceConfig xmlns="http://www.christofreichardt.de/java/tracer">
+  <Pool>
+    <TraceLogger name="${de.christofreichardt.diagnosis.tracer.1.name}" class="${de.christofreichardt.diagnosis.tracer.1.class}">
+      <LogDir>${de.christofreichardt.diagnosis.LogDir}</LogDir>
+      <AutoFlush>
+        ${de.christofreichardt.diagnosis.AutoFlush.1}
+      </AutoFlush>
+      <BufSize>${de.christofreichardt.diagnosis.BufSize.1}</BufSize>
+      <Limit>${de.christofreichardt.diagnosis.Limit}</Limit>
+      <Context>
+        <Thread name="main">
+          <Online>true</Online>
+          <DebugLevel>5</DebugLevel>
+        </Thread>
+        <Thread name="${de.christofreichardt.diagnosis.tracer.1.context.thread.name}">
+          <Online>${de.christofreichardt.diagnosis.Online}</Online>
+          <DebugLevel>${de.christofreichardt.diagnosis.DebugLevel}</DebugLevel>
+        </Thread>
+      </Context>
+    </TraceLogger>
+    <TraceLogger name="${de.christofreichardt.diagnosis.tracer.2.name}" class="${de.christofreichardt.diagnosis.tracer.2.class}">
+      <Listener>
+        <Port>${de.christofreichardt.diagnosis.Port}</Port>
+        <Host>${de.christofreichardt.diagnosis.Host}</Host>
+      </Listener>
+      <AutoFlush>${de.christofreichardt.diagnosis.AutoFlush.2}</AutoFlush>
+      <BufSize>${de.christofreichardt.diagnosis.BufSize.2}</BufSize>
+      <Context>
+        <Thread name="TestThread-2">
+          <Online>true</Online>
+          <DebugLevel>5</DebugLevel>
+        </Thread>
+      </Context>
+    </TraceLogger>
+  </Pool>
+  <DefaultTracer class="${de.christofreichardt.diagnosis.defaulttracer.class}"/>
+  <Queue>
+    <Enabled>
+      ${de.christofreichardt.diagnosis.queue.Enabled}
+    </Enabled>
+    <Size>
+      ${de.christofreichardt.diagnosis.queue.Size}
+    </Size>
+    <TraceLogger name="${de.christofreichardt.diagnosis.queue.tracer.name}" class="${de.christofreichardt.diagnosis.queue.tracer.class}">
+      <LogDir>${de.christofreichardt.diagnosis.queue.tracer.LogDir}</LogDir>
+      <AutoFlush>
+        ${de.christofreichardt.diagnosis.queue.tracer.AutoFlush}
+      </AutoFlush>
+      <BufSize>
+        ${de.christofreichardt.diagnosis.queue.tracer.BufSize}
+      </BufSize>
+    </TraceLogger>
+    <Online>
+      ${de.christofreichardt.diagnosis.queue.tracer.Online}
+    </Online>
+    <DebugLevel>
+      ${de.christofreichardt.diagnosis.queue.tracer.DebugLevel}
+    </DebugLevel>
+  </Queue>
+</TraceConfig>
