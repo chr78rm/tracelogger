@@ -213,7 +213,7 @@ public class FileTracerUnit5 implements WithAssertions {
 
         Path traceLogPath = Path.of(".", "log", String.format("%s.log", TRACERNAME));
         assertThat(traceLogPath).exists();
-        Pattern pattern = Pattern.compile("void Dummy\\[[0-9]+\\]\\.method_[123]\\(\\)");
+        Pattern pattern = Pattern.compile("void Dummy\\[[0-9]+]\\.method_[123]\\(\\)");
         try (LineNumberReader lineNumberReader = new LineNumberReader(new FileReader(traceLogPath.toFile()))) {
             String line;
             while ((line = lineNumberReader.readLine()) != null) {
@@ -255,4 +255,5 @@ public class FileTracerUnit5 implements WithAssertions {
         }
         Path path = Path.of(".", "log", "Example.log");
         assertThat(Files.exists(path) && Files.isRegularFile(path)).isTrue();
-    }}
+    }
+}
