@@ -39,11 +39,6 @@ abstract public class DebugLogTee<T extends AbstractTracer> extends AbstractTrac
   }
 
   @Override
-  final public Object getSyncObject() {
-    return this.tracer.getSyncObject();
-  }
-
-  @Override
   final public int getBufferSize() {
     return this.tracer.getBufferSize();
   }

@@ -47,16 +47,6 @@ abstract public class QueueTracer<T extends AbstractTracer> extends AbstractTrac
     /**
      * Delegates to the corresponding method of the wrapped tracer.
      *
-     * @return the sync object of the wrapped tracer
-     */
-    @Override
-    public Object getSyncObject() {
-        return this.tracer.getSyncObject();
-    }
-
-    /**
-     * Delegates to the corresponding method of the wrapped tracer.
-     *
      * @return the buffer size of the wrapped tracer
      */
     @Override

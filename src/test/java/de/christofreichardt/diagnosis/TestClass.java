@@ -112,16 +112,17 @@ public class TestClass {
         this.tracer.entry("void", this, "performTests()");
 
         try {
-            synchronized (this.tracer.getSyncObject()) {
+            this.tracer.out().lock();
+            try {
                 this.tracer.out().printfIndentln("%s is performing tests ...", Thread.currentThread().getName());
                 this.tracer.out().printfIndentln("%s: this.numberOfLoops = %d", Thread.currentThread().getName(), TestClass.NUMBER_OF_LOOPS);
+            } finally {
+                this.tracer.out().unlock();
             }
 
             for (int i = 0; i < TestClass.NUMBER_OF_LOOPS; i++) {
                 try {
-                    synchronized (this.tracer.getSyncObject()) {
-                        this.tracer.out().printfIndentln("%s: i = %d", Thread.currentThread().getName(), i);
-                    }
+                    this.tracer.out().printfIndentlnWithLock("%s: i = %d", Thread.currentThread().getName(), i);
 
                     firstTestMethod(i);
                 } catch (java.lang.Exception ex) {
@@ -139,12 +140,10 @@ public class TestClass {
         this.tracer.entry("void", this, "firstTestMethod(int i)");
 
         try {
-            synchronized (this.tracer.getSyncObject()) {
-                this.tracer.out().printfIndentln("%s is within first test method.", Thread.currentThread().getName());
-            }
+            this.tracer.out().printfIndentlnWithLock("%s is within first test method.", Thread.currentThread().getName());
 
             secondTestMethod(i);
-            thirdTestMethod(i);
+            thirdTestMethod(i, false);
         } finally {
             this.tracer.wayout();
         }
@@ -156,11 +155,9 @@ public class TestClass {
         }
 
         try {
-            synchronized (this.tracer.getSyncObject()) {
-                this.tracer.out().printfIndentln("%s is within second test method.", Thread.currentThread().getName());
-            }
+            this.tracer.out().runWithLock(() -> this.tracer.out().printfIndentln("%s is within second test method.", Thread.currentThread().getName()));
 
-            thirdTestMethod(i);
+            thirdTestMethod(i, true);
             if (this.staticCall) {
                 staticCall(i, this.tracer);
             }
@@ -171,17 +168,28 @@ public class TestClass {
         }
     }
 
-    private void thirdTestMethod(int i) throws java.lang.Exception {
+    private void thirdTestMethod(int i, boolean flag) throws java.lang.Exception {
         this.tracer.entry("void", this, "thirdTestMethod(int i)");
 
         try {
-            synchronized (this.tracer.getSyncObject()) {
-                this.tracer.out().printfIndentln("%s is within third test method.", Thread.currentThread().getName());
-            }
+            this.tracer.out().printfIndentlnWithLock("%s is within third test method.", Thread.currentThread().getName());
 
-            if (i % 10 == 0) {
-                throw new java.lang.Exception("Eine Exception zu Testzwecken.");
+            if (flag) {
+                fourthTestMethod(i);
             }
+            if (i % 10 == 0) {
+                throw new java.lang.Exception(String.format("%d: Eine Exception zu Testzwecken.", i));
+            }
+        } finally {
+            this.tracer.wayout();
+        }
+    }
+
+    private void fourthTestMethod(int i) {
+        this.tracer.entry("void", this, "fourthTestMethod(int i)");
+
+        try {
+            this.tracer.out().printfIndentlnWithLock("%s is within fourth test method.", Thread.currentThread().getName());
         } finally {
             this.tracer.wayout();
         }
@@ -191,9 +199,7 @@ public class TestClass {
         tracer.entry("void", TestClass.class, "staticCall(int i, AbstractTracer tracer)");
 
         try {
-            synchronized (tracer.getSyncObject()) {
-                tracer.out().printfIndentln("%s is within the static call.", Thread.currentThread().getName());
-            }
+            tracer.out().printfIndentlnWithLock("%s is within the static call.", Thread.currentThread().getName());
         } finally {
             tracer.wayout();
         }

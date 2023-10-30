@@ -5,8 +5,10 @@ package de.christofreichardt.diagnosis.io;
 
 import de.christofreichardt.diagnosis.AbstractThreadMap;
 import de.christofreichardt.diagnosis.ThreadLocalMap;
-import java.io.OutputStream;
+import de.christofreichardt.diagnosis.file.FileTracer;
+import java.io.BufferedOutputStream;
 import java.util.Arrays;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * This is the main implementation of an indentable PrintStream. This stream uses a thread map to retrieve the current stack size
@@ -22,6 +24,24 @@ public class TracePrintStream extends IndentablePrintStream {
     public final static int INDENT_CHAR_NUMBER = 2;
     /** string array that contains the indent strings */
     final protected static String[] INDENT_STRING;
+
+    protected ReentrantLock lock = new ReentrantLock();
+
+    public class LockAccess {
+        private LockAccess() {
+        }
+
+        public ReentrantLock getLock() {
+            return TracePrintStream.this.lock;
+        }
+        public void setLock(ReentrantLock lock) {
+            TracePrintStream.this.lock = lock;
+        }
+    }
+
+    public void grantLockAccess(FileTracer fileTracer) {
+        fileTracer.requestLockAccess(new LockAccess());
+    }
 
     static {
         INDENT_STRING = new String[MAX_INDENT_NUMBER];
@@ -43,6 +63,11 @@ public class TracePrintStream extends IndentablePrintStream {
         this.threadMap = new ThreadLocalMap();
     }
 
+    public TracePrintStream(AbstractThreadMap threadMap) {
+        super(new NullOutputStream());
+        this.threadMap = threadMap;
+    }
+
     /**
      * Creates a new instance of TracePrintStream by passing the given OutputStream to the underlying PrintStream.
      * The threadMap will be needed to determine the current stack size and hence the indentation level.
@@ -50,7 +75,7 @@ public class TracePrintStream extends IndentablePrintStream {
      * @param out       the underlying OutputStream
      * @param threadMap to compute the indentation level
      */
-    public TracePrintStream(OutputStream out, AbstractThreadMap threadMap) {
+    public TracePrintStream(BufferedOutputStream out, AbstractThreadMap threadMap) {
         super(out);
         this.threadMap = threadMap;
     }
@@ -87,7 +112,7 @@ public class TracePrintStream extends IndentablePrintStream {
     }
 
     @Override
-    public Indentable printfIndentln(String format, Object... args) {
+    public IndentablePrintStream printfIndentln(String format, Object... args) {
         printIndentString();
         printf(format, args);
         println();
@@ -95,4 +120,35 @@ public class TracePrintStream extends IndentablePrintStream {
         return this;
     }
 
+    @Override
+    public IndentablePrintStream printfIndentlnWithLock(String format, Object... args) {
+        lock();
+        try {
+            printfIndentln(format, args);
+
+            return this;
+        } finally {
+            unlock();
+        }
+    }
+
+    @Override
+    public void lock() {
+        this.lock.lock();
+    }
+
+    @Override
+    public void unlock() {
+        this.lock.unlock();
+    }
+
+    @Override
+    public void runWithLock(Runnable runnable) {
+        lock();
+        try {
+            runnable.run();
+        } finally {
+            unlock();
+        }
+    }
 }

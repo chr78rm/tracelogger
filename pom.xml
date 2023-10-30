@@ -61,6 +61,7 @@
                         <include>**/Log4j2RouterUnit5.java</include>
                         <include>**/PerformanceUnit5.java</include>
                         <include>**/PropertyExpressionUnit5.java</include>
+                        <include>**/LockUnit5.java</include>
                     </includes>
                 </configuration>
             </plugin>

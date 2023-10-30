@@ -37,5 +37,13 @@ public abstract class IndentablePrintStream extends PrintStream implements Inden
     abstract public IndentablePrintStream printIndentString();
 
     @Override
-    abstract public Indentable printfIndentln(String format, Object... args);
+    abstract public IndentablePrintStream printfIndentln(String format, Object... args);
+
+    abstract public IndentablePrintStream printfIndentlnWithLock(String format, Object... args);
+
+    abstract public void lock();
+
+    abstract public void unlock();
+
+    abstract public void runWithLock(Runnable runnable);
 }

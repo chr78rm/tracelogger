@@ -6,10 +6,7 @@
 
 package de.christofreichardt.diagnosis;
 
-import de.christofreichardt.diagnosis.io.IndentablePrintStream;
-import de.christofreichardt.diagnosis.io.NullOutputStream;
-import de.christofreichardt.diagnosis.io.NullPrintStream;
-import de.christofreichardt.diagnosis.io.TracePrintStream;
+import de.christofreichardt.diagnosis.io.*;
 import java.io.BufferedOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,8 +15,6 @@ import java.util.Formatter;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -43,7 +38,7 @@ import org.w3c.dom.NodeList;
  * </p>
  * <p>
  * It's possible for a tracer to manage a stack for more than one thread. Then it's the responsibility of the
- * client to synchronize access to the output stream with {@link #getSyncObject()}. However it is recommended
+ * client to synchronize access to the output stream. However it is recommended
  * to use another tracer for each thread.
  * </p>
  * <p>
@@ -146,9 +141,6 @@ abstract public class AbstractTracer {
     /** provides access to configured tracing context information */
     final private Map<String, DebugConfig> debugConfigMap = new ConcurrentHashMap<>();
 
-    /** used to synchronize access to the TracePrintStream */
-    final private Object syncObject = new Object();
-
     /**
      * Constructor expects a name for the tracer, preferably unique.
      *
@@ -160,7 +152,7 @@ abstract public class AbstractTracer {
         }
         this.name = name;
         this.nullPrintStream = new NullPrintStream();
-        this.tracePrintStream = new TracePrintStream(new NullOutputStream(), this.threadMap);
+        this.tracePrintStream = new TracePrintStream(this.threadMap);
     }
 
     /**
@@ -245,16 +237,6 @@ abstract public class AbstractTracer {
         } else {
             throw new IllegalArgumentException(String.format("No such Thread[name=%s] configured.", threadName));
         }
-    }
-
-    /**
-     * Synchronizes access to the {@link TracePrintStream}. Clients with multiple {@link TracingContext}s should  use it to synchronize their access to
-     * {@link #out()}.
-     *
-     * @return the syncObject
-     */
-    public Object getSyncObject() {
-        return syncObject;
     }
 
     /**
@@ -407,9 +389,7 @@ abstract public class AbstractTracer {
      */
     @Deprecated
     public TraceMethod entry(String methodSignature) {
-        synchronized (this.syncObject) {
-            out().printIndentln("ENTRY--" + methodSignature + "--" + Thread.currentThread().getName() + "[" + Thread.currentThread().getId() + "]");
-        }
+        out().printfIndentlnWithLock("ENTRY--" + methodSignature + "--" + Thread.currentThread().getName() + "[" + Thread.currentThread().getId() + "]");
 
         TraceMethod traceMethod = null;
         try {
@@ -430,9 +410,7 @@ abstract public class AbstractTracer {
      * @param methodSignature the method signature to be printed
      */
     private void printMethodEntry(String methodSignature) {
-        synchronized (this.syncObject) {
-            out().printIndentln("ENTRY--" + methodSignature + "--" + Thread.currentThread().getName() + "[" + Thread.currentThread().getId() + "]");
-        }
+        out().printfIndentlnWithLock("ENTRY--" + methodSignature + "--" + Thread.currentThread().getName() + "[" + Thread.currentThread().getId() + "]");
     }
 
     /**
@@ -512,11 +490,14 @@ abstract public class AbstractTracer {
         try {
             traceMethod = this.threadMap.pop();
             if (traceMethod != null) {
-                synchronized (this.syncObject) {
+                out().lock();
+                try {
                     out().printIndentln("RETURN-" + traceMethod.getSignature() + "--(+" + traceMethod.getElapsedTime() + "ms)--" + "(+" + traceMethod.getElapsedCpuTime() + "ms)--" + Thread.currentThread().getName() + "[" + Thread.currentThread().getId() + "]");
                     if (this.autoflush) {
                         out().flush();
                     }
+                } finally {
+                    out().unlock();
                 }
             }
         } catch (AbstractThreadMap.RuntimeException ex) {
@@ -541,11 +522,14 @@ abstract public class AbstractTracer {
         border[0] = '+';
         border[border.length - 1] = '+';
 
-        synchronized (this.syncObject) {
+        this.tracePrintStream.lock();
+        try {
             this.tracePrintStream.println(border);
             this.tracePrintStream.printf("| %s |  [%s] [%d,%s] [%s] [%s] \"%s\"%n", logLevel, timeStamp, Thread.currentThread().getId(),
                     Thread.currentThread().getName(), clazz.getName(), methodName, message);
             this.tracePrintStream.println(border);
+        } finally {
+            this.tracePrintStream.unlock();
         }
     }
 
@@ -572,12 +556,15 @@ abstract public class AbstractTracer {
             message = "No message.";
         }
 
-        synchronized (this.syncObject) {
+        this.tracePrintStream.lock();
+        try {
             this.tracePrintStream.println(border);
             this.tracePrintStream.printf("| %s |  [%s] [%d,%s] [%s] [%s] \"%s\"%n", logLevel, timeStamp, Thread.currentThread().getId(),
                     Thread.currentThread().getName(), clazz.getName(), methodName, message);
             this.tracePrintStream.println(border);
             throwable.printStackTrace(this.tracePrintStream);
+        } finally {
+            this.tracePrintStream.unlock();
         }
     }
 

@@ -7,6 +7,7 @@ import de.christofreichardt.diagnosis.net.NetTracer;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.io.UncheckedIOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.Charset;
@@ -16,7 +17,9 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.*;
 
@@ -45,6 +48,51 @@ public class LoadUnit5 implements WithAssertions {
     static class Log implements WithAssertions {
         final List<String> lines;
 
+        final Pattern[] firstMethodPatterns = {
+                Pattern.compile("( ){4}ENTRY--void TestClass\\[[0-9]+].firstTestMethod\\(int i\\)--main\\[[0-9]+]"),
+                Pattern.compile("( ){4}ENTRY--void TestClass\\[[0-9]+].firstTestMethod\\(int i\\)--TestThread-0\\[[0-9]+]"),
+                Pattern.compile("( ){4}ENTRY--void TestClass\\[[0-9]+].firstTestMethod\\(int i\\)--TestThread-1\\[[0-9]+]"),
+                Pattern.compile("( ){4}RETURN-void TestClass\\[[0-9]+].firstTestMethod\\(int i\\)--\\(\\+[0-9]+ms\\)--\\(\\+[0-9]+ms\\)--main\\[[0-9]+]"),
+                Pattern.compile("( ){4}RETURN-void TestClass\\[[0-9]+].firstTestMethod\\(int i\\)--\\(\\+[0-9]+ms\\)--\\(\\+[0-9]+ms\\)--TestThread-0\\[[0-9]+]"),
+                Pattern.compile("( ){4}RETURN-void TestClass\\[[0-9]+].firstTestMethod\\(int i\\)--\\(\\+[0-9]+ms\\)--\\(\\+[0-9]+ms\\)--TestThread-1\\[[0-9]+]")
+        };
+
+        final Pattern[] secondMethodPatterns = {
+                Pattern.compile("( ){6}ENTRY--void TestClass\\[[0-9]+].secondTestMethod\\(int i\\)--main\\[[0-9]+]"),
+                Pattern.compile("( ){6}ENTRY--void TestClass\\[[0-9]+].secondTestMethod\\(int i\\)--TestThread-0\\[[0-9]+]"),
+                Pattern.compile("( ){6}ENTRY--void TestClass\\[[0-9]+].secondTestMethod\\(int i\\)--TestThread-1\\[[0-9]+]"),
+                Pattern.compile("( ){6}RETURN-void TestClass\\[[0-9]+].secondTestMethod\\(int i\\)--\\(\\+[0-9]+ms\\)--\\(\\+[0-9]+ms\\)--main\\[[0-9]+]"),
+                Pattern.compile("( ){6}RETURN-void TestClass\\[[0-9]+].secondTestMethod\\(int i\\)--\\(\\+[0-9]+ms\\)--\\(\\+[0-9]+ms\\)--TestThread-0\\[[0-9]+]"),
+                Pattern.compile("( ){6}RETURN-void TestClass\\[[0-9]+].secondTestMethod\\(int i\\)--\\(\\+[0-9]+ms\\)--\\(\\+[0-9]+ms\\)--TestThread-1\\[[0-9]+]")
+        };
+
+        final Pattern[] thirdMethodPatterns_1 = {
+                Pattern.compile("( ){6}ENTRY--void TestClass\\[[0-9]+].thirdTestMethod\\(int i\\)--main\\[[0-9]+]"),
+                Pattern.compile("( ){6}ENTRY--void TestClass\\[[0-9]+].thirdTestMethod\\(int i\\)--TestThread-0\\[[0-9]+]"),
+                Pattern.compile("( ){6}ENTRY--void TestClass\\[[0-9]+].thirdTestMethod\\(int i\\)--TestThread-1\\[[0-9]+]"),
+                Pattern.compile("( ){6}RETURN-void TestClass\\[[0-9]+].thirdTestMethod\\(int i\\)--\\(\\+[0-9]+ms\\)--\\(\\+[0-9]+ms\\)--main\\[[0-9]+]"),
+                Pattern.compile("( ){6}RETURN-void TestClass\\[[0-9]+].thirdTestMethod\\(int i\\)--\\(\\+[0-9]+ms\\)--\\(\\+[0-9]+ms\\)--TestThread-0\\[[0-9]+]"),
+                Pattern.compile("( ){6}RETURN-void TestClass\\[[0-9]+].thirdTestMethod\\(int i\\)--\\(\\+[0-9]+ms\\)--\\(\\+[0-9]+ms\\)--TestThread-1\\[[0-9]+]")
+        };
+
+        final Pattern[] thirdMethodPatterns_2 = {
+                Pattern.compile("( ){8}ENTRY--void TestClass\\[[0-9]+].thirdTestMethod\\(int i\\)--main\\[[0-9]+]"),
+                Pattern.compile("( ){8}ENTRY--void TestClass\\[[0-9]+].thirdTestMethod\\(int i\\)--TestThread-0\\[[0-9]+]"),
+                Pattern.compile("( ){8}ENTRY--void TestClass\\[[0-9]+].thirdTestMethod\\(int i\\)--TestThread-1\\[[0-9]+]"),
+                Pattern.compile("( ){8}RETURN-void TestClass\\[[0-9]+].thirdTestMethod\\(int i\\)--\\(\\+[0-9]+ms\\)--\\(\\+[0-9]+ms\\)--main\\[[0-9]+]"),
+                Pattern.compile("( ){8}RETURN-void TestClass\\[[0-9]+].thirdTestMethod\\(int i\\)--\\(\\+[0-9]+ms\\)--\\(\\+[0-9]+ms\\)--TestThread-0\\[[0-9]+]"),
+                Pattern.compile("( ){8}RETURN-void TestClass\\[[0-9]+].thirdTestMethod\\(int i\\)--\\(\\+[0-9]+ms\\)--\\(\\+[0-9]+ms\\)--TestThread-1\\[[0-9]+]")
+        };
+
+        final Pattern[] fourthMethodPatterns = {
+                Pattern.compile("( ){10}ENTRY--void TestClass\\[[0-9]+].fourthTestMethod\\(int i\\)--main\\[[0-9]+]"),
+                Pattern.compile("( ){10}ENTRY--void TestClass\\[[0-9]+].fourthTestMethod\\(int i\\)--TestThread-0\\[[0-9]+]"),
+                Pattern.compile("( ){10}ENTRY--void TestClass\\[[0-9]+].fourthTestMethod\\(int i\\)--TestThread-1\\[[0-9]+]"),
+                Pattern.compile("( ){10}RETURN-void TestClass\\[[0-9]+].fourthTestMethod\\(int i\\)--\\(\\+[0-9]+ms\\)--\\(\\+[0-9]+ms\\)--main\\[[0-9]+]"),
+                Pattern.compile("( ){10}RETURN-void TestClass\\[[0-9]+].fourthTestMethod\\(int i\\)--\\(\\+[0-9]+ms\\)--\\(\\+[0-9]+ms\\)--TestThread-0\\[[0-9]+]"),
+                Pattern.compile("( ){10}RETURN-void TestClass\\[[0-9]+].fourthTestMethod\\(int i\\)--\\(\\+[0-9]+ms\\)--\\(\\+[0-9]+ms\\)--TestThread-1\\[[0-9]+]")
+        };
+
         Log(List<String> lines) {
             this.lines = lines;
         }
@@ -55,7 +103,7 @@ public class LoadUnit5 implements WithAssertions {
                     .collect(Collectors.toList());
             assertThat(
                     warnings.stream()
-                            .filter(warning -> warning.endsWith("\"Eine Exception zu Testzwecken.\""))
+                            .filter(warning -> warning.endsWith("Eine Exception zu Testzwecken.\""))
                             .count()
             ).isEqualTo(300);
             assertThat(
@@ -66,6 +114,121 @@ public class LoadUnit5 implements WithAssertions {
             assertThat(
                     lines.stream()
                             .filter(line -> line.startsWith("| SEVERE |"))
+                            .count()
+            ).isEqualTo(0);
+            for (Pattern methodPattern : this.firstMethodPatterns) {
+                assertThat(
+                        lines.stream()
+                                .filter(line -> methodPattern.matcher(line).matches())
+                                .count()
+                ).isEqualTo(1000);
+            }
+            for (Pattern methodPattern : this.secondMethodPatterns) {
+                assertThat(
+                        lines.stream()
+                                .filter(line -> methodPattern.matcher(line).matches())
+                                .count()
+                ).isEqualTo(1000);
+            }
+            for (Pattern methodPattern : this.thirdMethodPatterns_1) {
+                assertThat(
+                        lines.stream()
+                                .filter(line -> methodPattern.matcher(line).matches())
+                                .count()
+                ).isEqualTo(900);
+            }
+            for (Pattern methodPattern : this.thirdMethodPatterns_2) {
+                assertThat(
+                        lines.stream()
+                                .filter(line -> methodPattern.matcher(line).matches())
+                                .count()
+                ).isEqualTo(1000);
+            }
+            for (Pattern methodPattern : this.fourthMethodPatterns) {
+                assertThat(
+                        lines.stream()
+                                .filter(line -> methodPattern.matcher(line).matches())
+                                .count()
+                ).isEqualTo(1000);
+            }
+            assertThat(
+                    lines.stream()
+                            .filter(line -> line.equals("      TestThread-0 is within first test method."))
+                            .count()
+            ).isEqualTo(1000);
+            assertThat(
+                    lines.stream()
+                            .filter(line -> line.equals("      TestThread-1 is within first test method."))
+                            .count()
+            ).isEqualTo(1000);
+            assertThat(
+                    lines.stream()
+                            .filter(line -> line.equals("      main is within first test method."))
+                            .count()
+            ).isEqualTo(1000);
+            assertThat(
+                    lines.stream()
+                            .filter(line -> line.equals("        TestThread-0 is within second test method."))
+                            .count()
+            ).isEqualTo(1000);
+            assertThat(
+                    lines.stream()
+                            .filter(line -> line.equals("        TestThread-1 is within second test method."))
+                            .count()
+            ).isEqualTo(1000);
+            assertThat(
+                    lines.stream()
+                            .filter(line -> line.equals("        main is within second test method."))
+                            .count()
+            ).isEqualTo(1000);
+            assertThat(
+                    lines.stream()
+                            .filter(line -> line.equals("        TestThread-0 is within second test method."))
+                            .count()
+            ).isEqualTo(1000);
+            assertThat(
+                    lines.stream()
+                            .filter(line -> line.equals("        TestThread-1 is within second test method."))
+                            .count()
+            ).isEqualTo(1000);
+            assertThat(
+                    lines.stream()
+                            .filter(line -> line.equals("        main is within second test method."))
+                            .count()
+            ).isEqualTo(1000);
+            assertThat(
+                    lines.stream()
+                            .filter(line -> line.equals("          TestThread-0 is within third test method."))
+                            .count()
+            ).isEqualTo(1000);
+            assertThat(
+                    lines.stream()
+                            .filter(line -> line.equals("          TestThread-1 is within third test method."))
+                            .count()
+            ).isEqualTo(1000);
+            assertThat(
+                    lines.stream()
+                            .filter(line -> line.equals("          main is within third test method."))
+                            .count()
+            ).isEqualTo(1000);
+            assertThat(
+                    lines.stream()
+                            .filter(line -> line.equals("        main is within third test method."))
+                            .count()
+            ).isEqualTo(900);
+            assertThat(
+                    lines.stream()
+                            .filter(line -> line.equals("        TestThread-0 is within third test method."))
+                            .count()
+            ).isEqualTo(900);
+            assertThat(
+                    lines.stream()
+                            .filter(line -> line.equals("        TestThread-1 is within third test method."))
+                            .count()
+            ).isEqualTo(900);
+            assertThat(
+                    lines.stream()
+                            .filter(line -> line.endsWith("is within fourth test method."))
                             .count()
             ).isEqualTo(0);
         }
@@ -209,6 +372,37 @@ public class LoadUnit5 implements WithAssertions {
         assertThat(enabledThreads).isEmpty();
         assertThat(disabledThreads).contains("main", "TestThread-0", "TestThread-1");
         assertThat(fileTracer.out()).isInstanceOf(NullPrintStream.class);
+    }
+
+    @Test
+    void logFileRolling() throws BrokenBarrierException, InterruptedException, TimeoutException {
+        this.bannerPrinter.start("logFileRolling", getClass());
+
+        FileTracer fileTracer = new FileTracer("Test");
+        fileTracer.setLogDirPath(LOGDIR);
+        fileTracer.setByteLimit(200000L);
+        runScenario(fileTracer, new TestClass(fileTracer));
+        List<String> logFiles = new ArrayList<>(
+                IntStream.range(0, 21)
+                .mapToObj(i -> String.format("Test.%d.log", i))
+                .collect(Collectors.toList())
+        );
+        logFiles.add("Test.log");
+        assertThat(
+                logFiles.stream()
+                        .allMatch(logFile -> Files.exists(LOGDIR.resolve(logFile)))
+        ).isTrue();
+        List<String> lines = logFiles.stream()
+                .flatMap(logFile -> {
+                    try {
+                        return Files.readAllLines(LOGDIR.resolve(logFile), Charset.defaultCharset()).stream();
+                    } catch (IOException e) {
+                        throw new UncheckedIOException(e);
+                    }
+                })
+                .collect(Collectors.toList());
+        Log log = new Log(lines);
+        log.verify();
     }
 
     static class MyThreadFactory implements ThreadFactory {

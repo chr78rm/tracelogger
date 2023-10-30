@@ -17,6 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.locks.ReentrantLock;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -175,11 +176,20 @@ public class FileTracer extends AbstractTracer {
         System.out.println("this.byteLimit = " + this.byteLimit);
     }
 
+    protected TracePrintStream.LockAccess lockAccess;
+
+    public void requestLockAccess(TracePrintStream.LockAccess lockAccess) {
+        this.lockAccess = lockAccess;
+    }
+
     /**
      * Checks if the file size limit has been exceeded and splits the trace file if need be.
      */
     protected void checkLimit() {
-        synchronized (this.getSyncObject()) {
+        this.getTracePrintStream().lock();
+        this.getTracePrintStream().grantLockAccess(this);
+        ReentrantLock reentrantLock = this.lockAccess.getLock();
+        try {
             if (this.byteLimit != -1 && this.traceLogfile != null && this.traceLogfile.length() > this.byteLimit) {
                 close();
 
@@ -193,6 +203,10 @@ public class FileTracer extends AbstractTracer {
 
                 open();
             }
+        } finally {
+            this.getTracePrintStream().grantLockAccess(this);
+            this.lockAccess.setLock(reentrantLock);
+            this.getTracePrintStream().unlock();
         }
     }
 
