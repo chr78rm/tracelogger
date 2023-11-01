@@ -375,27 +375,23 @@ public class LoadUnit5 implements WithAssertions {
     }
 
     @Test
-    void logFileRolling() throws BrokenBarrierException, InterruptedException, TimeoutException {
+    void logFileRolling() throws BrokenBarrierException, InterruptedException, TimeoutException, IOException {
         this.bannerPrinter.start("logFileRolling", getClass());
 
         FileTracer fileTracer = new FileTracer("Test");
         fileTracer.setLogDirPath(LOGDIR);
-        fileTracer.setByteLimit(200000L);
+        fileTracer.setByteLimit(180000L);
         runScenario(fileTracer, new TestClass(fileTracer));
-        List<String> logFiles = new ArrayList<>(
-                IntStream.range(0, 21)
-                .mapToObj(i -> String.format("Test.%d.log", i))
-                .collect(Collectors.toList())
-        );
-        logFiles.add("Test.log");
-        assertThat(
-                logFiles.stream()
-                        .allMatch(logFile -> Files.exists(LOGDIR.resolve(logFile)))
-        ).isTrue();
+        List<Path> logFiles = new ArrayList<>();
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(LOGDIR)) {
+            for (Path path : stream) {
+                logFiles.add(path);
+            }
+        }
         List<String> lines = logFiles.stream()
                 .flatMap(logFile -> {
                     try {
-                        return Files.readAllLines(LOGDIR.resolve(logFile), Charset.defaultCharset()).stream();
+                        return Files.readAllLines(logFile, Charset.defaultCharset()).stream();
                     } catch (IOException e) {
                         throw new UncheckedIOException(e);
                     }

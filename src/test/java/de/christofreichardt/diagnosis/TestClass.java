@@ -122,7 +122,8 @@ public class TestClass {
 
             for (int i = 0; i < TestClass.NUMBER_OF_LOOPS; i++) {
                 try {
-                    this.tracer.out().printfIndentlnWithLock("%s: i = %d", Thread.currentThread().getName(), i);
+                    Integer index = Integer.valueOf(i);
+                    this.tracer.out().runWithLock(() -> this.tracer.out().printfIndentln("%s: i = %d", Thread.currentThread().getName(), index));
 
                     firstTestMethod(i);
                 } catch (java.lang.Exception ex) {
@@ -140,7 +141,7 @@ public class TestClass {
         this.tracer.entry("void", this, "firstTestMethod(int i)");
 
         try {
-            this.tracer.out().printfIndentlnWithLock("%s is within first test method.", Thread.currentThread().getName());
+            this.tracer.out().runWithLock(() -> this.tracer.out().printfIndentln("%s is within first test method.", Thread.currentThread().getName()));
 
             secondTestMethod(i);
             thirdTestMethod(i, false);
@@ -172,7 +173,7 @@ public class TestClass {
         this.tracer.entry("void", this, "thirdTestMethod(int i)");
 
         try {
-            this.tracer.out().printfIndentlnWithLock("%s is within third test method.", Thread.currentThread().getName());
+            this.tracer.out().runWithLock(() -> this.tracer.out().printfIndentln("%s is within third test method.", Thread.currentThread().getName()));
 
             if (flag) {
                 fourthTestMethod(i);
@@ -189,7 +190,7 @@ public class TestClass {
         this.tracer.entry("void", this, "fourthTestMethod(int i)");
 
         try {
-            this.tracer.out().printfIndentlnWithLock("%s is within fourth test method.", Thread.currentThread().getName());
+            this.tracer.out().runWithLock(() -> this.tracer.out().printfIndentln("%s is within fourth test method.", Thread.currentThread().getName()));
         } finally {
             this.tracer.wayout();
         }
@@ -199,7 +200,7 @@ public class TestClass {
         tracer.entry("void", TestClass.class, "staticCall(int i, AbstractTracer tracer)");
 
         try {
-            tracer.out().printfIndentlnWithLock("%s is within the static call.", Thread.currentThread().getName());
+            tracer.out().runWithLock(() -> tracer.out().printfIndentln("%s is within the static call.", Thread.currentThread().getName()));
         } finally {
             tracer.wayout();
         }

@@ -121,18 +121,6 @@ public class TracePrintStream extends IndentablePrintStream {
     }
 
     @Override
-    public IndentablePrintStream printfIndentlnWithLock(String format, Object... args) {
-        lock();
-        try {
-            printfIndentln(format, args);
-
-            return this;
-        } finally {
-            unlock();
-        }
-    }
-
-    @Override
     public void lock() {
         this.lock.lock();
     }

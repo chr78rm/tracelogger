@@ -389,7 +389,7 @@ abstract public class AbstractTracer {
      */
     @Deprecated
     public TraceMethod entry(String methodSignature) {
-        out().printfIndentlnWithLock("ENTRY--" + methodSignature + "--" + Thread.currentThread().getName() + "[" + Thread.currentThread().getId() + "]");
+        out().runWithLock(() -> out().printfIndentln("ENTRY--" + methodSignature + "--" + Thread.currentThread().getName() + "[" + Thread.currentThread().getId() + "]"));
 
         TraceMethod traceMethod = null;
         try {
@@ -410,7 +410,7 @@ abstract public class AbstractTracer {
      * @param methodSignature the method signature to be printed
      */
     private void printMethodEntry(String methodSignature) {
-        out().printfIndentlnWithLock("ENTRY--" + methodSignature + "--" + Thread.currentThread().getName() + "[" + Thread.currentThread().getId() + "]");
+        out().runWithLock(() -> out().printfIndentln("ENTRY--" + methodSignature + "--" + Thread.currentThread().getName() + "[" + Thread.currentThread().getId() + "]"));
     }
 
     /**

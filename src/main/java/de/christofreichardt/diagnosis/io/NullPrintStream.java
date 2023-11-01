@@ -35,11 +35,6 @@ final public class NullPrintStream extends IndentablePrintStream {
     }
 
     @Override
-    public IndentablePrintStream printfIndentlnWithLock(String format, Object... args) {
-        return this;
-    }
-
-    @Override
     public void lock() {
     }
 
