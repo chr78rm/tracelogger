@@ -334,7 +334,7 @@ public class TracerFactory {
      * @throws TracerFactory.Exception indicates a configuration problem
      * @throws IOException             indicates an I/O problem, e.g. a missing configuration file
      */
-    public void readConfiguration(File configFile) throws TracerFactory.Exception, IOException {
+    public void readConfiguration(File configFile) throws TracerFactory.Exception, IOException { // TODO: implement overloaded alternative method which expects a Path
         if (!configFile.exists()) {
             throw new FileNotFoundException(configFile + "doesn't exist.");
         }
