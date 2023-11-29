@@ -1,8 +1,11 @@
 package de.christofreichardt.diagnosis;
 
 import de.christofreichardt.diagnosis.file.FileTracer;
-import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,11 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.assertj.core.api.WithAssertions;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class ExampleUnit5 implements WithAssertions {
+public class ExampleUnit5 {
+
     public static final Path LOGDIR = Path.of(".", "log", "examples");
     final private BannerPrinter bannerPrinter = new BannerPrinter();
 
@@ -59,8 +65,7 @@ public class ExampleUnit5 implements WithAssertions {
                     try {
                         this.tracer.out().printfIndentln("Within bar().");
                         baz();
-                    }
-                    finally {
+                    } finally {
                         this.tracer.wayout();
                     }
                 }
@@ -69,8 +74,7 @@ public class ExampleUnit5 implements WithAssertions {
                     this.tracer.entry("void", this, "baz()");
                     try {
                         this.tracer.out().printfIndentln("Within baz().");
-                    }
-                    finally {
+                    } finally {
                         this.tracer.wayout();
                     }
                 }
@@ -79,16 +83,15 @@ public class ExampleUnit5 implements WithAssertions {
             foo.bar(); // nothing will be printed because no tracing context has been provided
             tracer.initCurrentTracingContext(); // the configured tracing context will be used
             foo.bar(); // this generates output
-        }
-        finally {
+        } finally {
             tracer.close();
         }
 
         Path path = LOGDIR.resolve("ExampleTracer.log");
-        assertThat(Files.exists(path)).isTrue();
-        assertThat(Files.isRegularFile(path)).isTrue();
+        assert Files.exists(path) == true;
+        assert Files.isRegularFile(path) == true;
         List<String> lines = Files.readAllLines(path);
-        assertThat(lines).hasSize(14);
+        assert lines.size() == 14;
     }
 
     @Test
@@ -112,8 +115,7 @@ public class ExampleUnit5 implements WithAssertions {
                     tracer.logMessage(LogLevel.INFO, "Consumer(" + this.id + ")", getClass(), "call()");
                     bar();
                     return this.id;
-                }
-                finally {
+                } finally {
                     tracer.wayout();
                 }
             }
@@ -123,8 +125,7 @@ public class ExampleUnit5 implements WithAssertions {
                 try {
                     getCurrentTracer().out().printfIndentln("Within bar().");
                     baz();
-                }
-                finally {
+                } finally {
                     getCurrentTracer().wayout();
                 }
             }
@@ -133,8 +134,7 @@ public class ExampleUnit5 implements WithAssertions {
                 getCurrentTracer().entry("void", this, "baz()");
                 try {
                     getCurrentTracer().out().printfIndentln("Within baz().");
-                }
-                finally {
+                } finally {
                     getCurrentTracer().wayout();
                 }
             }
@@ -170,17 +170,14 @@ public class ExampleUnit5 implements WithAssertions {
                         assert future.get() == i;
                         i++;
                     }
-                }
-                catch (ExecutionException ex) {
+                } catch (ExecutionException ex) {
                     ex.getCause().printStackTrace(System.err);
                 }
-            }
-            finally {
+            } finally {
                 executorService.shutdown();
                 assert executorService.awaitTermination(TIMEOUT, TimeUnit.SECONDS);
             }
-        }
-        finally {
+        } finally {
             TracerFactory.getInstance().closePoolTracer();
         }
     }
@@ -199,8 +196,7 @@ public class ExampleUnit5 implements WithAssertions {
                     tracer.entry("void", this, "bar()");
                     try {
                         tracer.out().printfIndentln("This is an example.");
-                    }
-                    finally {
+                    } finally {
                         tracer.wayout();
                     }
                 }
@@ -209,9 +205,56 @@ public class ExampleUnit5 implements WithAssertions {
             foo.bar(); // nothing will be printed because no tracing context has been provided
             tracer.initCurrentTracingContext(2, true);
             foo.bar(); // this generates output
-        }
-        finally {
+        } finally {
             tracer.close();
         }
+    }
+
+    @Test
+    @Disabled
+    void tracerByQueue() throws InterruptedException, ExecutionException {
+        this.bannerPrinter.start("tracerByQueue", getClass());
+
+        final int THREAD_NUMBER = 5;
+        ExecutorService executorService = Executors.newFixedThreadPool(THREAD_NUMBER, new ThreadFactory() {
+            final AtomicInteger threadNr = new AtomicInteger();
+
+            @Override
+            public Thread newThread(Runnable r) {
+                return new Thread(r, "Worker-" + this.threadNr.getAndIncrement());
+            }
+        });
+
+        HttpClient httpClient = HttpClient.newBuilder()
+                .executor(executorService)
+                .build();
+
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/trace-filter-example"))
+                .POST(HttpRequest.BodyPublishers.ofString("REQUEST_LocalDateTime"))
+                .build();
+
+        final int REQUESTS = 25;
+        List<CompletableFuture<Stream<String>>> completableFutures = IntStream.range(0, REQUESTS)
+                .mapToObj(i -> {
+                    return httpClient.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofLines())
+                            .thenApply(httpResponse -> {
+                                assert httpResponse.statusCode() == 200;
+                                return httpResponse.body();
+                            });
+                })
+                .collect(Collectors.toList());
+        List<String> responses = completableFutures.stream()
+                .map(completableFuture -> {
+                    try {
+                        return completableFuture.get();
+                    } catch (ExecutionException | InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                })
+                .flatMap(bodies -> bodies)
+                .collect(Collectors.toList());
+        assert responses.size() == REQUESTS;
+        responses.forEach(response -> System.out.printf("response = %s%n", response));
     }
 }
