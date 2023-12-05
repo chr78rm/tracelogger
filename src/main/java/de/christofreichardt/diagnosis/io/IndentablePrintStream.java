@@ -39,9 +39,20 @@ public abstract class IndentablePrintStream extends PrintStream implements Inden
     @Override
     abstract public IndentablePrintStream printfIndentln(String format, Object... args);
 
+    /**
+     * Acquires a lock to prevent concurrent access to the {@code IndentablePrintStream}. This is useful if multiple threads are
+     * writing to the {@code IndentablePrintStream}.
+     */
     abstract public void lock();
 
+    /**
+     * Unlocks the lock.
+     */
     abstract public void unlock();
 
+    /**
+     * The given {@code Runnable} will be executed when the lock could be acquired.
+     * @param runnable should contain print statements
+     */
     abstract public void runWithLock(Runnable runnable);
 }

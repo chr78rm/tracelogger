@@ -10,6 +10,9 @@ import java.util.Locale;
  */
 final public class NullPrintStream extends IndentablePrintStream {
 
+    /**
+     * Default constructor passes a {@link NullOutputStream} to the underlying {@link IndentablePrintStream}.
+     */
     public NullPrintStream() {
         super(new NullOutputStream());
     }
@@ -34,14 +37,25 @@ final public class NullPrintStream extends IndentablePrintStream {
         return this;
     }
 
+    /**
+     * Pseudo lock()-method.
+     */
     @Override
     public void lock() {
     }
 
+    /**
+     * Pseudo unlock()-method
+     */
     @Override
     public void unlock() {
     }
 
+    /**
+     * Pseudo runWithLock()-method.
+     *
+     * @param runnable should contain print statements
+     */
     @Override
     public void runWithLock(Runnable runnable) {
     }
