@@ -482,7 +482,7 @@ public class TracerFactory {
                     System.out.println("(+) " + (i + 1) + ". Mapping");
                     Element threadElement = (Element) threadNodes.item(i);
                     String threadName = threadElement.getAttribute("name");
-                    String referencedTracerName = (String) this.xpath.evaluate("./dns:TraceLogger/@ref", threadElement, XPathConstants.STRING);
+                    String referencedTracerName = (String) this.xpath.evaluate("./dns:TraceLogger/@ref", threadElement, XPathConstants.STRING); // TODO: implement a fail-fast for dangling references(?)
                     System.out.println(threadName + " => " + referencedTracerName);
                     this.threadName2Element.put(threadName, threadElement);
                 }
