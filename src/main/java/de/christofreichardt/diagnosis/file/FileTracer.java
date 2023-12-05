@@ -176,8 +176,15 @@ public class FileTracer extends AbstractTracer {
         System.out.println("this.byteLimit = " + this.byteLimit);
     }
 
+    /**
+     * A helper object used to facilitate the roll-over of a {@code Lock} from one instance of a {@link TracePrintStream} to another instance.
+     */
     protected TracePrintStream.LockAccess lockAccess;
 
+    /**
+     * The {@link TracePrintStream} uses this method to grant lock access to this {@code FileTracer}.
+     * @param lockAccess a helper object with access to the employed {@code Lock} of the enclosing {@link TracePrintStream}
+     */
     public void requestLockAccess(TracePrintStream.LockAccess lockAccess) {
         this.lockAccess = lockAccess;
     }

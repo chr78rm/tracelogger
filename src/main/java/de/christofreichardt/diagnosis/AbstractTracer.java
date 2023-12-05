@@ -22,9 +22,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
+ * Defines the basic behaviour of tracers.
  * <div style="text-align: justify;">
  * <p>
- * Defines the basic behaviour of tracers. A tracer comes with a map which maps threads on so called
+ * A tracer comes with a map which maps threads on so called
  * {@link TracingContext}s. Each of these {@link TracingContext}s manage a stack of {@link TraceMethod}s.
  * To be observed methods can be pushed on the method stack assigned to the current thread. When a method is
  * pushed on the stack a notification will be written to an output stream. When the method is popped from the
@@ -94,6 +95,9 @@ import org.w3c.dom.NodeList;
  */
 abstract public class AbstractTracer {
 
+    /**
+     * Notes the current version.
+     */
     final static public String VERSION = "1.10.0";
 
     /**
@@ -221,6 +225,11 @@ abstract public class AbstractTracer {
         this.bufferSize = bufferSize;
     }
 
+    /**
+     * Indicates if some particular thread is configured to be online.
+     * @param threadName the name of the thread
+     * @return true if the thread is configured to be online
+     */
     public boolean isOnline(String threadName) {
         DebugConfig debugConfig = this.debugConfigMap.get(threadName);
         if (Objects.nonNull(debugConfig)) {
@@ -230,6 +239,11 @@ abstract public class AbstractTracer {
         }
     }
 
+    /**
+     * Returns the configured debug level - that is the stack size - up until trace messages will be printed for a particular thread
+     * @param threadName the name of the thread
+     * @return the configured debug level
+     */
     public int getLevel(String threadName) {
         DebugConfig debugConfig = this.debugConfigMap.get(threadName);
         if (Objects.nonNull(debugConfig)) {
