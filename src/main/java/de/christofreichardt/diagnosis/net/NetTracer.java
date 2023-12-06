@@ -27,6 +27,9 @@ import org.w3c.dom.Node;
  */
 public class NetTracer extends AbstractTracer {
 
+    /**
+     * The timeout when connecting to the remote logging server in milliseconds
+     */
     public static final int TIMEOUT = 5000;
 
     /**
@@ -42,11 +45,18 @@ public class NetTracer extends AbstractTracer {
      */
     protected Socket pizzaConnection = null;
 
+    /**
+     * Constructor expects the name of the tracer. That name will be sent over the network when connecting to remote logging server.
+     *
+     * @param name the name of the tracer
+     */
     public NetTracer(String name) {
         super(name);
     }
 
     /**
+     * Returns the port number used to connect to the remote logging server.
+     *
      * @return the portNo
      */
     public int getPortNo() {
@@ -54,6 +64,8 @@ public class NetTracer extends AbstractTracer {
     }
 
     /**
+     * Sets the port number used to connect to the remote logging server.
+     *
      * @param portNo the portNo to set
      */
     public void setPortNo(int portNo) {
@@ -61,6 +73,8 @@ public class NetTracer extends AbstractTracer {
     }
 
     /**
+     * Returns the hostname used to connect to the remote logging server.
+     *
      * @return the hostName
      */
     public String getHostName() {
@@ -68,6 +82,8 @@ public class NetTracer extends AbstractTracer {
     }
 
     /**
+     * Sets the hostname used to connect to the remote logging server.
+     *
      * @param hostName the hostName to set
      */
     public void setHostName(String hostName) {

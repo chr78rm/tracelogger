@@ -12,11 +12,13 @@ import javax.xml.xpath.XPathExpressionException;
 import org.w3c.dom.Node;
 
 /**
- * @author Developer
+ * Not supported yet.
+ *
+ * @author Christof Reichardt
  */
 public class OueueNetTracer extends QueueTracer<NetTracer> {
 
-    public OueueNetTracer(String name, NetTracer tracer) {
+    public OueueNetTracer(String name, NetTracer tracer) { // TODO: the signature needs to be changed, the code responsible for configuration expects a single argument constructor of type String
         super(name, new NetTracer(name));
     }
 
