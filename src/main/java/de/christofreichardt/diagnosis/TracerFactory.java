@@ -41,11 +41,12 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
+ * A factory and holder of tracers.
  * <div style="text-align: justify">
  * <p>
- * A factory and holder of tracers. Tracers will be created according to a given (XML-)configuration. So long as no configuration has been read
+ * Tracers will be created according to a given (XML-)configuration. So long as no configuration has been read
  * some methods provide a default tracer. This default tracer traces nothing and routes log messages to the core logging facilities of the Java platform,
- * see <a href="http://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html">java.util.logging</a> and {@link JDKLoggingRouter}.
+ * see <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.logging/java/util/logging/package-summary.html">java.util.logging</a> and {@link JDKLoggingRouter}.
  * </p>
  * <p>
  * The configuration file consists of four main sections. You can put tracer into a pool and access them by name. Second you may redefine the default tracer.
@@ -283,6 +284,8 @@ public class TracerFactory {
     }
 
     /**
+     * Returns the configured default tracer (a {@link NullTracer}).
+     *
      * @return the defaultTracer
      */
     public NullTracer getDefaultTracer() {
@@ -290,6 +293,8 @@ public class TracerFactory {
     }
 
     /**
+     * Returns the size of the configured tracer queue.
+     *
      * @return the size of the tracer queue
      */
     public int getQueueSize() {
@@ -302,7 +307,9 @@ public class TracerFactory {
     }
 
     /**
-     * @return indicates if the tracer queue is enabled
+     * Indicates if the tracer queue is enabled.
+     *
+     * @return true if the tracer queue is enabled
      */
     public boolean isQueueEnabled() {
         this.queueReadLock.lock();
@@ -314,7 +321,9 @@ public class TracerFactory {
     }
 
     /**
-     * @return the classname of the employed QueueTracer
+     * Returns the classname of the configured QueueTracer.
+     *
+     * @return the classname of the configured QueueTracer
      */
     public String getQueueTracerClassname() {
         this.queueReadLock.lock();
