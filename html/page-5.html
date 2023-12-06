@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tracelogger</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style>
+            div.overall-background {
+                height: 100vh;
+                background-color: rgb(240,236,233);
+            }
+            div.top-background {
+                padding-bottom: 0.25em;
+                padding-top: 0.25em;
+                font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+                font-weight: bold;
+            }
+            div.top-panel {
+                width: 70%;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 1em;
+                color: rgb(187,38,73);
+                background-color: rgb(212,202,205);
+                padding: 1em;
+                border-style: solid;
+                border-color: rgb(187,38,73);
+                border-radius: 0.75em;
+            }
+            div.center-background {
+                margin-top: 1em;
+                font-weight: bold;
+                width: 70%;
+                margin-left: auto;
+                margin-right: auto;
+                display: flow;
+            }
+            div.outline {
+                font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+                float: left;
+                width: 15%;
+                left: -1em;
+                position: relative;
+            }
+            div.content {
+                float: right;
+                width: 80%;
+                border-style: none;
+            }
+            div.panel {
+                color: rgb(126,75,82);
+                background-color: rgb(240,236,233);
+                font-family: Cambria, serif;
+                font-weight: normal;
+                font-size: 1em;
+                text-align: justify;
+            }
+            div.code {
+                color: rgb(55,57,72);
+                background-color: rgb(229,204,175);
+                font-family: Consolas, monospace;
+                font-weight: normal;
+                font-size: 0.8em;
+                margin-bottom: 1em;
+                margin-top: 1em;
+                padding: 0.5em;
+                border-radius: 0.5em;
+                border-style: dotted;
+                border-color: rgb(55,57,72);
+                border-width: 1px;
+                overflow-x: scroll;
+                overflow-y: hidden;
+            }
+            div.imprint {
+                width: 70%;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 1em;
+                border-style: solid;
+                border-color: rgb(187,38,73);
+                background-color: rgb(212,202,205);
+                border-radius: 0.75em;
+                text-align: center;
+                padding-left: 1em;
+                padding-right: 1em;
+            }
+            a:link{
+                text-decoration: none
+            }
+            a:hover{
+                text-decoration: none;
+            }
+            a:visited{
+            }
+            a.head-link {
+                color: rgb(187,38,73);
+            }
+            a.section-link {
+                color: rgb(133,160,171);
+            }
+            a.content-link {
+                color: rgb(126,75,82);
+                text-decoration: underline;
+            }
+            a.code-link {
+                font-family: Consolas, monospace;
+                font-weight: normal;
+                font-size: 0.8em;
+                color: rgb(126,75,82);
+                text-decoration: underline;
+            }
+            p.headline {
+                color: rgb(187,38,73);
+                background-color: rgb(240,236,233);
+                font-family: Cambria, serif;
+                font-weight: bold;
+                font-size: 1em;
+            }
+            td.code {
+                white-space: pre;
+            }
+            span.code {
+                font-family: Consolas, monospace;
+                font-weight: normal;
+                font-size: 0.8em;
+            }
+            a.code-link {
+                color: rgb(126,75,82);
+                text-decoration: underline;
+                font-family: Consolas, monospace;
+                font-weight: normal;
+                font-size: 0.8em;
+            }
+            div.menu {
+                border-top-style: solid;
+                border-bottom-style: solid;
+                border-color: rgb(126,75,82);
+                border-width: 1px;
+                padding: 1em;
+                color: rgb(187,38,73);
+                font-family: Cambria, serif;
+                font-weight: bold;
+                font-size: 1em;
+            }
+            a.menu {
+                color: rgb(187,38,73);
+            }
+            span.keyword {
+                font-family: Consolas, monospace;
+                font-weight: bold;
+            }
+            div.main {
+                min-width: 1100px;
+            }
+        </style>
+    </head>
+    <body style="height: 100%; background-color: rgb(240,236,233);">
+        <div class="overall-background">
+            <div class="main">
+                <div class="top-background">
+                    <div style="color: rgb(187,38,73); width: 72%; margin-left: auto; margin-right: auto; margin-top: 1em; margin-bottom: 1em; font-size: 0.9em; text-align: right">
+                        <span style="font-style: italic;">Last updated: 6-December-2023</span>
+                    </div>
+                    <div class="top-panel">
+                        <span style="font-size: 3em;">
+                            Tracelogger (Preview)
+                        </span>
+                    </div>
+                </div>
+                <div class="center-background">
+                    <div class="outline">
+                        <div style="width: 100%; border-bottom-style: solid; border-right-style: solid; border-bottom-right-radius: 0.75em; border-color: rgb(187,38,73);">
+                            <div style="font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif; ">
+                                <span><a class="section-link" href="../index.html">Abstract</a></span><br/>
+                                <span><a class="section-link" href="./page-2.html">Build</a></span><br/>
+                                <span><a class="section-link" href="./page-3.html">Examples</a></span><br/>
+                                <span><a class="section-link" href="./page-4.html">Configuration</a></span>
+                            </div>
+                        </div>
+                        <span style="color: rgb(187,38,73); font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;">Technologies</span>
+                        <div style="width: 100%; border-top-style: solid; border-right-style: solid; border-top-right-radius: 0.75em; border-color: rgb(187,38,73);">
+                            <div style="color: rgb(133,160,171); font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif; height: 28em">
+                                <span><a class="section-link" href="./page-6.html">UML Diagrams</a></span><br/>
+                                <span><a class="section-link" href="./page-7.html">Download</a></span><br/>
+                                <span>API Docs</span><br/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <p id="section-1" class="headline">Keywords</p>
+                        <div class="panel" style="margin-top: 1em">
+                            <ul>
+                                <li>Thread-Local Variables</li>
+                                <li>Concurrency APIs</li>
+                                <li>JUnit 5</li>
+                                <li>Maven (Surefire Plugin)</li>
+                                <li>Java Microbenchmark Harness (JMH)</li>
+                                <li>Java API for XML Processing (JAXP)</li>
+                                <li>W3C Document Object Model (DOM) API</li>
+                                <li>Generics</li>
+                                <li>LogBack</li>
+                                <li>Log4j2</li>
+                                <li>Java Logging API</li>
+                                <li>Java I/O API</li>
+                            </ul>
+                        </div>
+                        <p id="section-2" class="headline">Brief Overview</p>
+                        <div class="panel">
+                            Where advisable, the library uses thread-local variables to store relevant state specific to a particular thread. E.g. a <span class="code">QueueTracer</span> which has been retrieved 
+                            using <span class="code">takeTracer()</span> is subsequently available via <span class="code">getCurrentQueueTracer()</span> by the calling thread. Under the hood
+                            <span class="code">getCurrentQueueTracer()</span> uses a thread-local variable to provide the <span class="code">QueueTracer</span> until the last pop enqueues it again.
+                            Alternatively, instances of
+                            <a class="code-link" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/ConcurrentMap.html">ConcurrentMap</a><span class="code">&lt;Long,​V></span>
+                            have been applied for similar use cases where the use of thread-local variables is not sufficient. 
+                            Here the type parameter <span class="code">Long</span> represents the thread id.
+                            A Reentrant mutual exclusion 
+                            <a class="code-link" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/locks/Lock.html">Lock</a>
+                            is used to synchronize access to the underlying <span class="code">TracePrintStream</span>.
+                            Read-Write locks are employed to facilitate configuration changes on-the-fly (experimental feature).
+                        </div>
+                        <div class="panel" style="margin-top: 1em">
+                            The unit tests are implemented by using <a class="content-link" href="https://junit.org/junit5/">JUnit5</a> and are executed during the 
+                            build by the <a class="content-link" href="https://maven.apache.org/surefire/maven-surefire-plugin/">Maven Surefire Plugin</a>. A certain unit test class is dedicated to
+                            perform benchmarks using <a class="content-link" href="https://github.com/openjdk/jmh">JMH</a>. Several test cases are using thread pools created by the factory methods of the
+                            <a class="code-link" href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/Executors.html/">Executors</a>
+                            class to generate load.
+                        </div>
+                        <div class="panel" style="margin-top: 1em">
+                            The Java API for XML Processing is used to evaluate the XML tracing-configuration by obtaining a DOM instance. The DOM instance will be validated against a XML schema.
+                        </div>
+                        <div class="panel" style="margin-top: 1em">
+                            <span class="code">QueueTracer</span>s may come in different flavors, e.g. <span class="code">QueueFileTracer</span>s or <span class="code">QueueNullTracer</span>s.
+                            In order to avoid code duplication and simultaneously providing a uniform interface to all the different tracers the <span class="code">QueueTracer</span>s are
+                            declared as follows:
+                        </div>
+                        <div class="code" style="overflow-x: hidden; margin-top: 0.5em">
+                            class QueueTracer&lt;T extends AbstractTracer> extends AbstractTracer {...}<br/>
+                            class QueueFileTracer extends QueueTracer&lt;FileTracer> {...}<br/>
+                            class QueueNetTracer extends QueueTracer&lt;NetTracer> {...}<br/>
+                            class QueueNullTracer extends QueueTracer&lt;NullTracer> {...}
+                        </div>
+                        <div class="panel" style="margin-top: -0.5em">
+                            That is a <span class="code">QueueTracer</span> is a <span class="code">AbstractTracer</span> and delegates calls to the exposed interface to a member of type
+                            <span class="code">T extends AbstractTracer</span>.
+                        </div>
+                        <div class="panel" style="margin-top: 1em">
+                            The library provides adapters to external logging libraries, e.g. LogBack and Log4j2.
+                        </div>
+                        <div class="panel" style="margin-top: 1em">
+                            An important feature is the usage of polymorphic <span class="code">IndentablePrintStream</span>s. An <span class="code">IndentablePrintStream</span> itself is
+                            a derived <span class="code">PrintStream</span> with some additional (abstract) methods required for indented prints (and synchronization). The classes 
+                            <span class="code">TracePrintStream</span> and <span class="code">NullPrintStream</span> are both implementing <span class="code">IndentablePrintStream</span>'s
+                            abstract methods. Whereas instances of <span class="code">TracePrintStream</span> are used for cases where actual output is required, instances of 
+                            <span class="code">NullPrintStream</span> are used when the given prints should be discarded, e.g. if the stack size exceeds the configured limit. The 
+                            <span class="code">NullPrintStream</span> overwrites all inherited methods with empty method bodies. That is the Java Virtual Machine is able to optimize calls to those 
+                            empty methods away by inlining them. The overall performance impact of tracing statements in the case of disabled tracing should therefore be minimal.
+                        </div>
+                    </div>
+                </div>
+                <div style="clear: both"></div>
+                <div class="imprint">
+                    <img style="border-style: none" src="../imprint.png" alt="imprint"/>
+                </div>
+                <div id="imprint" style="height: 1em"></div>
+            </div>
+        </div>
+    </body>
+</html>

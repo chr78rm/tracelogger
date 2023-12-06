@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tracelogger</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style>
+            div.overall-background {
+                height: 100vh;
+                background-color: rgb(240,236,233);
+            }
+            div.top-background {
+                padding-bottom: 0.25em;
+                padding-top: 0.25em;
+                font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+                font-weight: bold;
+            }
+            div.top-panel {
+                width: 70%;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 1em;
+                color: rgb(187,38,73);
+                background-color: rgb(212,202,205);
+                padding: 1em;
+                border-style: solid;
+                border-color: rgb(187,38,73);
+                border-radius: 0.75em;
+            }
+            div.center-background {
+                margin-top: 1em;
+                font-weight: bold;
+                width: 70%;
+                margin-left: auto;
+                margin-right: auto;
+                display: flow;
+            }
+            div.outline {
+                font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+                float: left;
+                width: 15%;
+                left: -1em;
+                position: relative;
+            }
+            div.content {
+                float: right;
+                width: 80%;
+                border-style: none;
+            }
+            div.panel {
+                color: rgb(126,75,82);
+                background-color: rgb(240,236,233);
+                font-family: Cambria, serif;
+                font-weight: normal;
+                font-size: 1em;
+                text-align: justify;
+            }
+            div.code {
+                color: rgb(55,57,72);
+                background-color: rgb(229,204,175);
+                font-family: Consolas, monospace;
+                font-weight: normal;
+                font-size: 0.8em;
+                margin-bottom: 1em;
+                margin-top: 1em;
+                padding: 0.5em;
+                border-radius: 0.5em;
+                border-style: dotted;
+                border-color: rgb(55,57,72);
+                border-width: 1px;
+                overflow-x: scroll;
+                overflow-y: hidden;
+            }
+            div.imprint {
+                width: 70%;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 1em;
+                border-style: solid;
+                border-color: rgb(187,38,73);
+                background-color: rgb(212,202,205);
+                border-radius: 0.75em;
+                text-align: center;
+                padding-left: 1em;
+                padding-right: 1em;
+            }
+            a:link{
+                text-decoration: none
+            }
+            a:hover{
+                text-decoration: none;
+            }
+            a:visited{
+            }
+            a.head-link {
+                color: rgb(187,38,73);
+            }
+            a.section-link {
+                color: rgb(133,160,171);
+            }
+            a.content-link {
+                color: rgb(126,75,82);
+                text-decoration: underline;
+            }
+            p.headline {
+                color: rgb(187,38,73);
+                background-color: rgb(240,236,233);
+                font-family: Cambria, serif;
+                font-weight: bold;
+                font-size: 1em;
+            }
+            td.code {
+                white-space: pre;
+            }
+            span.code {
+                font-family: Consolas, monospace;
+                font-weight: normal;
+                font-size: 0.8em;
+            }
+            a.code-link {
+                color: rgb(126,75,82);
+                text-decoration: underline;
+                font-family: Consolas, monospace;
+                font-weight: normal;
+                font-size: 0.8em;
+            }
+            div.menu {
+                border-top-style: solid;
+                border-bottom-style: solid;
+                border-color: rgb(126,75,82);
+                border-width: 1px;
+                padding: 1em;
+                color: rgb(187,38,73);
+                font-family: Cambria, serif;
+                font-weight: bold;
+                font-size: 1em;
+            }
+            a.menu {
+                color: rgb(187,38,73);
+            }
+            span.keyword {
+                font-family: Consolas, monospace;
+                font-weight: bold;
+            }
+            div.main {
+                min-width: 1100px;
+            }
+        </style>
+    </head>
+    <body style="height: 100%; background-color: rgb(240,236,233);">
+        <div class="overall-background">
+            <div class="main">
+                <div class="top-background">
+                    <div style="color: rgb(187,38,73); width: 72%; margin-left: auto; margin-right: auto; margin-top: 1em; margin-bottom: 1em; font-size: 0.9em; text-align: right">
+                        <span style="font-style: italic;">Last updated: 6-December-2023</span>
+                    </div>
+                    <div class="top-panel">
+                        <span style="font-size: 3em;">
+                            Tracelogger (Preview)
+                        </span>
+                    </div>
+                </div>
+                <div class="center-background">
+                    <div class="outline">
+                        <div style="width: 100%; border-bottom-style: solid; border-right-style: solid; border-bottom-right-radius: 0.75em; border-color: rgb(187,38,73);">
+                            <div style="font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif; ">
+                                <span><a class="section-link" href="../index.html">Abstract</a></span><br/>
+                                <span><a class="section-link" href="./page-2.html">Build</a></span><br/>
+                                <span><a class="section-link" href="./page-3.html">Examples</a></span>
+                            </div>
+                        </div>
+                        <span style="color: rgb(187,38,73); font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;">Configuration</span>
+                        <div style="width: 100%; border-top-style: solid; border-right-style: solid; border-top-right-radius: 0.75em; color: rgb(187,38,73)">
+                            <div style="color: rgb(133,160,171); font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif; height: 29em">
+                                <span><a class="section-link" href="./page-5.html">Technologies</a></span><br/>
+                                <span><a class="section-link" href="./page-6.html">UML Diagrams</a></span><br/>
+                                <span><a class="section-link" href="./page-7.html">Download</a></span><br/>
+                                <span>API Docs</span><br/>
+                                <span style="white-space: pre">    </span><br/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="menu" style="margin-top: 1.5em">
+                            <span><a class="menu" href="#section-1">(1) XML Schema</a></span><br/>
+                            <span><a class="menu" href="#section-2">(2) Pool</a></span><br/>
+                            <span><a class="menu" href="#section-3">(3) Default Tracer</a></span><br/>
+                            <span><a class="menu" href="#section-4">(4) Map</a></span><br/>
+                            <span><a class="menu" href="#section-5">(5) Queue</a></span><br/>
+                        </div>
+                        <div class="panel" style="margin-top: 1em">
+                            Currently, there are two (overloaded) methods of the class <span class="code">TracerFactory</span> which evaluate a given XML trace-config: 
+                            <span class="code">readConfiguration(File configFile)</span> and <span class="code">readConfiguration(InputStream inputStream)</span>. The latter one is well suited for
+                            configurations which are given as resources on the classpath. Both methods are validating their input against a XML schema which is referenced in the first section.
+                            The overall structure of the XML configuration is divided into four parts: the pool of named tracers, the default tracer (which must always be a NullTracer), a map which maps
+                            threads on named tracers and a queue of uniform tracers. These parts will be discussed in the sections 2-5.
+                        </div>
+                        <p id="section-1" class="headline">(1) XML Schema</p>
+                        <div class="panel">
+                            The applied XML schema is attached to the classpath as resource, see 
+                            <a class="content-link" href="../src/main/resources/de/christofreichardt/diagnosis/TraceConfigSchema.xsd">TraceConfigSchema</a>.
+                        </div>
+                        <p id="section-2" class="headline">(2) Pool</p>
+                        <div class="panel">
+                            This section is mandatory for historical reasons, but its content might be empty. The uniquely named tracers together with their individual configurations belong into this 
+                            part. A complete <span class="code">FileTracer</span> configuration is shown below:
+                        </div>
+                        <div class="code">
+                            <table style="border-collapse: separate; padding: 0.1em">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table>
+                                                <tbody style="text-align: right">
+                                                    <tr>
+                                                        <td class="code">1</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">2</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">3</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">4</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">5</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">6</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">7</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">8</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">9</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">10</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">11</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">12</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">13</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">14</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">15</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">16</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">17</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">18</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">19</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="code">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">&lt;TraceConfig xmlns="http://www.christofreichardt.de/java/tracer"&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">  &lt;Pool&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">    ...</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">    &lt;TraceLogger name="ExampleTracer" class="de.christofreichardt.diagnosis.file.FileTracer"&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;LogDir&gt;./log/examples&lt;/LogDir&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;AutoFlush&gt;true&lt;/AutoFlush&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;BufSize&gt;1024&lt;/BufSize&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;Limit&gt;1048576&lt;/Limit&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;Context&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">        &lt;Thread name="main"&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">          &lt;Online&gt;true&lt;/Online&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">          &lt;DebugLevel&gt;5&lt;/DebugLevel&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">        &lt;/Thread&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;/Context&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">    &lt;/TraceLogger&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">    ...</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">  &lt;/Pool&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">&lt;/TraceConfig&gt;</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="panel">
+                            The specification of the <span class="code">Limit</span> and the <span class="code">Context</span> is optional. If no <span class="code">Limit</span> is given the file size 
+                            of the accompanying log file is unbounded. If no <span class="code">Context</span> is specified you must initialise a <span class="code">Context</span> with explicit values 
+                            for <span class="code">DebugLevel</span> and <span class="code">Online</span> by applying <span class="code">initCurrentTracingContext(int debugLevel, boolean online)</span>
+                            otherwise calling <span class="code">initCurrentTracingContext()</span> is sufficient. A <span class="code">Context</span> is always associated with a certain thread. 
+                            A <span class="code">NetTracer</span> needs no log directory but a listener address, see below:
+                        </div>
+                        <div class="code">
+                            <table style="border-collapse: separate; padding: 0.1em">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table>
+                                                <tbody style="text-align: right">
+                                                    <tr>
+                                                        <td class="code">1</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">2</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">3</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">4</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">5</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">6</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">7</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">8</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">9</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">10</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">11</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">12</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">13</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">14</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">15</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">16</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">17</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">18</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">19</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">20</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">21</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="code">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">&lt;TraceConfig xmlns="http://www.christofreichardt.de/java/tracer"&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">  &lt;Pool&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">    ...</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">    &lt;TraceLogger name="TestTracer-2" class="de.christofreichardt.diagnosis.net.NetTracer"&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;Listener&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">        &lt;Port&gt;1234&lt;/Port&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">        &lt;Host&gt;localhost&lt;/Host&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;/Listener&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;AutoFlush&gt;true&lt;/AutoFlush&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;BufSize&gt;1024&lt;/BufSize&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;Context&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">        &lt;Thread name="TestThread-2"&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">          &lt;Online&gt;true&lt;/Online&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">          &lt;DebugLevel&gt;5&lt;/DebugLevel&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">        &lt;/Thread&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;/Context&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">    &lt;/TraceLogger&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">    ...</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">  &lt;/Pool&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">&lt;/TraceConfig&gt;</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p><a class="content-link" href="#">top</a></p>
+                        <p id="section-3" class="headline">(3) Default Tracer</p>
+                        <div class="panel">
+                            The specification of a DefaultTracer is optional. If no DefaultTracer is given the
+                            <a class="content-link" href="../src/main/java/de/christofreichardt/diagnosis/JDKLoggingRouter.java">JDKLoggingRouter</a> is used. The default tracer is returned
+                            by the methods <span class="code">getCurrentPoolTracer()</span> or <span class="code">getCurrentQueueTracer()</span> of the class <span class="code">TracerFactory</span> 
+                            if no specified tracer can be found for the current thread or - in case of a QueueTracer - if the queue tracers are disabled. Only <span class="code">NullTracer</span>s are 
+                            allowed, e.g.: 
+                        </div>
+                        <div class="code">
+                            <table style="border-collapse: separate; padding: 0.1em">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table>
+                                                <tbody style="text-align: right">
+                                                    <tr>
+                                                        <td class="code">1</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">2</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">3</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">4</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">5</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">6</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="code">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">&lt;TraceConfig xmlns="http://www.christofreichardt.de/java/tracer"&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">  ...</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">  &lt;DefaultTracer class="de.christofreichardt.diagnosis.LogbackRouter"/&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">  ...</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">&lt;/TraceConfig&gt;</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p><a class="content-link" href="#">top</a></p>
+                        <p id="section-4" class="headline">(4) Map</p>
+                        <div class="panel">
+                            Within this section you can map threads on pooled tracers so that you can easily request a tracer for the current thread by calling <span class="code">getCurrentPoolTracer()</span>
+                            or <span class="code">getTracer(Thread thread)</span>. See, for example, the configuration below:
+                        </div>
+                        <div class="code">
+                            <table style="border-collapse: separate; padding: 0.1em">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table>
+                                                <tbody style="text-align: right">
+                                                    <tr>
+                                                        <td class="code">1</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">2</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">3</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">4</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">5</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">6</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">7</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">8</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">9</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">10</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">11</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">12</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">13</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">14</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">15</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">16</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">17</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">18</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">19</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">20</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">21</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">22</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">23</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">24</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">25</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">26</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">27</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">28</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">29</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">30</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">31</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">32</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">33</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">34</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">35</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">36</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">37</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">38</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">39</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">40</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">41</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">42</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">43</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">44</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">45</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">46</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">47</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">48</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">49</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">50</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">51</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">52</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">53</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">54</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">55</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">56</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">57</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">58</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">59</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">60</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">61</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">62</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">63</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">64</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">65</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">66</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="code">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">&lt;TraceConfig xmlns="http://www.christofreichardt.de/java/tracer"&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">  &lt;Pool&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">    &lt;TraceLogger name="TestTracer-0" class="de.christofreichardt.diagnosis.file.FileTracer"&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;LogDir&gt;./log/&lt;/LogDir&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;AutoFlush&gt;true&lt;/AutoFlush&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;BufSize&gt;1024&lt;/BufSize&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;Limit&gt;1048576&lt;/Limit&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;Context&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">        &lt;Thread name="main"&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">          &lt;Online&gt;true&lt;/Online&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">          &lt;DebugLevel&gt;5&lt;/DebugLevel&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">        &lt;/Thread&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">        &lt;Thread name="TestThread-0"&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">          &lt;Online&gt;true&lt;/Online&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">          &lt;DebugLevel&gt;3&lt;/DebugLevel&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">        &lt;/Thread&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">        &lt;Thread name="TestThread-1"&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">          &lt;Online&gt;false&lt;/Online&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">          &lt;DebugLevel&gt;2&lt;/DebugLevel&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">        &lt;/Thread&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;/Context&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">    &lt;/TraceLogger&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">    &lt;TraceLogger name="TestTracer-1" class="de.christofreichardt.diagnosis.file.FileTracer"&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;LogDir&gt;./log/&lt;/LogDir&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;AutoFlush&gt;true&lt;/AutoFlush&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;BufSize&gt;1024&lt;/BufSize&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;Context&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">        &lt;Thread name="TestThread-1"&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">          &lt;Online&gt;true&lt;/Online&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">          &lt;DebugLevel&gt;5&lt;/DebugLevel&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">        &lt;/Thread&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;/Context&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">    &lt;/TraceLogger&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">    &lt;TraceLogger name="TestTracer-2" class="de.christofreichardt.diagnosis.net.NetTracer"&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;Listener&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">        &lt;Port&gt;1234&lt;/Port&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">        &lt;Host&gt;localhost&lt;/Host&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;/Listener&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;AutoFlush&gt;true&lt;/AutoFlush&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;BufSize&gt;1024&lt;/BufSize&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;Context&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">        &lt;Thread name="TestThread-2"&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">          &lt;Online&gt;true&lt;/Online&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">          &lt;DebugLevel&gt;5&lt;/DebugLevel&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">        &lt;/Thread&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;/Context&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">    &lt;/TraceLogger&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">  &lt;/Pool&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">  &lt;Map&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">    &lt;Threads&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;Thread name="TestThread-0"&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">        &lt;TraceLogger ref="TestTracer-0" /&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;/Thread&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;Thread name="TestThread-1"&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">        &lt;TraceLogger ref="TestTracer-1" /&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;/Thread&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;Thread name="TestThread-2"&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">        &lt;TraceLogger ref="TestTracer-2" /&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;/Thread&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;Thread name="main"&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">        &lt;TraceLogger ref="TestTracer-0" /&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;/Thread&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">    &lt;/Threads&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">  &lt;/Map&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">&lt;/TraceConfig&gt;</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="panel">
+                            Given three pooled tracers, the <span class="code">main</span>- and the <span class="code">TestThread-0</span>-threads are mapped on the <span class="code">TestTracer-0</span>,
+                            the <span class="code">TestThread-1</span>-thread is mapped on the <span class="code">TestTracer-0</span> and the <span class="code">TestThread-2</span>-thread is mapped on 
+                            the <span class="code">TestTracer-2</span>. E.g. calling <span class="code">getCurrentPoolTracer()</span> from the <span class="code">main</span>-thread or from 
+                            <span class="code">TestThread-0</span> gives you the <span class="code">TestTracer-0</span>.
+                        </div>
+                        <p><a class="content-link" href="#">top</a></p>
+                        <p id="section-5" class="headline">(5) Queue</p>
+                        <div class="panel">
+                            A blocking queue containing uniform tracers can be configured within this segment. By invoking <span class="code">takeTracer()</span> you receive the next available tracer
+                            from the queue or the invocation blocks if the queue is empty because all tracers are currently allocated. This approach might be useful for debugging code running within 
+                            an application server serving web requests. <span class="code">QueueTracer</span>s should not be used for long running tasks.
+                        </div>
+                        <div class="code">
+                            <table style="border-collapse: separate; padding: 0.1em">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <table>
+                                                <tbody style="text-align: right">
+                                                    <tr>
+                                                        <td class="code">1</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">2</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">3</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">4</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">5</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">6</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">7</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">8</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">9</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">10</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">11</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">12</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">13</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">14</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">15</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="code">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">&lt;TraceConfig xmlns="http://www.christofreichardt.de/java/tracer"&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">  ...</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">  &lt;Queue&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">    &lt;Enabled/&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">    &lt;Size&gt;5&lt;/Size&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">    &lt;TraceLogger name="QueueTracer" class="de.christofreichardt.diagnosis.file.QueueFileTracer"&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;LogDir&gt;./log/queue&lt;/LogDir&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;AutoFlush&gt;true&lt;/AutoFlush&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">      &lt;BufSize&gt;1024&lt;/BufSize&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">    &lt;/TraceLogger&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">    &lt;Online&gt;true&lt;/Online&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">    &lt;DebugLevel&gt;3&lt;/DebugLevel&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">  &lt;/Queue&gt;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="code">&lt;/TraceConfig&gt;</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p><a class="content-link" href="#">top</a></p>
+                    </div>
+                </div>
+                <div style="clear: both"></div>
+                <div class="imprint">
+                    <img style="border-style: none" src="../imprint.png" alt="imprint"/>
+                </div>
+                <div id="imprint" style="height: 1em"></div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tracelogger</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style>
+            div.overall-background {
+                height: 100vh;
+                background-color: rgb(240,236,233);
+            }
+            div.top-background {
+                padding-bottom: 0.25em;
+                padding-top: 0.25em;
+                font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+                font-weight: bold;
+            }
+            div.top-panel {
+                width: 70%;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 1em;
+                color: rgb(187,38,73);
+                background-color: rgb(212,202,205);
+                padding: 1em;
+                border-style: solid;
+                border-color: rgb(187,38,73);
+                border-radius: 0.75em;
+            }
+            div.center-background {
+                margin-top: 1em;
+                font-weight: bold;
+                width: 70%;
+                margin-left: auto;
+                margin-right: auto;
+                display: flow;
+            }
+            div.outline {
+                font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+                float: left;
+                width: 15%;
+                left: -1em;
+                position: relative;
+            }
+            div.content {
+                float: right;
+                width: 80%;
+                border-style: none;
+            }
+            div.panel {
+                color: rgb(126,75,82);
+                background-color: rgb(240,236,233);
+                font-family: Cambria, serif;
+                font-weight: normal;
+                font-size: 1em;
+                text-align: justify;
+            }
+            div.code {
+                color: rgb(55,57,72);
+                background-color: rgb(229,204,175);
+                font-family: Consolas, monospace;
+                font-weight: normal;
+                font-size: 0.8em;
+                margin-bottom: 1em;
+                margin-top: 1em;
+                padding: 0.5em;
+                border-radius: 0.5em;
+                border-style: dotted;
+                border-color: rgb(55,57,72);
+                border-width: 1px;
+                overflow-x: scroll;
+                overflow-y: hidden;
+            }
+            div.imprint {
+                width: 70%;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 1em;
+                border-style: solid;
+                border-color: rgb(187,38,73);
+                background-color: rgb(212,202,205);
+                border-radius: 0.75em;
+                text-align: center;
+                padding-left: 1em;
+                padding-right: 1em;
+            }
+            a:link{
+                text-decoration: none
+            }
+            a:hover{
+                text-decoration: none;
+            }
+            a:visited{
+            }
+            a.head-link {
+                color: rgb(187,38,73);
+            }
+            a.section-link {
+                color: rgb(133,160,171);
+            }
+            a.content-link {
+                color: rgb(126,75,82);
+                text-decoration: underline;
+            }
+            a.code-link {
+                font-family: Consolas, monospace;
+                font-weight: normal;
+                font-size: 0.8em;
+                color: rgb(126,75,82);
+                text-decoration: underline;
+            }
+            p.headline {
+                color: rgb(187,38,73);
+                background-color: rgb(240,236,233);
+                font-family: Cambria, serif;
+                font-weight: bold;
+                font-size: 1em;
+            }
+            td.code {
+                white-space: pre;
+            }
+            span.code {
+                font-family: Consolas, monospace;
+                font-weight: normal;
+                font-size: 0.8em;
+            }
+            a.code-link {
+                color: rgb(126,75,82);
+                text-decoration: underline;
+                font-family: Consolas, monospace;
+                font-weight: normal;
+                font-size: 0.8em;
+            }
+            div.menu {
+                border-top-style: solid;
+                border-bottom-style: solid;
+                border-color: rgb(126,75,82);
+                border-width: 1px;
+                padding: 1em;
+                color: rgb(187,38,73);
+                font-family: Cambria, serif;
+                font-weight: bold;
+                font-size: 1em;
+            }
+            a.menu {
+                color: rgb(187,38,73);
+            }
+            span.keyword {
+                font-family: Consolas, monospace;
+                font-weight: bold;
+            }
+            div.main {
+                min-width: 1100px;
+            }
+        </style>
+    </head>
+    <body style="height: 100%; background-color: rgb(240,236,233);">
+        <div class="overall-background">
+            <div class="main">
+                <div class="top-background">
+                    <div style="color: rgb(187,38,73); width: 72%; margin-left: auto; margin-right: auto; margin-top: 1em; margin-bottom: 1em; font-size: 0.9em; text-align: right">
+                        <span style="font-style: italic;">Last updated: 6-December-2023</span>
+                    </div>
+                    <div class="top-panel">
+                        <span style="font-size: 3em;">
+                            Tracelogger (Preview)
+                        </span>
+                    </div>
+                </div>
+                <div class="center-background">
+                    <div class="outline">
+                        <div style="width: 100%; border-bottom-style: solid; border-right-style: solid; border-bottom-right-radius: 0.75em; border-color: rgb(187,38,73);">
+                            <div style="font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif; ">
+                                <span><a class="section-link" href="../index.html">Abstract</a></span><br/>
+                                <span><a class="section-link" href="./page-2.html">Build</a></span><br/>
+                                <span><a class="section-link" href="./page-3.html">Examples</a></span><br/>
+                                <span><a class="section-link" href="./page-4.html">Configuration</a></span><br/>
+                                <span><a class="section-link" href="./page-5.html">Technologies</a></span><br/>
+                                <span><a class="section-link" href="./page-6.html">UML Diagrams</a></span>
+                            </div>
+                        </div>
+                        <span style="color: rgb(187,38,73); font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;">Download</span>
+                        <div style="width: 100%; border-top-style: solid; border-right-style: solid; border-top-right-radius: 0.75em; border-color: rgb(187,38,73);">
+                            <div style="color: rgb(133,160,171); font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif; height: 10em">
+                                <span>API Docs</span><br/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <p class="headline">Maven Coordinates</p>
+                        <div class="code" style="overflow-x: hidden; margin-top: 0.5em; white-space: pre">&lt;dependency>
+    &lt;groupId>de.christofreichardt&lt;/groupId>
+    &lt;artifactId>tracelogger&lt;/artifactId>
+    &lt;version>1.10.0&lt;/version>
+&lt;/dependency></div>
+                        <p class="headline">Direct Download</p>
+                        <div class="panel" style="margin-top: 1em">
+                            <table style="width: 100%; margin-left: auto; margin-right: auto">
+                                <thead style="background-color: rgb(186,194,215); color: rgb(55,57,72)">
+                                    <tr>
+                                        <th>Artifact</th>
+                                        <th>JAR</th>
+                                        <th>Build Time</th>
+                                        <th>SHA-512</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="background-color: rgb(229,204,175); color: rgb(126,75,82)">
+                                    <tr>
+                                        <td>tracelogger-1.10.0</td>
+                                        <td><a class="content-link" href="https://www.dropbox.com/scl/fi/954xiviu1e0tl2gh1whr6/tracelogger-1.10.0.jar?rlkey=zw17vqdgabmqhzgp5ieypxejc&dl=1">tracelogger-1.10.0.jar</a></td>
+                                        <td>2023-12-04 13:54:06.851562900 +0100</td>
+                                        <td><a class="content-link" href="./tracelogger-1.10.0.jar.sha512.txt">tracelogger-1.10.0.jar.sha512</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div style="clear: both"></div>
+                <div class="imprint">
+                    <img style="border-style: none" src="../imprint.png" alt="imprint"/>
+                </div>
+                <div id="imprint" style="height: 1em"></div>
+            </div>
+        </div>
+    </body>
+</html>

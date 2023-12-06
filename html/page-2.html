@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tracelogger</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            div.overall-background {
+                height: 100vh;
+                background-color: rgb(240,236,233);
+            }
+            div.top-background {
+                padding-bottom: 0.25em;
+                padding-top: 0.25em;
+                font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+                font-weight: bold;
+            }
+            div.top-panel {
+                width: 70%;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 1em;
+                color: rgb(187,38,73);
+                background-color: rgb(212,202,205);
+                padding: 1em;
+                border-style: solid;
+                border-color: rgb(187,38,73);
+                border-radius: 0.75em;
+            }
+            div.center-background {
+                margin-top: 1em;
+                font-weight: bold;
+                width: 70%;
+                margin-left: auto;
+                margin-right: auto;
+                display: flow;
+            }
+            div.outline {
+                font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+                float: left;
+                width: 15%;
+                left: -1em;
+                position: relative;
+            }
+            div.content {
+                float: right;
+                width: 80%;
+                border-style: none;
+            }
+            div.panel {
+                color: rgb(126,75,82);
+                background-color: rgb(240,236,233);
+                font-family: Cambria, serif;
+                font-weight: normal;
+                font-size: 1em;
+                text-align: justify;
+            }
+            div.code {
+                color: rgb(55,57,72);
+                background-color: rgb(229,204,175);
+                font-family: Consolas, monospace;
+                font-weight: normal;
+                font-size: 0.8em;
+                margin-bottom: 1em;
+                margin-top: 1em;
+                padding: 0.5em;
+                border-radius: 0.5em;
+                border-style: dotted;
+                border-color: rgb(55,57,72);
+                border-width: 1px;
+            }
+            div.imprint {
+                width: 70%;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 1em;
+                border-style: solid;
+                border-color: rgb(187,38,73);
+                background-color: rgb(212,202,205);
+                border-radius: 0.75em;
+                text-align: center;
+                padding-left: 1em;
+                padding-right: 1em;
+            }
+            a:link{
+                text-decoration: none
+            }
+            a:hover{
+                text-decoration: none;
+            }
+            a:visited{
+            }
+            a.head-link {
+                color: rgb(187,38,73);
+            }
+            a.section-link {
+                color: rgb(133,160,171);
+            }
+            a.content-link {
+                color: rgb(126,75,82);
+                text-decoration: underline;
+            }
+            p.headline {
+                color: rgb(187,38,73);
+                background-color: rgb(240,236,233);
+                font-family: Cambria, serif;
+                font-weight: bold;
+                font-size: 1em;
+            }
+            td.code {
+                white-space: pre;
+            }
+            span.code {
+                font-family: Consolas, monospace;
+                font-weight: normal;
+                font-size: 0.8em;
+            }
+            div.main {
+                min-width: 1100px;
+            }
+        </style>
+    </head>
+    <body style="height: 100%; background-color: rgb(240,236,233);">
+        <div class="overall-background">
+            <div class="main">
+                <div class="top-background">
+                    <div style="color: rgb(187,38,73); width: 72%; margin-left: auto; margin-right: auto; margin-top: 1em; margin-bottom: 1em; font-size: 0.9em; text-align: right">
+                        <span style="font-style: italic;">Last updated: 6-December-2023</span>
+                    </div>
+                    <div class="top-panel">
+                        <span style="font-size: 3em;">
+                            Tracelogger (Preview)
+                        </span>
+                    </div>
+                </div>
+                <div class="center-background">
+                    <div class="outline">
+                        <div style="width: 100%; border-bottom-style: solid; border-right-style: solid; border-bottom-right-radius: 0.75em; color: rgb(187,38,73); display: flex">
+                            <div style="color: rgb(133,160,171); font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif; align-self: flex-end">
+                                <span style=""><a class="section-link" href="../index.html">Abstract</a></span>
+                            </div>
+                        </div>
+                        <span style="color: rgb(187,38,73); font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;">Build</span>
+                        <div style="width: 100%; border-top-style: solid; border-right-style: solid; border-top-right-radius: 0.75em; color: rgb(187,38,73)">
+                            <div style="color: rgb(133,160,171); font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;">
+                                <span><a class="section-link" href="./page-3.html">Examples</a></span><br/>
+                                <span><a class="section-link" href="./page-4.html">Configuration</a></span><br/>
+                                <span><a class="section-link" href="./page-5.html">Technologies</a></span><br/>
+                                <span><a class="section-link" href="./page-6.html">UML Diagrams</a></span><br/>
+                                <span><a class="section-link" href="./page-7.html">Download</a></span><br/>
+                                <span>API Docs</span><br/>
+                                <span style="white-space: pre">    </span><br/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="panel" style="display: table; width: 100%">
+                            <span style="vertical-align: middle; display: table-cell">
+                                The source code is hosted on GitHub: <a class="content-link" href="https://github.com/chr78rm/tracelogger">https://github.com/chr78rm/tracelogger</a> and is licensed
+                                under the Apache License, Version 2.0.
+                            </span>
+                            <a href="https://www.apache.org/licenses/LICENSE-2.0" style="float: right;">
+                                <img style="height: 2.5em" src="https://www.apache.org/img/asf-estd-1999-logo.jpg" alt="Apache License 2.0" title="Apache License 2.0" />
+                            </a>
+                        </div>
+                        <div class="panel" style="margin-top: 1em">
+                            First, clone the project:
+                        </div>
+                        <div class="code">
+                            git clone https://github.com/chr78rm/tracelogger.git <br/>
+                            cd tracelogger
+                        </div>
+                        <div class="panel">
+                            <a class="content-link" href="https://maven.apache.org/">Maven</a> and a JDK11+ is required for the build of the multi-module project: 
+                        </div>
+                        <div class="code">
+                            mvn clean install
+                        </div>
+                        <div class="panel">
+                            Above command compiles the sources, runs the tests and installs the library into the local Maven repository.
+                        </div>
+                    </div>
+                </div>
+                <div style="clear: both"></div>
+                <div id="imprint" class="imprint">
+                    <img style="border-style: none" src="../imprint.png" alt="imprint"/>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
