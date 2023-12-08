@@ -16,24 +16,24 @@ import org.w3c.dom.Node;
 
 /**
  * A {@link QueueTracer} that uses a {@link FileTracer} internally.
- * 
+ *
  * @author Christof Reichardt
  */
 public class QueueFileTracer extends QueueTracer<FileTracer> {
 
-  public QueueFileTracer(String name) {
-    super(name, new FileTracer(name));
-  }
+    public QueueFileTracer(String name) {
+        super(name, new FileTracer(name));
+    }
 
-  public Path getLogDirPath() {
-    return super.tracer.getLogDirPath();
-  }
+    public Path getLogDirPath() {
+        return super.tracer.getLogDirPath();
+    }
 
-  @Override
-  protected void readConfiguration(XPath xpath, Node node) throws XPathExpressionException, QueueFileTracer.Exception {
-    super.readConfiguration(xpath, node);
-    File logDir = new File((String) xpath.evaluate("./dns:TraceLogger/dns:LogDir/text()", node, XPathConstants.STRING));
-    super.tracer.setLogDirPath(logDir.toPath());
-  }
+    @Override
+    protected void readConfiguration(XPath xpath, Node node) throws XPathExpressionException, QueueFileTracer.Exception {
+        super.readConfiguration(xpath, node);
+        File logDir = new File((String) xpath.evaluate("./dns:TraceLogger/dns:LogDir/text()", node, XPathConstants.STRING));
+        super.tracer.setLogDirPath(logDir.toPath());
+    }
 
 }
