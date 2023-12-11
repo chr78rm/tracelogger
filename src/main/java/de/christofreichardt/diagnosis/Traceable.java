@@ -14,5 +14,11 @@ package de.christofreichardt.diagnosis;
  * @author Christof Reichardt
  */
 public interface Traceable {
+    /**
+     * Returns the "current" tracer for the implementing class. Most of the time it might delegate to {@link TracerFactory#getCurrentPoolTracer()},
+     * {@link TracerFactory#getCurrentQueueTracer()} or {@link TracerFactory#getDefaultTracer()}.
+     *
+     * @return the "current" tracer for the implementing class
+     */
     AbstractTracer getCurrentTracer();
 }

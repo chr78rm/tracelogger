@@ -12,7 +12,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * This is the main implementation of an indentable PrintStream. This stream uses a thread map to retrieve the current stack size
- * and computes the extend of the indentation accordingly.
+ * and computes the extent of the indentation accordingly.
  *
  * @author Christof Reichardt
  */
@@ -20,25 +20,44 @@ public class TracePrintStream extends IndentablePrintStream {
 
     /** indicates the maximum number of indentations */
     public final static int MAX_INDENT_NUMBER = 100;
-    /** number of spaces that should used per indentation */
+    /** number of spaces that should be used per indentation */
     public final static int INDENT_CHAR_NUMBER = 2;
     /** string array that contains the indent strings */
     final protected static String[] INDENT_STRING;
 
+    /** used to synchronize access to this {@code TracePrintStream}. */
     protected ReentrantLock lock = new ReentrantLock();
 
+    /**
+     * Helper class for controlled access to the {@link TracePrintStream#lock} by classes outside the inheritance hierarchy and outside the
+     * {@link de.christofreichardt.diagnosis.io} package.
+     */
     public class LockAccess {
         private LockAccess() {
         }
 
+        /**
+         * Returns the {@link TracePrintStream#lock}.
+         * @return the {@link TracePrintStream#lock}.
+         */
         public ReentrantLock getLock() {
             return TracePrintStream.this.lock;
         }
+
+        /**
+         * Sets the {@link TracePrintStream#lock}.
+         * @param lock the {@code lock} to set
+         */
         public void setLock(ReentrantLock lock) {
             TracePrintStream.this.lock = lock;
         }
     }
 
+    /**
+     * Grants access to the {@link TracePrintStream#lock}.
+     *
+     * @param fileTracer the {@link FileTracer} which requests access to the {@code lock}.
+     */
     public void grantLockAccess(FileTracer fileTracer) {
         fileTracer.requestLockAccess(new LockAccess());
     }
@@ -57,12 +76,9 @@ public class TracePrintStream extends IndentablePrintStream {
 
     /**
      * Creates a new instance by passing a {@link NullOutputStream} to the base class.
+     *
+     * @param threadMap the to be applied {@link AbstractThreadMap}
      */
-    public TracePrintStream() {
-        super(new NullOutputStream());
-        this.threadMap = new ThreadLocalMap();
-    }
-
     public TracePrintStream(AbstractThreadMap threadMap) {
         super(new NullOutputStream());
         this.threadMap = threadMap;

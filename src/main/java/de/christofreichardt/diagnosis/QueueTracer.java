@@ -103,10 +103,20 @@ abstract public class QueueTracer<T extends AbstractTracer> extends AbstractTrac
         this.tracer.setAutoflush(autoflush);
     }
 
+    /**
+     * Returns the configured {@code online} value. Will be used by the parameterless {@link QueueTracer#initCurrentTracingContext()} method.
+     *
+     * @return the configured {@code online} value
+     */
     public boolean isOnline() {
         return this.online;
     }
 
+    /**
+     * Returns the configured debuglevel. Will be used by the parameterless {@link QueueTracer#initCurrentTracingContext()} method.
+     *
+     * @return the configured debug level
+     */
     public int getLevel() {
         return this.level;
     }
