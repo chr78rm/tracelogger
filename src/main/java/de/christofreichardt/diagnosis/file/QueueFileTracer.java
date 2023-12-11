@@ -21,10 +21,18 @@ import org.w3c.dom.Node;
  */
 public class QueueFileTracer extends QueueTracer<FileTracer> {
 
+    /**
+     * Constructor expects the name of the (internal) {@link FileTracer}.
+     * @param name the name of the tracer
+     */
     public QueueFileTracer(String name) {
         super(name, new FileTracer(name));
     }
 
+    /**
+     * Returns the log directory of the internally used {@link FileTracer}.
+     * @return the log directory
+     */
     public Path getLogDirPath() {
         return super.tracer.getLogDirPath();
     }
