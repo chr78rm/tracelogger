@@ -90,6 +90,26 @@
             <build>
                 <plugins>
                     <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <version>3.5.0</version>
+                        <executions>
+                            <execution>
+                                <id>timestamp-property</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>timestamp-property</goal>
+                                </goals>
+                                <configuration>
+                                    <name>build.time</name>
+                                    <pattern>yyyyMMddHHmmssSSS</pattern>
+                                    <locale>de_DE</locale>
+                                    <timeZone>GMT</timeZone>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
                         <version>3.6.3</version>
@@ -104,7 +124,8 @@
                         <configuration>
                             <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
                             <header>tracelogger ${project.version} API</header>
-                            <bottom>Copyright &#x00A9; 2015, 2023, Christof Reichardt - Paul-Ehrlich-Weg 1 - D-63110 Rodgau
+                            <bottom>
+                                Copyright &#x00A9; 2015, 2023, Christof Reichardt - Paul-Ehrlich-Weg 1 - D-63110 Rodgau - Build ${build.time}
                             </bottom>
                             <additionalJOptions>
                                 <additionalJOption>-J-Duser.language=en</additionalJOption>
