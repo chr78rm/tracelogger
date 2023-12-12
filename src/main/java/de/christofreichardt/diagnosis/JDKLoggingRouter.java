@@ -7,12 +7,11 @@
 package de.christofreichardt.diagnosis;
 
 import java.util.logging.Level;
-import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 /**
  * This specialised {@link NullTracer} redirects log messages to the core logging facilities of the Java platform,
- * see <a href="http://docs.oracle.com/javase/7/docs/api/java/util/logging/package-summary.html">java.util.logging</a>.
+ * see <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.logging/java/util/logging/package-summary.html">java.util.logging</a>.
  * The {@link LogLevel}s will be translated into the {@link Level}s used by loggers of the Java platform. All of the other
  * tracing output will be discarded.
  *
