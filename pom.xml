@@ -12,7 +12,8 @@
         A trace tool which produces clearly arranged logs by indenting the trace messages depending on the depth of the
         call stack.
     </description>
-    <url>http://www.christofreichardt.de/Projektstudien/TraceLogger/index.html</url>
+    <url>http://chr78rm.github.io/tracelogger/index.html</url>
+    <inceptionYear>2014</inceptionYear>
     <licenses>
         <license>
             <name>Apache License Version 2.0, January 2004</name>
@@ -125,7 +126,7 @@
                             <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
                             <header>tracelogger ${project.version} API</header>
                             <bottom>
-                                Copyright &#x00A9; 2015, 2023, Christof Reichardt - Paul-Ehrlich-Weg 1 - D-63110 Rodgau - Build ${build.time}
+                                Copyright &#x00A9; 2014, 2023, Christof Reichardt - Paul-Ehrlich-Weg 1 - D-63110 Rodgau - Build ${build.time}
                             </bottom>
                             <additionalJOptions>
                                 <additionalJOption>-J-Duser.language=en</additionalJOption>
