@@ -14,9 +14,12 @@
                 padding-top: 0.25em;
                 font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
                 font-weight: bold;
+                width: 72%;
+                margin-left: auto;
+                margin-right: auto;
             }
             div.top-panel {
-                width: 70%;
+                width: 97%;
                 margin-left: auto;
                 margin-right: auto;
                 margin-top: 1em;
@@ -117,15 +120,51 @@
             }
             div.main {
                 min-width: 1100px;
+                overflow-x: auto;
+            }
+            @media (max-width: 1500px) {
+                div.top-background {
+                    padding-bottom: 0.25em;
+                    padding-top: 0.25em;
+                    font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+                    font-weight: bold;
+                    width: 93%;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+                div.center-background {
+                    margin-top: 1em;
+                    font-weight: bold;
+                    width: 90%;
+                    margin-left: auto;
+                    margin-right: auto;
+                    display: flow;
+                }
+                div.imprint {
+                    width: 90%;
+                    margin-left: auto;
+                    margin-right: auto;
+                    margin-top: 1em;
+                    border-style: solid;
+                    border-color: rgb(187,38,73);
+                    background-color: rgb(212,202,205);
+                    border-radius: 0.75em;
+                    text-align: center;
+                    padding-left: 1em;
+                    padding-right: 1em;
+                }
+            }
+            html, body {
+                height: 100vh;
             }
         </style>
     </head>
-    <body style="height: 100%; background-color: rgb(240,236,233);">
+    <body style="background-color: rgb(240,236,233);">
         <div class="overall-background">
             <div class="main">
                 <div class="top-background">
-                    <div style="color: rgb(187,38,73); width: 72%; margin-left: auto; margin-right: auto; margin-top: 1em; margin-bottom: 1em; font-size: 0.9em; text-align: right">
-                        <span style="font-style: italic;">Last updated: 11-December-2023</span>
+                    <div style="color: rgb(187,38,73); margin-top: 1em; margin-bottom: 1em; font-size: 0.9em; text-align: right">
+                        <span style="font-style: italic;">Last updated: 13-December-2023</span>
                     </div>
                     <div class="top-panel">
                         <span style="font-size: 3em;">
