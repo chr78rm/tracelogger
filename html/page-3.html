@@ -1590,7 +1590,7 @@
                                                         <td class="code">            for (Future&lt;Integer&gt; future : futures) {</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="code">                assert future.get() == i;</td>
+                                                        <td class="code">                <span class="keyword">assert</span> future.get() == i;</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="code">                i++;</td>
@@ -1614,7 +1614,7 @@
                                                         <td class="code">        executorService.shutdown();</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="code">        assert executorService.awaitTermination(TIMEOUT, TimeUnit.SECONDS);</td>
+                                                        <td class="code">        <span class="keyword">assert</span> executorService.awaitTermination(TIMEOUT, TimeUnit.SECONDS);</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="code">    }</td>
