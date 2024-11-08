@@ -3,7 +3,7 @@ package de.christofreichardt.diagnosis;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
-import ch.qos.logback.core.util.StatusPrinter;
+import ch.qos.logback.core.util.StatusPrinter2;
 import de.christofreichardt.diagnosis.io.NullPrintStream;
 import java.io.File;
 import java.io.IOException;
@@ -47,7 +47,8 @@ public class LogbackRouterUnit5 implements WithAssertions {
         context.reset();
         File configFile = new File("." + File.separator + "config" + File.separator + "logback.xml");
         configurator.doConfigure(configFile);
-        StatusPrinter.print(context);
+        StatusPrinter2 statusPrinter2 = new StatusPrinter2();
+        statusPrinter2.print(context);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
