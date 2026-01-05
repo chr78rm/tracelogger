@@ -41,6 +41,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <argLine>-Duser.language=en</argLine>
+        <log4j2.version>2.25.3</log4j2.version>
     </properties>
 
     <build>
@@ -48,7 +49,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.2</version>
+                <version>3.5.4</version>
                 <configuration>
                     <includes>
                         <include>**/TracerFactoryUnit5.java</include>
@@ -69,28 +70,41 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
+                <version>3.14.1</version>
                 <configuration>
-                    <release>11</release>
+                    <release>17</release>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.apache.logging.log4j</groupId>
+                            <artifactId>log4j-core</artifactId>
+                            <version>${log4j2.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                    <annotationProcessors>
+                        <processor>org.apache.logging.log4j.core.config.plugins.processor.PluginProcessor</processor>
+                        <processor>org.apache.logging.log4j.core.config.plugins.processor.GraalVmProcessor</processor>
+                    </annotationProcessors>
                     <compilerArgs>
                         <arg>-Xlint:all,-serial,-classfile,-processing</arg>
                         <arg>-J-Duser.language=en_EN</arg>
                         <arg>-proc:full</arg> <!-- needed for Log4js XmlConfigurationFactory -->
-                </compilerArgs>
+                        <arg>-Alog4j.graalvm.groupId=${project.groupId}</arg>
+                        <arg>-Alog4j.graalvm.artifactId=${project.artifactId}</arg>
+                    </compilerArgs>
 
-                <!--
-                needed for passing through the -J options
-                <fork>
-                    true
-                </fork>
-                -->
+                    <!--
+                    needed for passing through the -J options
+                    <fork>
+                        true
+                    </fork>
+                    -->
 
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.9.0</version>
             </plugin>
         </plugins>
     </build>
@@ -103,7 +117,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>build-helper-maven-plugin</artifactId>
-                        <version>3.6.0</version>
+                        <version>3.6.1</version>
                         <executions>
                             <execution>
                                 <id>timestamp-property</id>
@@ -123,7 +137,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.11.1</version>
+                        <version>3.12.0</version>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
@@ -137,7 +151,7 @@
                             <header>tracelogger ${project.version} API</header>
                             <!--suppress UnresolvedMavenProperty -->
                             <bottom>
-                                Copyright &#x00A9; 2014, 2024, Christof Reichardt - Paul-Ehrlich-Weg 1 - D-63110 Rodgau - Build ${build.time}
+                                Copyright &#x00A9; 2014, 2026, Christof Reichardt - Paul-Ehrlich-Weg 1 - D-63110 Rodgau - Build ${build.time}
                             </bottom>
                             <additionalJOptions>
                                 <additionalJOption>-J-Duser.language=en</additionalJOption>
@@ -147,7 +161,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>3.3.1</version>
+                        <version>3.4.0</version>
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
@@ -160,7 +174,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.2.7</version>
+                        <version>3.2.8</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -172,14 +186,12 @@
                         </executions>
                     </plugin>
                     <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.13</version>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.9.0</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <serverId>ossrh</serverId>
-                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                            <publishingServerId>central</publishingServerId>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -191,19 +203,19 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.11.3</version>
+            <version>6.0.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
-            <version>5.11.3</version>
+            <version>6.0.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.26.3</version>
+            <version>3.27.6</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -221,19 +233,19 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.5.12</version>
+            <version>1.5.23</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
-            <version>2.24.1</version>
+            <version>${log4j2.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.24.1</version>
+            <version>${log4j2.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
